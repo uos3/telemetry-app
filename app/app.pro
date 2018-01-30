@@ -30,11 +30,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    uploader.cpp
+    uploader.cpp \
+    db.cpp
 
 HEADERS += \
         mainwindow.h \
-    uploader.h
+    uploader.h \
+    db.h
 
 FORMS += \
         mainwindow.ui

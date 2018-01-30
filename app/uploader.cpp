@@ -9,9 +9,7 @@ void Uploader::upload(std::vector<std::tuple<QString, QString>> body) {
 	QUrl url(target);
 	QNetworkRequest request(url);
 
-	// TODO - in what format does the server want the data?
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-//	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
 	QUrlQuery params;
 	for (auto item : body) {
