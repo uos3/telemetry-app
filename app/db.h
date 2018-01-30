@@ -17,6 +17,7 @@ public:
 
 	// Methods
 	QSqlQuery get (QString table, QString field="*");
+	static QList<QPair<QString, QString>> row (QSqlQuery qu, QString fields);
 
 	// Getters / setters
 private:

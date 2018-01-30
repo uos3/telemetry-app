@@ -18,13 +18,13 @@ int main(int argc, char *argv[])
 
 	// test db.
 	DB mydb(secrets::db_hostname, secrets::db_dbname, secrets::db_username, secrets::db_password);
-	QSqlQuery qu = mydb.get("mydata", "id, tstamp, battery_voltage, 5v_current");
+	QString fields = "id, tstamp, battery_voltage, 5v_current";
+	QSqlQuery qu = mydb.get("dummydata", fields);
 	while (qu.next()) {
-		QString id = qu.value(0).toString();
-		QString tstamp = qu.value(1).toString();
-		QString battery_voltage = qu.value(2).toString();
-		QString fiveV_current = qu.value(3).toString();
-		qDebug() << id << tstamp << battery_voltage << fiveV_current;
+		QList<QPair<QString, QString>> this_row = DB::row(qu, fields);
+		for (auto col: this_row) {
+			qDebug() << col.first << col.second;
+		}
 	}
 
 	// test network stuff
