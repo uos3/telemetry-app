@@ -6,10 +6,9 @@
 #include <QSqlQuery>
 #include <string.h>
 
-class DB
-{
+class DB {
 public:
-	// Construction / destruction
+	// Construction / Destruction
 	DB(std::string hostname,
 	   std::string dbname,
 	   std::string username,
@@ -19,9 +18,9 @@ public:
 	QSqlQuery get (QString table, QString field="*");
 	static QList<QPair<QString, QString>> row (QSqlQuery qu, QString fields);
 
-	// Getters / setters
+	// Getters / Setters
 private:
-	// Member variables
+	// Members
 	QSqlDatabase db;
 
 	// Methods

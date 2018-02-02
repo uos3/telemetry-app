@@ -13,7 +13,7 @@
 class Uploader : public QObject {
 	Q_OBJECT
 public:
-	// Constructors
+	// Construction / Destruction
 	Uploader(QString target = "http://localhost:8080");
 
 	// Methods
