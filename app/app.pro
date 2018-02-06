@@ -31,8 +31,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     uploader.cpp \
-    db.cpp \
-    packet.cpp
+    db.cpp
 
 HEADERS += \
         mainwindow.h \
