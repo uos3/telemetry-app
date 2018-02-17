@@ -5,11 +5,12 @@ Uploader::Uploader(QString target) :
 	target(target) { }
 
 void Uploader::upload(std::vector<std::tuple<QString, QString>> body) {
-// upload data to the (a) server, via POST
+// upload data in (string) key-value form to the (a) server, via POST
 	QUrl url(target);
 	QNetworkRequest request(url);
 
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	request.setHeader(QNetworkRequest::ContentTypeHeader,
+					  "application/x-www-form-urlencoded");
 
 	QUrlQuery params;
 	for (auto item : body) {
@@ -20,10 +21,26 @@ void Uploader::upload(std::vector<std::tuple<QString, QString>> body) {
 					 this, &Uploader::replyFinished);
 
 	manager->post(request, params.query().toUtf8());
+}
 
+void Uploader::upload(QByteArray body) {
+// upload data in byte array form to the (a) server, via POST
+	// TODO: can't really test this properly until I have a sample packet in
+	//       byte-array form to send.
+	QUrl url(target);
+	QNetworkRequest request(url);
+
+	request.setHeader(QNetworkRequest::ContentTypeHeader,
+					  "application/x-www-form-urlencoded");
+
+	QObject::connect(manager, &QNetworkAccessManager::finished,
+					 this, &Uploader::replyFinished);
+
+	manager->post(request, body);
 }
 
 void Uploader::upload () {
+// upload sample data in (string) key-value form to the (a) server, via POST
 	std::vector<std::tuple<QString, QString>> body;
 	body.push_back(std::make_tuple("name", "seymour"));
 	upload(body);

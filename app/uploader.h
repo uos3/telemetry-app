@@ -18,6 +18,7 @@ public:
 
 	// Methods
 	void upload(std::vector<std::tuple<QString, QString>> body);
+	void upload(QByteArray body);
 	void upload();
 
 	// Getters / Setters
