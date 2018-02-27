@@ -1,5 +1,5 @@
 /* CREATE TABLE */
-CREATE TABLE IF NOT EXISTS TABLE_NAME(
+CREATE TABLE IF NOT EXISTS DUMMYGPS(
   preamble INT(11), 
   syncWord DECIMAL(10, 2), 
   packType DECIMAL(10, 2), 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS TABLE_NAME(
   CRC DECIMAL(10, 2)
 );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -60,7 +60,7 @@ VALUES
     59419
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -83,7 +83,7 @@ VALUES
     16364
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -105,7 +105,7 @@ VALUES
     5729
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -127,7 +127,7 @@ VALUES
     49624
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -150,7 +150,7 @@ VALUES
     29093
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -172,7 +172,7 @@ VALUES
     32938
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -195,7 +195,7 @@ VALUES
     13078
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -218,7 +218,7 @@ VALUES
     3303
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -241,7 +241,7 @@ VALUES
     58294
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -264,7 +264,7 @@ VALUES
     12311
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -287,7 +287,7 @@ VALUES
     45447
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -310,7 +310,7 @@ VALUES
     14125
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -332,7 +332,7 @@ VALUES
     58309
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -355,7 +355,7 @@ VALUES
     5114
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -377,7 +377,7 @@ VALUES
     45000
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -399,7 +399,7 @@ VALUES
     44990
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -422,7 +422,7 @@ VALUES
     48425
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -445,7 +445,7 @@ VALUES
     1252
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -468,7 +468,7 @@ VALUES
     37294
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -491,7 +491,7 @@ VALUES
     19177
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -514,7 +514,7 @@ VALUES
     51594
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -537,7 +537,7 @@ VALUES
     37321
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -560,7 +560,7 @@ VALUES
     7033
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -583,7 +583,7 @@ VALUES
     37884
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -606,7 +606,7 @@ VALUES
     39778
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -628,7 +628,7 @@ VALUES
     17417
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -651,7 +651,7 @@ VALUES
     24836
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -674,7 +674,7 @@ VALUES
     62389
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -697,7 +697,7 @@ VALUES
     13198
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -720,7 +720,7 @@ VALUES
     6790
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -743,7 +743,7 @@ VALUES
     18447
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -766,7 +766,7 @@ VALUES
     57806
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -788,7 +788,7 @@ VALUES
     44368
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -811,7 +811,7 @@ VALUES
     61857
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -834,7 +834,7 @@ VALUES
     18299
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -857,7 +857,7 @@ VALUES
     29743
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -880,7 +880,7 @@ VALUES
     19315
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -902,7 +902,7 @@ VALUES
     63647
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -924,7 +924,7 @@ VALUES
     13698
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -946,7 +946,7 @@ VALUES
     64319
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -969,7 +969,7 @@ VALUES
     54291
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -991,7 +991,7 @@ VALUES
     7399
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1014,7 +1014,7 @@ VALUES
     47026
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1037,7 +1037,7 @@ VALUES
     53722
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1060,7 +1060,7 @@ VALUES
     46920
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1083,7 +1083,7 @@ VALUES
     51829
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1106,7 +1106,7 @@ VALUES
     2815
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1129,7 +1129,7 @@ VALUES
     58024
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1152,7 +1152,7 @@ VALUES
     57510
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1175,7 +1175,7 @@ VALUES
     15711
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1198,7 +1198,7 @@ VALUES
     49412
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1221,7 +1221,7 @@ VALUES
     27277
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1243,7 +1243,7 @@ VALUES
     54146
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1266,7 +1266,7 @@ VALUES
     38870
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1289,7 +1289,7 @@ VALUES
     11995
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1312,7 +1312,7 @@ VALUES
     50657
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1335,7 +1335,7 @@ VALUES
     57630
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1357,7 +1357,7 @@ VALUES
     57394
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1380,7 +1380,7 @@ VALUES
     1118
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1402,7 +1402,7 @@ VALUES
     45380
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1424,7 +1424,7 @@ VALUES
     49044
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1447,7 +1447,7 @@ VALUES
     52128
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1470,7 +1470,7 @@ VALUES
     36449
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1493,7 +1493,7 @@ VALUES
     5596
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1516,7 +1516,7 @@ VALUES
     57511
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1538,7 +1538,7 @@ VALUES
     43279
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1561,7 +1561,7 @@ VALUES
     15885
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1584,7 +1584,7 @@ VALUES
     44681
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1606,7 +1606,7 @@ VALUES
     25133
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1629,7 +1629,7 @@ VALUES
     54609
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1652,7 +1652,7 @@ VALUES
     49455
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1675,7 +1675,7 @@ VALUES
     63756
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1697,7 +1697,7 @@ VALUES
     39115
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1720,7 +1720,7 @@ VALUES
     44160
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1742,7 +1742,7 @@ VALUES
     42928
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1765,7 +1765,7 @@ VALUES
     21927
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1788,7 +1788,7 @@ VALUES
     3194
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1811,7 +1811,7 @@ VALUES
     57060
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1834,7 +1834,7 @@ VALUES
     53436
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1857,7 +1857,7 @@ VALUES
     2882
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1880,7 +1880,7 @@ VALUES
     5277
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1902,7 +1902,7 @@ VALUES
     29239
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1924,7 +1924,7 @@ VALUES
     52740
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1947,7 +1947,7 @@ VALUES
     55363
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1970,7 +1970,7 @@ VALUES
     53771
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -1992,7 +1992,7 @@ VALUES
     15371
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2015,7 +2015,7 @@ VALUES
     20647
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2037,7 +2037,7 @@ VALUES
     35198
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2060,7 +2060,7 @@ VALUES
     64715
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2083,7 +2083,7 @@ VALUES
     2734
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2106,7 +2106,7 @@ VALUES
     5942
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2129,7 +2129,7 @@ VALUES
     65407
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2152,7 +2152,7 @@ VALUES
     50673
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2175,7 +2175,7 @@ VALUES
     25458
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2198,7 +2198,7 @@ VALUES
     14404
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2221,7 +2221,7 @@ VALUES
     22782
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2243,7 +2243,7 @@ VALUES
     50989
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2266,7 +2266,7 @@ VALUES
     33241
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2289,7 +2289,7 @@ VALUES
     10966
   );
 /* INSERT QUERY */
-INSERT INTO TABLE_NAME(
+INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID, 
   time, timeSource, seqID, OBCTemp, 
   battTemp, battVolt, battCurrent, 
@@ -2311,5 +2311,3 @@ VALUES
     1010101010101010101010101010101010101010101010101010101010101010, 
     47851
   );
-/* TABLE RENAME */
-RENAME TABLE TABLE_NAME TO DUMMYGPS;
