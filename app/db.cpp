@@ -27,6 +27,20 @@ QSqlQuery DB::get (QString table, QString field) {
 	}
 }
 
+QTableView* DB::table (QString table, QString fields) {
+	QSqlQueryModel model;
+	model.setQuery("select" + fields + " from " + table);
+
+	QStringList field_list = fields.split(", ");
+	for (int i=0; i<field_list.size(); i++) {
+		model.setHeaderData(i, Qt::Horizontal, field_list.at(i));
+	}
+
+	QTableView* view = new QTableView;
+	view->setModel(&model);
+	return view;
+}
+
 QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 // gives a tuple (for a row) of { "col_name": "value", ... }
 // TODO - necessary?

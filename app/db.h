@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlQueryModel>
+#include <QTableView>
 #include <string.h>
 
 class DB {
@@ -17,6 +19,7 @@ public:
 	// Methods
 	QSqlQuery get (QString table, QString field="*");
 	static QList<QPair<QString, QString>> row (QSqlQuery qu, QString fields);
+	QTableView* table (QString table, QString fields);
 
 	// Getters / Setters
 private:
