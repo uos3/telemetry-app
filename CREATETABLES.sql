@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS PACKETS(
   packCHK VARCHAR(100), 
   packHASH VARCHAR(100), 
   seqStat INT(11), 
-  seqSecond INT(11), 
-  secondType INT(11),
+  seqPayload INT(11), 
+  payloadType INT(11),
   downlinkTime VARCHAR(100)
   );
 /* CREATE TABLE STATUS */
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS STATUS(
 /* CREATE TABLE GPS*/
 CREATE TABLE IF NOT EXISTS GPS(
   packID INT(11), 
-  seqSecond DECIMAL(10, 2), 
+  seqPayload DECIMAL(10, 2), 
   timeStamp VARCHAR(100), 
   lat DECIMAL(10, 2), 
   lon DECIMAL(10, 2), 
