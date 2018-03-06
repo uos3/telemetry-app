@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS STATUS(
 CREATE TABLE IF NOT EXISTS GPS(
   packID INT(11),
   seqPayload DECIMAL(10, 2),
-  timeStamp VARCHAR(100),
+  payloadTimeStamp VARCHAR(100),
   lat DECIMAL(10, 2),
   lon DECIMAL(10, 2),
   alt DECIMAL(10, 2),
