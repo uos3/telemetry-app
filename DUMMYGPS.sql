@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS DUMMYGPS(
   syncWord BIGINT(32),
   packType DECIMAL(10, 2),
   SCID DECIMAL(10, 2),
-  time VARCHAR(100),
+  SCTime VARCHAR(100),
   timeSource DECIMAL(10, 2),
   seqID DECIMAL(10, 2),
   OBCTemp DECIMAL(10, 2),
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS DUMMYGPS(
   PATemp DECIMAL(10, 2),
   RXNoiseFloor DECIMAL(10, 2),
   seqIDPayload DECIMAL(10, 2),
-  timeStamp VARCHAR(100),
+  payloadTimeStamp VARCHAR(100),
   lat DECIMAL(10, 2),
   lon DECIMAL(10, 2),
   alt DECIMAL(10, 2),
@@ -40,12 +40,12 @@ CREATE TABLE IF NOT EXISTS DUMMYGPS(
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -62,12 +62,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -85,12 +85,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -107,12 +107,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -129,12 +129,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -152,12 +152,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -174,12 +174,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -197,12 +197,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -220,12 +220,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -243,12 +243,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -266,12 +266,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -289,12 +289,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -312,12 +312,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -334,12 +334,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -357,12 +357,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -379,12 +379,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -401,12 +401,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -424,12 +424,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -447,12 +447,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -470,12 +470,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -493,12 +493,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -516,12 +516,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -539,12 +539,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -562,12 +562,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -585,12 +585,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -608,12 +608,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -630,12 +630,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -653,12 +653,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -676,12 +676,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -699,12 +699,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -722,12 +722,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -745,12 +745,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -768,12 +768,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -790,12 +790,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -813,12 +813,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -836,12 +836,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -859,12 +859,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -882,12 +882,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -904,12 +904,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -926,12 +926,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -948,12 +948,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -971,12 +971,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -993,12 +993,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1016,12 +1016,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1039,12 +1039,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1062,12 +1062,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1085,12 +1085,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1108,12 +1108,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1131,12 +1131,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1154,12 +1154,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1177,12 +1177,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1200,12 +1200,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1223,12 +1223,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1245,12 +1245,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1268,12 +1268,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1291,12 +1291,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1314,12 +1314,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1337,12 +1337,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1359,12 +1359,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1382,12 +1382,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1404,12 +1404,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1426,12 +1426,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1449,12 +1449,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1472,12 +1472,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1495,12 +1495,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1518,12 +1518,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1540,12 +1540,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1563,12 +1563,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1586,12 +1586,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1608,12 +1608,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1631,12 +1631,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1654,12 +1654,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1677,12 +1677,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1699,12 +1699,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1722,12 +1722,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1744,12 +1744,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1767,12 +1767,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1790,12 +1790,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1813,12 +1813,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1836,12 +1836,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1859,12 +1859,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1882,12 +1882,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1904,12 +1904,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1926,12 +1926,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1949,12 +1949,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1972,12 +1972,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -1994,12 +1994,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2017,12 +2017,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2039,12 +2039,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2062,12 +2062,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2085,12 +2085,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2108,12 +2108,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2131,12 +2131,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2154,12 +2154,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2177,12 +2177,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2200,12 +2200,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2223,12 +2223,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2245,12 +2245,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2268,12 +2268,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
@@ -2291,12 +2291,12 @@ VALUES
 /* INSERT QUERY */
 INSERT INTO DUMMYGPS(
   preamble, syncWord, packType, SCID,
-  time, timeSource, seqID, OBCTemp,
+  SCTime, timeSource, seqID, OBCTemp,
   battTemp, battVolt, battCurrent,
   chargeCurrent, antDep, dataPending,
   rebootCnt, rails1, rails2, rails3,
   rails4, rails5, rails6, RXTemp, TXTemp,
-  PATemp, RXNoiseFloor, seqIDPayload, timeStamp,
+  PATemp, RXNoiseFloor, seqIDPayload, payloadTimeStamp,
   lat, lon, alt, HDOP, VDOP, PDOP, TDOP,
   hash, CRC
 )
