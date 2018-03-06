@@ -31,13 +31,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     uploader.cpp \
-    db.cpp
+    db.cpp \
+    reader.cpp
 
 HEADERS += \
         mainwindow.h \
     uploader.h \
     db.h \
-    packet.h
+    packet.h \
+    reader.h
 
 FORMS += \
         mainwindow.ui
