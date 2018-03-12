@@ -10,7 +10,7 @@
 #include "db.h"
 #include "secrets/secrets.h"
 #include "packet.h"
-#include "reader.h"
+#include "buffer.h"
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
@@ -40,8 +40,17 @@ int main(int argc, char *argv[]) {
 //	packet my_packet = { my_status, gps_data };
 //	qDebug() << "status:" << my_packet._status.spacecraft_id
 //			 << "  data:" << my_packet._data._gps.sequence_id;
-	Reader r;
-	r.testing();
+
+	Buffer b;
+	b.from_file("test.txt");
+
+	qDebug() << "Reading bits from the file:";
+	char ch1 = (char)b.get(23 * 8 + 0,  8); // expect 01111000 (x)
+	char ch2 = (char)b.get(11 * 8 + 2,  6); // expect 00100101 (%)
+	uint32_t ch3 =   b.get(22 * 8 + 0, 15); // expect 0011001010111100 (12988)
+	uint32_t ch4 =   b.get(22 * 8 + 4, 15); // expect 0010101111000011 (11203)
+
+	qDebug() << ch1 << ", " << ch2 << ", " << ch3 << ", " << ch4;
 
 	return a.exec();
 }
