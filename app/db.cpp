@@ -56,3 +56,53 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 
 	return list;
 }
+
+bool DB::store_packet (Packet p) {
+	QSqlQuery query;
+	QString query_str = "BEGIN;\n";
+
+	// packet
+	query_str += "insert into packets (packCHK, packHASH, seqStat, seqPayload,"
+	    "payloadType, downlinkTime) values (";
+	query_str += p.hash + ", ";
+	query_str += p.crc + ", ";
+	query_str += p.status.sequence_id + ", ";
+//	query_str += p.data.xxx.sequence_id + ", "; // TODO @finish: get correct data
+	query_str += p.type + ")\n";
+
+	// status
+	query_str += "insert into status (packID, seqStat, SCID, SCTime,"
+	    "timeSource, OBCTemp, battTemp, battVolt, battCurrent, chargeCurrent,"
+	    "antDep, dataPending, rebootCnt, rails1, rails2, rails3, rails4,"
+	    "rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) values (";
+	query_str += "last_insert_id(), ";
+	query_str += p.status.sequence_id + ", ";
+	query_str += p.status.spacecraft_id + ", ";
+	query_str += p.status.time + ", ";
+	query_str += p.status.time_source + ", ";
+	query_str += p.status.obc_temperature + ", ";
+	query_str += p.status.battery_temperature + ", ";
+	query_str += p.status.battery_voltage + ", ";
+	query_str += p.status.battery_current + ", ";
+	query_str += p.status.charge_current + ", ";
+	query_str += p.status.antenna_deployment + ", ";
+	query_str += p.status.data_pending + ", ";
+	query_str += p.status.reboot_count + ", ";
+	query_str += p.status.rails_status[0] + ", ";
+	query_str += p.status.rails_status[1] + ", ";
+	query_str += p.status.rails_status[2] + ", ";
+	query_str += p.status.rails_status[3] + ", ";
+	query_str += p.status.rails_status[4] + ", ";
+	query_str += p.status.rails_status[5] + ", ";
+	query_str += p.status.rx_temperature + ", ";
+	query_str += p.status.tx_temperature + ", ";
+	query_str += p.status.pa_temperature + ", ";
+	query_str += p.status.rx_noisefloor + ")";
+
+	// data
+//	query_str += "data";
+	// TODO @finish: get the right type of data, fill out all the values.
+
+	query_str += "COMMIT;";
+	return query.exec(query_str);
+}

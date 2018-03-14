@@ -14,8 +14,11 @@ public:
 	// TODO @completeness: custom copy constructor, assignment operator.
 
 	// Methods
-	void from_file(std::string fname);
-	uint32_t get(uint32_t start_bit, size_t num_bits);
+	void from_file (std::string fname);
+	uint32_t get (uint32_t start_bit, size_t num_bits);
+
+	// Static Methods
+	static float parse_float (uint8_t real);
 
 	// Getters / Setters
 	char* getBuf();

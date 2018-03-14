@@ -4,11 +4,11 @@
 #include <QString>
 
 // Types
-struct status {
+struct Status {
 	// TODO: in spec, spacecraft_id is 16bit (2 chars), so this is 3 to
 	//       accomodate null terminator.
 	char spacecraft_id[3];
-	unsigned int time;
+	uint32_t time;
 	bool time_source;
 	char sequence_id[3];
 	// TODO - NOTE: according to the spec, these are 8bit reals (at least from
@@ -28,9 +28,9 @@ struct status {
 	float rx_noisefloor;
 };
 
-struct gps {
+struct GPS {
 	char sequence_id[3];
-	unsigned int timestamp;
+	uint32_t timestamp;
 	float lat;
 	float lon;
 	float alt;
@@ -40,9 +40,9 @@ struct gps {
 	float TDOP;
 };
 
-struct imu {
+struct IMU {
 	char sequence_id[3];
-	unsigned int timestamp;
+	uint32_t timestamp;
 	// TODO: are likely reals, not ints
 	uint16_t Mag_X[5];
 	uint16_t Mag_Y[5];
@@ -55,9 +55,9 @@ struct imu {
 	uint16_t Accel_Z[5];
 };
 
-struct img {
+struct Img {
 	char sequence_id[3];
-	unsigned int timestamp;
+	uint32_t timestamp;
 	uint8_t image_id;
 	uint16_t fragment_id;
 	uint16_t num_fragments;
@@ -65,10 +65,10 @@ struct img {
 	char image_data[6];
 };
 
-struct health {
+struct Health {
 	// TODO - actual types
 	char sequence_id[3];
-	unsigned int timestamp;
+	uint32_t timestamp;
 	float obc_temperature;
 	float rx_temperature;
 	float tx_temperature;
@@ -131,17 +131,23 @@ struct ts_dt {
 	char member[6];
 };
 
-union data {
-	gps _gps;
-	imu _imu;
-	img _img;
-	health _health;
-	ts_dt _td;
+union Data {
+	GPS gps;
+	IMU imu;
+	Img img;
+	Health health;
+	ts_dt td;
 };
 
-struct packet {
-	status _status;
-	data _data;
+enum class DataType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Conf=6 };
+
+struct Packet {
+	char crc[16];
+	char hash[16];
+	DataType type;
+	Status status;
+	Data data;
+	uint32_t downlink_time;
 };
 
 #endif // PACKET_H

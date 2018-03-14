@@ -17,7 +17,7 @@ void Buffer::from_file (std::string fname) {
 		is.read(buffer,length);
 
 		if (is) {
-			qDebug() << "all characters read successfully.\nbuffer:";
+			qDebug() << "all characters read successfully.";
 			buffer[length] = '\0';
 		} else { qDebug() << "error: only " << is.gcount() << " could be read"; }
 		is.close();
@@ -40,10 +40,31 @@ uint32_t Buffer::get(uint32_t start_bit, size_t num_bits) {
 		val |= this->get(start_bit + available, num_bits - available);
 		return val;
 	} else {
-		// TODO @bug: what if num_bits is too big for the shift in a uint8_t?
 		uint8_t mask = ((1 << num_bits) - 1) << (8 - num_bits - bit);
 		return (this->buf[byte] & mask) >> (8 - bit - num_bits);
 	}
+}
+
+float Buffer::parse_float (uint8_t in) {
+	// TODO @finish: find out what the actual format of the input reals are, and use that.
+	// input format:  1bit sign, 1bit exp sign, 2bit exp, 4bit mantissa.
+	// output format: 1bit sign, 8bit exponent, 23bit mantissa.
+	float f = 0;
+
+//	uint8_t sign     = (in & 0x80) >> 7;
+//	uint8_t exp_sign = (in & 0x40) >> 6;
+//	uint8_t exp      = (in & 0x30) >> 4;
+//	uint8_t mantissa = (in & 0x0F);
+
+	// TODO @check: verify shifts etc.
+	uint32_t sign     = (in & 0x80) << 25;
+	uint32_t exp_sign = (in & 0x40) << 24; // TODO @check: correct?
+	uint32_t exp      = (in & 0x30) << 19;
+	uint32_t mantissa = (in & 0x0F);
+
+	f = (float)(sign & exp_sign & exp & mantissa);
+
+	return f;
 }
 
 char* Buffer::getBuf() { return this->buf; }
