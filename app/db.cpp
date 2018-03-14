@@ -67,7 +67,7 @@ bool DB::store_packet (Packet p) {
 	query_str += p.hash + ", ";
 	query_str += p.crc + ", ";
 	query_str += p.status.sequence_id + ", ";
-//	query_str += p.data.xxx.sequence_id + ", "; // TODO @finish: get correct data
+//	query_str += p.payload.xxx.sequence_id + ", "; // TODO @finish: get correct data
 	query_str += p.type + ")\n";
 
 	// status
