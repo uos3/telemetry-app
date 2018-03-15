@@ -127,26 +127,26 @@ struct Health {
 	float _5v_current;
 };
 
-struct ts_dt {
-	char member[6];
-};
+//struct ts_dt {
+//	char member[6];
+//};
 
-union Data {
+union Payload {
 	GPS gps;
 	IMU imu;
 	Img img;
 	Health health;
-	ts_dt td;
+//	ts_dt td;
 };
 
-enum class DataType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Conf=6 };
+enum class PayloadType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Conf=6 };
 
 struct Packet {
 	char crc[16];
 	char hash[16];
-	DataType type;
+	PayloadType type;
 	Status status;
-	Data data;
+	Payload payload;
 	uint32_t downlink_time;
 };
 

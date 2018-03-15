@@ -67,7 +67,7 @@ bool DB::store_packet (Packet p) {
 	query_str += p.hash + ", ";
 	query_str += p.crc + ", ";
 	query_str += p.status.sequence_id + ", ";
-//	query_str += p.payload.xxx.sequence_id + ", "; // TODO @finish: get correct data
+//	query_str += p.payload.xxx.sequence_id + ", "; // TODO @finish: get correct payload
 	query_str += p.type + ")\n";
 
 	// status
@@ -99,9 +99,9 @@ bool DB::store_packet (Packet p) {
 	query_str += p.status.pa_temperature + ", ";
 	query_str += p.status.rx_noisefloor + ")";
 
-	// data
-//	query_str += "data";
-	// TODO @finish: get the right type of data, fill out all the values.
+	// payload
+//	query_str += "payload";
+	// TODO @finish: get the right type of payload, fill out all the values.
 
 	query_str += "COMMIT;";
 	return query.exec(query_str);
