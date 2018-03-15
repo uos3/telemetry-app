@@ -21,7 +21,7 @@ QSqlQuery DB::get (QString table, QString field) {
 	if (query.exec(full_query_string)) {
 		return query;
 	} else {
-		// TODO - can prob deal with this better.
+		// TODO @enhancement: can prob deal with this better.
 		std::string msg = "error with db query \"" + full_query_string.toStdString()+ "\".";
 		throw std::runtime_error(msg);
 	}
@@ -43,7 +43,7 @@ QTableView* DB::table (QString table, QString fields) {
 
 QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 // gives a tuple (for a row) of { "col_name": "value", ... }
-// TODO - necessary?
+// TODO @refactor: necessary?
 	QStringList field_list = fields.split(", ");
 
 	QList<QPair<QString, QString>> list;
@@ -61,14 +61,18 @@ bool DB::store_packet (Packet p) {
 	QSqlQuery query;
 	QString query_str = "BEGIN;\n";
 
+	// TODO @refactor: a neater way of doing this?
+	auto comma = [&query_str]() { query_str += ", "; };
+
 	// packet
 	query_str += "insert into packets (packCHK, packHASH, seqStat, seqPayload,"
 	    "payloadType, downlinkTime) values (";
-	query_str += p.hash + ", ";
-	query_str += p.crc + ", ";
-	query_str += p.status.sequence_id + ", ";
-//	query_str += p.payload.xxx.sequence_id + ", "; // TODO @finish: get correct payload
-	query_str += p.type + ")\n";
+	query_str += p.hash; comma();
+	query_str += p.crc; comma();
+	query_str += p.status.sequence_id; comma();
+//	query_str += p.payload.xxx.sequence_id; comma(); // TODO @finish: get correct payload
+	query_str += static_cast<int>(p.type);
+	query_str += ")\n";
 
 	// status
 	query_str += "insert into status (packID, seqStat, SCID, SCTime,"
@@ -76,31 +80,31 @@ bool DB::store_packet (Packet p) {
 	    "antDep, dataPending, rebootCnt, rails1, rails2, rails3, rails4,"
 	    "rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) values (";
 	query_str += "last_insert_id(), ";
-	query_str += p.status.sequence_id + ", ";
-	query_str += p.status.spacecraft_id + ", ";
-	query_str += p.status.time + ", ";
-	query_str += p.status.time_source + ", ";
-	query_str += p.status.obc_temperature + ", ";
-	query_str += p.status.battery_temperature + ", ";
-	query_str += p.status.battery_voltage + ", ";
-	query_str += p.status.battery_current + ", ";
-	query_str += p.status.charge_current + ", ";
-	query_str += p.status.antenna_deployment + ", ";
-	query_str += p.status.data_pending + ", ";
-	query_str += p.status.reboot_count + ", ";
-	query_str += p.status.rails_status[0] + ", ";
-	query_str += p.status.rails_status[1] + ", ";
-	query_str += p.status.rails_status[2] + ", ";
-	query_str += p.status.rails_status[3] + ", ";
-	query_str += p.status.rails_status[4] + ", ";
-	query_str += p.status.rails_status[5] + ", ";
-	query_str += p.status.rx_temperature + ", ";
-	query_str += p.status.tx_temperature + ", ";
-	query_str += p.status.pa_temperature + ", ";
-	query_str += p.status.rx_noisefloor + ")";
+	query_str += p.status.sequence_id; comma();
+	query_str += p.status.spacecraft_id; comma();
+	query_str += p.status.time; comma();
+	query_str += p.status.time_source; comma();
+	query_str += p.status.obc_temperature; comma();
+	query_str += p.status.battery_temperature; comma();
+	query_str += p.status.battery_voltage; comma();
+	query_str += p.status.battery_current; comma();
+	query_str += p.status.charge_current; comma();
+	query_str += p.status.antenna_deployment; comma();
+	query_str += p.status.data_pending; comma();
+	query_str += p.status.reboot_count; comma();
+	query_str += p.status.rails_status[0]; comma();
+	query_str += p.status.rails_status[1]; comma();
+	query_str += p.status.rails_status[2]; comma();
+	query_str += p.status.rails_status[3]; comma();
+	query_str += p.status.rails_status[4]; comma();
+	query_str += p.status.rails_status[5]; comma();
+	query_str += p.status.rx_temperature; comma();
+	query_str += p.status.tx_temperature; comma();
+	query_str += p.status.pa_temperature; comma();
+	query_str += p.status.rx_noisefloor;
+	query_str += ")";
 
 	// payload
-//	query_str += "payload";
 	// TODO @finish: get the right type of payload, fill out all the values.
 
 	query_str += "COMMIT;";

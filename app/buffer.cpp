@@ -47,6 +47,10 @@ uint32_t Buffer::get(uint32_t start_bit, size_t num_bits) {
 
 float Buffer::parse_float (uint8_t in) {
 	// TODO @finish: find out what the actual format of the input reals are, and use that.
+	std::string msg = "parse_float hasn't been implemented yet, as the format "
+	"of the mini-reals is not finalised. For now, treat them as uints.";
+	throw std::runtime_error(msg);
+
 	// input format:  1bit sign, 1bit exp sign, 2bit exp, 4bit mantissa.
 	// output format: 1bit sign, 8bit exponent, 23bit mantissa.
 	float f = 0;
