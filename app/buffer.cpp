@@ -1,8 +1,8 @@
 #include "buffer.h"
 
-Buffer::Buffer() { }
+Buffer::Buffer () { }
 
-Buffer::~Buffer() { if (this->buf) { delete[] this->buf; } }
+Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
 
 void Buffer::from_file (std::string fname) {
 	std::ifstream is (fname, std::ifstream::binary);
@@ -27,7 +27,7 @@ void Buffer::from_file (std::string fname) {
 	} else { qDebug() << "couldn't read file"; }
 }
 
-uint32_t Buffer::get(uint32_t start_bit, size_t num_bits) {
+uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
 	uint32_t byte = start_bit / 8;
 	uint8_t  bit  = start_bit % 8;
 
@@ -43,6 +43,12 @@ uint32_t Buffer::get(uint32_t start_bit, size_t num_bits) {
 		uint8_t mask = ((1 << num_bits) - 1) << (8 - num_bits - bit);
 		return (this->buf[byte] & mask) >> (8 - bit - num_bits);
 	}
+}
+
+uint32_t Buffer::get (size_t num_bits) {
+	uint32_t bits = get(pos, num_bits);
+	pos += num_bits;
+	return bits;
 }
 
 float Buffer::parse_float (uint8_t in) {
@@ -71,5 +77,7 @@ float Buffer::parse_float (uint8_t in) {
 	return f;
 }
 
-char* Buffer::getBuf() { return this->buf; }
-uint64_t Buffer::getLen() { return this->len; }
+char* Buffer::getBuf () { return this->buf; }
+uint64_t Buffer::getLen () { return this->len; }
+uint64_t Buffer::getPos () { return this->pos; }
+void Buffer::setPos (uint64_t pos) { this->pos = pos; }
