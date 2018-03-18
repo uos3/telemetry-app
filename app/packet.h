@@ -193,9 +193,65 @@ void from_buffer (Status& s, Buffer& b) {
 	s.rx_noisefloor = (uint8_t)(b.get(8));
 }
 
-void from_buffer (GPS& p, Buffer& p) { throw std::runtime_error("not done yet."); }
-void from_buffer (IMU& p, Buffer& p) { throw std::runtime_error("not done yet."); }
-void from_buffer (Img& p, Buffer& p) { throw std::runtime_error("not done yet."); }
+void from_buffer (GPS& g, Buffer& p) {
+	b.setPos(0/* TODO @bug: find out proper value & set. */);
+	char sequence_id[3] = (char*)(b.get(16)); sequence_id[2] = '\0';
+	g.sequence_id = sequence_id;
+	g.timestamp = b.get(32);
+	g.lat = (float)b.get(32);
+	g.lon = (float)b.get(32);
+	g.alt = (float)b.get(32);
+	g.HDOP = (uint8_t)b.get(8);
+	g.VDOP = (uint8_t)b.get(8);
+	g.PDOP = (uint8_t)b.get(8);
+	g.TDOP = (uint8_t)b.get(8);
+}
+
+void from_buffer (IMU& i, Buffer& p) {
+	b.setPos(0/* TODO @bug: find out proper value & set. */);
+	char sequence_id[3] = (char*)(b.get(16)); sequence_id[2] = '\0';
+	i.sequence_id = sequence_id;
+	i.timestamp = b.get(32);
+	uint16_t mag_x[5];
+	for (int i=0; i<5; i++) { mag_x[i] = (uint16_t)b.get(16); }
+	i.Mag_X = mag_x;
+	uint16_t mag_y[5];
+	for (int i=0; i<5; i++) { mag_y[i] = (uint16_t)b.get(16); }
+	i.Mag_X = mag_y;
+	uint16_t mag_z[5];
+	for (int i=0; i<5; i++) { mag_z[i] = (uint16_t)b.get(16); }
+	i.Mag_X = mag_z;
+	uint16_t gyro_x[5];
+	for (int i=0; i<5; i++) { gyro_x[i] = (uint16_t)b.get(16); }
+	i.Mag_X = gyro_x;
+	uint16_t gyro_y[5];
+	for (int i=0; i<5; i++) { gyro_y[i] = (uint16_t)b.get(16); }
+	i.Mag_X = gyro_y;
+	uint16_t gyro_z[5];
+	for (int i=0; i<5; i++) { gyro_z[i] = (uint16_t)b.get(16); }
+	i.Mag_X = gyro_z;
+	uint16_t accel_x[5];
+	for (int i=0; i<5; i++) { accel_x[i] = (uint16_t)b.get(16); }
+	i.Mag_X = accel_x;
+	uint16_t accel_y[5];
+	for (int i=0; i<5; i++) { accel_y[i] = (uint16_t)b.get(16); }
+	i.Mag_X = accel_y;
+	uint16_t accel_z[5];
+	for (int i=0; i<5; i++) { accel_z[i] = (uint16_t)b.get(16); }
+	i.Mag_X = accel_z;
+}
+
+void from_buffer (Img& p, Buffer& p) {
+	b.setPos(0/* TODO @bug: find out proper value & set. */);
+	char sequence_id[3] = (char*)(b.get(16)); sequence_id[2] = '\0';
+	i.sequence_id = sequence_id;
+	i.timestamp = b.get(32);
+	i.image_id = (uint8_t)b.get(8);
+	i.fragment_id = (uint16_t)b.get(16);
+	i.num_fragments = (uint16_t)b.get(16);
+	i.image_data = "image";
+}
+
 void from_buffer (Health& p, Buffer& p) { throw std::runtime_error("not done yet."); }
 
 #endif // PACKET_H
