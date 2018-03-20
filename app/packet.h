@@ -143,8 +143,9 @@ struct Health {
 union Payload {
 	GPS gps;
 	IMU imu;
-	Img img;
 	Health health;
+	Img img;
+	// TODO @bug: Missing Conf
 //	ts_dt td;
 };
 

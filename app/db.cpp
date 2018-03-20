@@ -65,20 +65,41 @@ bool DB::store_packet (Packet p) {
 	auto comma = [&query_str]() { query_str += ", "; };
 
 	// packet
-	query_str += "insert into packets (packCHK, packHASH, seqStat, seqPayload,"
-	    "payloadType, downlinkTime) values (";
-	query_str += p.hash; comma();
+	query_str += "INSERT INTO PACKETS (packCHK, packHASH, seqStat, seqPayload,"
+	    "payloadType, downlinkTime) VALUES (";
 	query_str += p.crc; comma();
+	query_str += p.hash; comma();
 	query_str += p.status.sequence_id; comma();
-//	query_str += p.payload.xxx.sequence_id; comma(); // TODO @finish: get correct payload
-	query_str += static_cast<int>(p.type);
-	query_str += ")\n";
+	switch (static_cast<int>(p.type)) {
+		case 2 :
+			query_str += p.payload.gps.sequence_id; comma();
+			query_str += static_cast<int>(p.type); comma();
+			break;
+		case 3 :
+			query_str += p.payload.imu.sequence_id; comma();
+			query_str += static_cast<int>(p.type); comma();
+			break;
+		case 4 :
+			query_str += p.payload.health.sequence_id; comma();
+			query_str += static_cast<int>(p.type); comma();
+			break;
+		case 5 :
+			query_str += p.payload.img.sequence_id; comma();
+			query_str += static_cast<int>(p.type); comma();
+			break;
+		case 6 :
+			query_str += p.payload.conf.sequence_id; comma();
+			query_str += static_cast<int>(p.type); comma();
+			break;
+	}
+	query_str += p.downlink_time;
+	query_str += ");\n";
 
 	// status
-	query_str += "insert into status (packID, seqStat, SCID, SCTime,"
+	query_str += "INSERT INTO STATUS (packID, seqStat, SCID, SCTime,"
 	    "timeSource, OBCTemp, battTemp, battVolt, battCurrent, chargeCurrent,"
 	    "antDep, dataPending, rebootCnt, rails1, rails2, rails3, rails4,"
-	    "rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) values (";
+	    "rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) VALUES (";
 	query_str += "last_insert_id(), ";
 	query_str += p.status.sequence_id; comma();
 	query_str += p.status.spacecraft_id; comma();
@@ -102,10 +123,12 @@ bool DB::store_packet (Packet p) {
 	query_str += p.status.tx_temperature; comma();
 	query_str += p.status.pa_temperature; comma();
 	query_str += p.status.rx_noisefloor;
-	query_str += ")";
+	query_str += ");\n";
 
 	// payload
-	// TODO @finish: get the right type of payload, fill out all the values.
+	switch (static_cast<int>(p.type)) {
+		// TODO @finish: get the right type of payload, fill out all the values.
+	}
 
 	query_str += "COMMIT;";
 	return query.exec(query_str);
