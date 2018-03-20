@@ -59,15 +59,6 @@ struct IMU {
 	uint16_t Accel_Z[5];
 };
 
-struct Img {
-	char sequence_id[3];
-	uint32_t timestamp;
-	uint8_t image_id;
-	uint16_t fragment_id;
-	uint16_t num_fragments;
-	char image_data[6]; // TODO: replace once size is finalized
-};
-
 struct Health {
 	char sequence_id[3];
 	uint32_t timestamp;
@@ -137,6 +128,19 @@ struct Health {
 	uint16_t _5v_voltage;
 	uint16_t _5v_current;
 };
+
+struct Img {
+	char sequence_id[3];
+	uint32_t timestamp;
+	uint8_t image_id;
+	uint16_t fragment_id;
+	uint16_t num_fragments;
+	char image_data[6]; // TODO: replace once size is finalized
+};
+
+struct Config {
+	// TODO @bug: Missing Conf struct
+}
 
 //struct ts_dt {
 //	char member[6];
@@ -331,17 +335,20 @@ void from_buffer (Packet& p, Buffer& b) {
 	p.type = static_cast<PayloadType>(b.get(16));
 	from_buffer(p.status, b);
 	switch (p.type) {
-		case PayloadType::GPS:
+		case PayloadType::GPS :
 			from_buffer(p.payload.gps, b);
 			break;
-		case PayloadType::IMU:
+		case PayloadType::IMU :
 			from_buffer(p.payload.imu, b);
 			break;
-		case PayloadType::Health:
+		case PayloadType::Health :
 			from_buffer(p.payload.health, b);
 			break;
-		case PayloadType::Img:
+		case PayloadType::Img :
 			from_buffer(p.payload.img, b);
+			break;
+		case PayloadType::Config :
+			// TODO @bug: Needs finishing
 			break;
 		default:
 			throw std::runtime_error("invalid payload type while parsing packet.");

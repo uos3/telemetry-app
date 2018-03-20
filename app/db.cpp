@@ -65,29 +65,29 @@ bool DB::store_packet (Packet p) {
 	auto comma = [&query_str]() { query_str += ", "; };
 
 	// packet
-	query_str += "INSERT INTO PACKETS (packCHK, packHASH, seqStat, seqPayload,"
-	    "payloadType, downlinkTime) VALUES (";
+	query_str += "INSERT INTO PACKETS (packCHK, packHASH, seqStat, seqPayload, \
+	    payloadType, downlinkTime) VALUES (";
 	query_str += p.crc; comma();
 	query_str += p.hash; comma();
 	query_str += p.status.sequence_id; comma();
-	switch (static_cast<int>(p.type)) {
-		case 2 :
+	switch (p.type) {
+		case PayloadType::GPS :
 			query_str += p.payload.gps.sequence_id; comma();
 			query_str += static_cast<int>(p.type); comma();
 			break;
-		case 3 :
+		case PayloadType::IMU :
 			query_str += p.payload.imu.sequence_id; comma();
 			query_str += static_cast<int>(p.type); comma();
 			break;
-		case 4 :
+		case PayloadType::Health :
 			query_str += p.payload.health.sequence_id; comma();
 			query_str += static_cast<int>(p.type); comma();
 			break;
-		case 5 :
+		case PayloadType::Img :
 			query_str += p.payload.img.sequence_id; comma();
 			query_str += static_cast<int>(p.type); comma();
 			break;
-		case 6 :
+		case PayloadType::Config :
 			query_str += p.payload.conf.sequence_id; comma();
 			query_str += static_cast<int>(p.type); comma();
 			break;
@@ -96,10 +96,10 @@ bool DB::store_packet (Packet p) {
 	query_str += ");\n";
 
 	// status
-	query_str += "INSERT INTO STATUS (packID, seqStat, SCID, SCTime,"
-	    "timeSource, OBCTemp, battTemp, battVolt, battCurrent, chargeCurrent,"
-	    "antDep, dataPending, rebootCnt, rails1, rails2, rails3, rails4,"
-	    "rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) VALUES (";
+	query_str += "INSERT INTO STATUS (packID, seqStat, SCID, SCTime, \
+	    timeSource, OBCTemp, battTemp, battVolt, battCurrent, chargeCurrent, \
+	    antDep, dataPending, rebootCnt, rails1, rails2, rails3, rails4, \
+	    rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) VALUES (";
 	query_str += "last_insert_id(), ";
 	query_str += p.status.sequence_id; comma();
 	query_str += p.status.spacecraft_id; comma();
@@ -126,12 +126,11 @@ bool DB::store_packet (Packet p) {
 	query_str += ");\n";
 
 	// payload
-	switch (static_cast<int>(p.type)) {
-		// TODO @finish: get the right type of payload, fill out all the values.
-		case 2 :
-			query_str += "INSERT INTO GPS (packID, seqPayload, payloadTimeStamp,"
-					"lat, lon, alt, HDOP, VDOP, PDOP, TDOP) VALUES (";
-			// query_str += p.payload.gps.packID; comma(); TODO @bug: needs fixing
+	switch (p.type) {
+		case PayloadType::GPS :
+			query_str += "INSERT INTO GPS (packID, seqPayload, payloadTimeStamp, \
+					lat, lon, alt, HDOP, VDOP, PDOP, TDOP) VALUES (";
+			query_str += "last_insert_id(), ";
 			query_str += p.payload.gps.sequence_id; comma();
 			query_str += p.payload.gps.timestamp; comma();
 			query_str += p.payload.gps.lat; comma();
@@ -143,11 +142,11 @@ bool DB::store_packet (Packet p) {
 			query_str += p.payload.gps.TDOP;
 			query_str += ");\n";
 			break;
-		case 3 :
-			query_str += "INSERT INTO IMU (packID, seqPayload, payloadTimeStamp,"
-					"magX, magY, magZ, gyroX, gyroY, gyroZ, accelX, accelY, accelZ)"
-					"VALUES ("
-			// query_str += p.payload.imu.packID; comma(); TODO @bug: needs fixing
+		case PayloadType::IMU :
+			query_str += "INSERT INTO IMU (packID, seqPayload, payloadTimeStamp, \
+					magX, magY, magZ, gyroX, gyroY, gyroZ, accelX, accelY, accelZ) \
+					VALUES ("
+			query_str += "last_insert_id(), ";
 			query_str += p.payload.imu.sequence_id; comma();
 			query_str += p.payload.imu.timestamp; comma();
 			query_str += p.payload.imu.Mag_X; comma();
@@ -161,23 +160,23 @@ bool DB::store_packet (Packet p) {
 			query_str += p.payload.imu.Accel_Z;
 			query_str += ");\n";
 			break;
-		case 4 :
-			query_str += "INSERT INTO HEALTH (packID, seqPayload, payloadTimeStamp,"
-					"OBCTemp, RXTemp, TXTemp, PATemp, rebootCnt, dataPending, antSwitch,"
-					"RXNoiseFloor, detectFlashErr, detectRAMErr, battVolt, battCurrent,"
-					"battTemp, chargeCurrent, MPPTVolt, solarN1C, solarN2C,"
-					"solarE1C, solarE2C, solarS1C, solarS2C, solarW1C, solarW2C,"
-					"solarT1C, solarT2C, rails1Switch, rails2Switch, rails3Switch,"
-					"rails4Switch, rails5Switch, rails6Switch, rails1Over, rails2Over,"
-					"rails3Over, rails4Over, rails5Over, rails6Over,"
-					"rails1Boot, rails1OverCnt, rails1Volt, rails1Curr,"
-					"rails2Boot, rails2OverCnt, rails2Volt, rails2Curr,"
-					"rails3Boot, rails3OverCnt, rails3Volt, rails3Curr,"
-					"rails4Boot, rails4OverCnt, rails4Volt, rails4Curr,"
-					"rails5Boot, rails5OverCnt, rails5Volt, rails5Curr,"
-					"rails6Boot, rails6OverCnt, rails6Volt, rails6Curr,"
-					"3V3Volt, 3V3Curr, 5VVolt, 5VCurr) VALUES ("
-			// query_str += p.payload.health.packID; comma(); TODO @bug: needs fixing
+		case PayloadType::Health :
+			query_str += "INSERT INTO HEALTH (packID, seqPayload, payloadTimeStamp, \
+					OBCTemp, RXTemp, TXTemp, PATemp, rebootCnt, dataPending, antSwitch, \
+					RXNoiseFloor, detectFlashErr, detectRAMErr, battVolt, battCurrent, \
+					battTemp, chargeCurrent, MPPTVolt, solarN1C, solarN2C, \
+					solarE1C, solarE2C, solarS1C, solarS2C, solarW1C, solarW2C, \
+					solarT1C, solarT2C, rails1Switch, rails2Switch, rails3Switch, \
+					rails4Switch, rails5Switch, rails6Switch, rails1Over, rails2Over, \
+					rails3Over, rails4Over, rails5Over, rails6Over, \
+					rails1Boot, rails1OverCnt, rails1Volt, rails1Curr, \
+					rails2Boot, rails2OverCnt, rails2Volt, rails2Curr, \
+					rails3Boot, rails3OverCnt, rails3Volt, rails3Curr, \
+					rails4Boot, rails4OverCnt, rails4Volt, rails4Curr, \
+					rails5Boot, rails5OverCnt, rails5Volt, rails5Curr, \
+					rails6Boot, rails6OverCnt, rails6Volt, rails6Curr, \
+					3V3Volt, 3V3Curr, 5VVolt, 5VCurr) VALUES ("
+			query_str += "last_insert_id(), ";
 			query_str += p.payload.health.sequence_id; comma();
 			query_str += p.payload.health.timestamp; comma();
 			query_str += p.payload.health.obc_temperature; comma();
@@ -247,10 +246,10 @@ bool DB::store_packet (Packet p) {
 			query_str += p.payload.health._5v_current;
 			query_str += ");\n";
 			break;
-		case 5 :
-			query_str += "INSERT INTO IMG (packID, seqPayload, payloadTimeStamp,"
-					"imgID, fragID, fragNums, imgData) VALUES ("
-			// query_str += p.payload.img.packID; comma(); TODO @bug: needs fixing
+		case PayloadType::Img :
+			query_str += "INSERT INTO IMG (packID, seqPayload, payloadTimeStamp, \
+					imgID, fragID, fragNums, imgData) VALUES ("
+			query_str += "last_insert_id(), ";
 			query_str += p.payload.img.sequence_id; comma();
 			query_str += p.payload.img.timestamp; comma();
 			query_str += p.payload.img.image_id; comma();
@@ -259,7 +258,7 @@ bool DB::store_packet (Packet p) {
 			query_str += p.payload.img.image_data;
 			query_str += ");\n";
 			break;
-		case 6 :
+		case PayloadType::Config :
 			// TODO @bug: Conf needs finishing
 			break;
 	}
