@@ -4,8 +4,16 @@ Buffer::Buffer () { }
 
 Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
 
-void Buffer::from_file (std::string fname) {
-	std::ifstream is (fname, std::ifstream::binary);
+void Buffer::from_file (std::string fname, int packSize) {
+
+	std::ifstream ifs (fname, std::ifstream::binary);
+	if (ifs) {
+		ifs.seekg(0, ifs.end);
+		int fileLen = ifs.tellg();
+		std::istream::get pack (ifs.seekg(0, ifs.end - packSize), packSize);
+	}
+
+	std::istream is (pack);
 	if (is) {
 		is.seekg(0, is.end);
 		int length = is.tellg();

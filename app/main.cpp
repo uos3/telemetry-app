@@ -12,6 +12,8 @@
 #include "packet.h"
 #include "buffer.h"
 
+int packSize = 3136; // Number of bits per packet
+
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     MainWindow w;
@@ -42,7 +44,7 @@ int main(int argc, char *argv[]) {
 //			 << "  data:" << my_packet.payload.gps.sequence_id;
 
 	Buffer b;
-	b.from_file("test.txt");
+	b.from_file("test.txt", packSize);
 	qDebug() << "\nBUFFER:\n" << b.getBuf() << "\n";
 
 	qDebug() << "Reading bits from the file:";
