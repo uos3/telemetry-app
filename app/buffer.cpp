@@ -16,6 +16,7 @@ void Buffer::from_file (std::string fname, int packSize) {
 		if (is) {
 			is.seekg(0, is.end);
 			int length = is.tellg();
+			// @TODO: Check if matches with packSize
 			is.seekg(0, is.beg);
 
 			char* buffer = new char[length+1];
