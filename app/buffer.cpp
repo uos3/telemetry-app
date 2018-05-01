@@ -11,28 +11,28 @@ void Buffer::from_file (std::string fname, int packSize) {
 		ifs.seekg(0, ifs.end);
 		int fileLen = ifs.tellg();
 		std::istream::get pack (ifs.seekg(0, ifs.end - packSize), packSize);
-	}
 
-	std::istream is (pack);
-	if (is) {
-		is.seekg(0, is.end);
-		int length = is.tellg();
-		is.seekg(0, is.beg);
-
-		char* buffer = new char[length+1];
-
-		qDebug() << "Reading " << length << " characters... ";
-		is.read(buffer,length);
-
+		std::istream is (pack);
 		if (is) {
-			qDebug() << "all characters read successfully.";
-			buffer[length] = '\0';
-		} else { qDebug() << "error: only " << is.gcount() << " could be read"; }
-		is.close();
+			is.seekg(0, is.end);
+			int length = is.tellg();
+			is.seekg(0, is.beg);
 
-		this->buf = buffer;
-		this->len = length;
-	} else { qDebug() << "couldn't read file"; }
+			char* buffer = new char[length+1];
+
+			qDebug() << "Reading " << length << " characters... ";
+			is.read(buffer,length);
+
+			if (is) {
+				qDebug() << "all characters read successfully.";
+				buffer[length] = '\0';
+			} else { qDebug() << "error: only " << is.gcount() << " could be read"; }
+			is.close();
+
+			this->buf = buffer;
+			this->len = length;
+		} else { qDebug() << "couldn't read file"; }
+	}
 }
 
 uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
