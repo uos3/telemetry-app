@@ -6,7 +6,8 @@
 #include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QTableView>
-#include <string.h>
+#include <QTextStream>
+#include <string>
 
 #include "packet.h"
 
@@ -30,6 +31,8 @@ private:
 	QSqlDatabase db;
 
 	// Methods
+//	template <class T>
+//	void add_to_query (QString& query, const T& x, bool comma=true);
 };
 
 #endif // DB_H

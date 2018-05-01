@@ -14,7 +14,7 @@ struct Status {
 	uint32_t time;
 	bool time_source;
 	char sequence_id[3];
-	// TODO @note: to be 8bit reals x 5
+	// TODO #note: to be 8bit reals x 5
 	uint8_t obc_temperature;
 	uint8_t battery_temperature;
 	uint8_t battery_voltage;
@@ -24,7 +24,7 @@ struct Status {
 	uint16_t data_pending;
 	uint8_t reboot_count;
 	bool rails_status[6];
-	// TODO @note: to be 8bit reals x 4
+	// TODO #note: to be 8bit reals x 4
 	uint8_t rx_temperature;
 	uint8_t tx_temperature;
 	uint8_t pa_temperature;
@@ -37,7 +37,7 @@ struct GPS {
 	float lat;
 	float lon;
 	float alt;
-	// TODO @note: to be 8bit reals x 4
+	// TODO #note: to be 8bit reals x 4
 	uint8_t HDOP;
 	uint8_t VDOP;
 	uint8_t PDOP;
@@ -47,7 +47,7 @@ struct GPS {
 struct IMU {
 	char sequence_id[3];
 	uint32_t timestamp;
-	// TODO @note: to be 16bit reals x 5 x 9
+	// TODO #note: to be 16bit reals x 5 x 9
 	uint16_t Mag_X[5];
 	uint16_t Mag_Y[5];
 	uint16_t Mag_Z[5];
@@ -62,7 +62,7 @@ struct IMU {
 struct Health {
 	char sequence_id[3];
 	uint32_t timestamp;
-	// TODO @note: to be 8bit reals x 4
+	// TODO #note: to be 8bit reals x 4
 	uint8_t obc_temperature;
 	uint8_t rx_temperature;
 	uint8_t tx_temperature;
@@ -70,12 +70,12 @@ struct Health {
 	uint8_t reboot_count;
 	uint16_t data_packets_pending;
 	bool antenna_switch;
-	// TODO @note: to be 8bit real
+	// TODO #note: to be 8bit real
 	uint8_t rx_noisefloor;
 	uint8_t detected_flash_errors;
 	uint8_t detected_ram_errors;
 	// all floats from here on will be 10bit coming in.
-	// TODO @note: to be 10bit reals x 15
+	// TODO #note: to be 10bit reals x 15
 	uint16_t battery_voltage;
 	uint16_t battery_current;
 	uint16_t battery_temperature;
@@ -95,32 +95,32 @@ struct Health {
 	bool rails_overcurrent_status[6];
 	uint16_t rail_1_boot_count;
 	uint16_t rail_1_overcurrent_count;
-	// TODO @note: to be 10bit reals x 2
+	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_1_voltage;
 	uint16_t rail_1_current;
 	uint16_t rail_2_boot_count;
 	uint16_t rail_2_overcurrent_count;
-	// TODO @note: to be 10bit reals x 2
+	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_2_voltage;
 	uint16_t rail_2_current;
 	uint16_t rail_3_boot_count;
 	uint16_t rail_3_overcurrent_count;
-	// TODO @note: to be 10bit reals x 2
+	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_3_voltage;
 	uint16_t rail_3_current;
 	uint16_t rail_4_boot_count;
 	uint16_t rail_4_overcurrent_count;
-	// TODO @note: to be 10bit reals x 2
+	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_4_voltage;
 	uint16_t rail_4_current;
 	uint16_t rail_5_boot_count;
 	uint16_t rail_5_overcurrent_count;
-	// TODO @note: to be 10bit reals x 2
+	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_5_voltage;
 	uint16_t rail_5_current;
 	uint16_t rail_6_boot_count;
 	uint16_t rail_6_overcurrent_count;
-	// TODO @note: to be 10bit reals x 6
+	// TODO #note: to be 10bit reals x 6
 	uint16_t rail_6_voltage;
 	uint16_t rail_6_current;
 	uint16_t _3v3_voltage;
@@ -139,23 +139,20 @@ struct Img {
 };
 
 struct Config {
-	// TODO @bug: Missing Conf struct
-}
-
-//struct ts_dt {
-//	char member[6];
-//};
+	// TODO #bug: Missing Conf struct
+	char sequence_id[3];
+	uint32_t timestamp;
+};
 
 union Payload {
 	GPS gps;
 	IMU imu;
 	Health health;
 	Img img;
-	// TODO @bug: Missing Conf
-//	ts_dt td;
+	Config config;
 };
 
-enum class PayloadType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Conf=6 };
+enum class PayloadType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Config=6 };
 
 struct Packet {
 	char crc[2];
@@ -301,7 +298,7 @@ void from_buffer (Health& h, Buffer& b) {
 }
 
 void from_buffer (Status& s, Buffer& b) {
-	// TODO @bug: will the pointery stuff get reclaimed after the function?
+	// TODO #bug: will the pointery stuff get reclaimed after the function?
 	b.setPos(80);
 	char* spacecraft_id = (char*)((uint16_t)b.get(16));
 	std::copy(spacecraft_id, spacecraft_id+2, s.spacecraft_id);
@@ -348,13 +345,13 @@ void from_buffer (Packet& p, Buffer& b) {
 			from_buffer(p.payload.img, b);
 			break;
 		case PayloadType::Config :
-			// TODO @bug: Needs finishing
+			// TODO #bug: Needs finishing
 			break;
 		default:
 			throw std::runtime_error("invalid payload type while parsing packet.");
 			break;
 	}
-	// TODO @verify: assumes crc & hash occupy last 144 bits of packet (as
+	// TODO #verify: assumes crc & hash occupy last 144 bits of packet (as
 	//               opposed to the 144 bits that come after the payload).
 	strncpy(p.hash, b.getBuf()+144, 16);
 	strncpy(p.crc, b.getBuf()+160, 2);

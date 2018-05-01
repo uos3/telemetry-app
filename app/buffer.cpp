@@ -41,7 +41,7 @@ uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
 
 	if (bit + num_bits > 8) {
 		// want to read 'across' bytes, so must do in multiple stages.
-		// TODO @optimisation: make this iterative.
+		// TODO #optimisation: make this iterative.
 		uint8_t available = 8 - bit;
 		uint32_t val = this->get(start_bit, available);
 		val = val << (num_bits - available);
@@ -60,7 +60,7 @@ uint32_t Buffer::get (size_t num_bits) {
 }
 
 float Buffer::parse_float (uint8_t in) {
-	// TODO @finish: find out what the actual format of the input reals are, and use that.
+	// TODO #finish: find out what the actual format of the input reals are, and use that.
 	std::string msg = "parse_float hasn't been implemented yet, as the format "
 	"of the mini-reals is not finalised. For now, treat them as uints.";
 	throw std::runtime_error(msg);
@@ -74,9 +74,9 @@ float Buffer::parse_float (uint8_t in) {
 //	uint8_t exp      = (in & 0x30) >> 4;
 //	uint8_t mantissa = (in & 0x0F);
 
-	// TODO @check: verify shifts etc.
+	// TODO #check: verify shifts etc.
 	uint32_t sign     = (in & 0x80) << 25;
-	uint32_t exp_sign = (in & 0x40) << 24; // TODO @check: correct?
+	uint32_t exp_sign = (in & 0x40) << 24; // TODO #check: correct?
 	uint32_t exp      = (in & 0x30) << 19;
 	uint32_t mantissa = (in & 0x0F);
 

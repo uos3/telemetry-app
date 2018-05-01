@@ -12,7 +12,8 @@
 #include "packet.h"
 #include "buffer.h"
 
-int packSize = 3136; // Number of bits per packet
+//int packSize = 3136; // Number of bits per packet
+int packSize = 88; // Number of bits per packet
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);

@@ -11,10 +11,10 @@ public:
     // Construction / Destruction
     Buffer();
     ~Buffer();
-	// TODO @completeness: custom copy constructor, assignment operator.
+    // TODO #completeness: custom copy constructor, assignment operator.
 
 	// Methods
-	void from_file (std::string fname);
+	void from_file (std::string fname, int packSize);
 	uint32_t get (uint32_t start_bit, size_t num_bits);
 	uint32_t get (size_t num_bits);
 
@@ -27,7 +27,7 @@ public:
 	uint64_t getPos ();
 	void setPos (uint64_t pos);
 protected:
-	// TODO @refactor: use a QByteArray?
+	// TODO #refactor: use a QByteArray?
 	char* buf;
 	uint64_t len;
 	uint64_t pos = 0;
