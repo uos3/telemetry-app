@@ -6,7 +6,8 @@
 #include <cstring>
 #include <algorithm>
 
-// Types
+// Define types of downlink packets
+
 struct Status {
 	// TODO: in spec, spacecraft_id is 16bit (2 chars), so this is 3 to
 	//       accomodate null terminator.
@@ -152,7 +153,11 @@ union Payload {
 	Config config;
 };
 
+// Define the Payload types
+
 enum class PayloadType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Config=6 };
+
+// Define the packet struct
 
 struct Packet {
 	char crc[2];
@@ -162,6 +167,9 @@ struct Packet {
 	Payload payload;
 	uint32_t downlink_time;
 };
+
+/* Overloaded from_buffer functions that extract data from the buffer into the
+corresponding structs */
 
 void from_buffer (GPS& g, Buffer& b) {
 	b.setPos(249);

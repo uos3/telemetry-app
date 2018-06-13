@@ -4,6 +4,7 @@ Buffer::Buffer () { }
 
 Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
 
+// Gets raw file and stores latest packet into buffer
 void Buffer::from_file (std::string fname, int packSize) {
 
 	std::ifstream ifs (fname, std::ifstream::binary);
