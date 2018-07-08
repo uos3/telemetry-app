@@ -4,37 +4,30 @@ Buffer::Buffer () { }
 
 Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
 
-// Gets raw file and stores latest packet into buffer
-void Buffer::from_file (std::string fname, int packSize) {
+// Gets raw file and stores latest packet into buffer. default size=0 means
+// read the whole file, size!=0 means read last 'size' bytes.
+void Buffer::from_file (std::string fname, int size) {
+	std::ifstream is (fname, std::ifstream::binary);
+	if (is) {
+		is.seekg(0, is.end);
+		int length = is.tellg(); // length of the whole file
+		if (size == 0) { size = length; }
+		is.seekg(length-size, is.beg);
 
-	std::ifstream ifs (fname, std::ifstream::binary);
-	if (ifs) {
-		ifs.seekg(0, ifs.end);
-		int fileLen = ifs.tellg();
-		std::istream::get pack (ifs.seekg(0, ifs.end - packSize), packSize);
+		char* buffer = new char[size+1];
 
-		std::istream is (pack);
+		qDebug() << "Reading " << size << " characters... ";
+		is.read(buffer,size);
+
 		if (is) {
-			is.seekg(0, is.end);
-			int length = is.tellg();
-			// @TODO: Check if matches with packSize
-			is.seekg(0, is.beg);
+			qDebug() << "all characters read successfully.";
+			buffer[size] = '\0';
+		} else { qDebug() << "error: only " << is.gcount() << " could be read"; }
+		is.close();
 
-			char* buffer = new char[length+1];
-
-			qDebug() << "Reading " << length << " characters... ";
-			is.read(buffer,length);
-
-			if (is) {
-				qDebug() << "all characters read successfully.";
-				buffer[length] = '\0';
-			} else { qDebug() << "error: only " << is.gcount() << " could be read"; }
-			is.close();
-
-			this->buf = buffer;
-			this->len = length;
-		} else { qDebug() << "couldn't read file"; }
-	}
+		this->buf = buffer;
+		this->len = size;
+	} else { qDebug() << "couldn't read file"; }
 }
 
 uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {

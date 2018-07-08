@@ -45,15 +45,23 @@ int main(int argc, char *argv[]) {
 //			 << "  data:" << my_packet.payload.gps.sequence_id;
 
 	Buffer b;
-	b.from_file("test.txt", packSize);
-	qDebug() << "\nBUFFER:\n" << b.getBuf() << "\n";
+//	b.from_file("test.txt");//, packSize);
+	b.from_file("testinput.bin", packSize);
+	qDebug() << "\nbuffer:\n";
+	{
+		QDebug p = qDebug();
+		for (unsigned int i=0;i<b.getLen();i++) { p << b.getBuf()[i]; } // TODO: doesn't work
+		p << "\n";
+	}
 
-	qDebug() << "Reading bits from the file:";
-	char ch1 = (char)b.get(23 * 8 + 0,  8); // expect 01111000 (x)
-	char ch2 = (char)b.get(11 * 8 + 2,  6); // expect 00100101 (%)
-	uint32_t ch3 =   b.get(22 * 8 + 0, 15); // expect 0011001010111100 (12988)
-	uint32_t ch4 =   b.get(22 * 8 + 4, 15); // expect 0010101111000011 (11203)
+	qDebug() << "\nReading bits from the file:";
+	uint8_t  ch1 = (uint8_t)b.get(23 * 8 + 0,  8);
+	uint8_t  ch2 = (uint8_t)b.get(11 * 8 + 2,  6);
+	uint32_t ch3 =          b.get(22 * 8 + 0, 15);
+	uint32_t ch4 =          b.get(22 * 8 + 4, 15);
 
+	// for whole test.txt, expect 120, 37, 12988, 11203
+	// for whole testinput.bin, expect 31, 2, 29455, 12541
 	qDebug() << ch1 << ", " << ch2 << ", " << ch3 << ", " << ch4;
 
 	return a.exec();
