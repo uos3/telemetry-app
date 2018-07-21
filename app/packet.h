@@ -9,12 +9,12 @@
 // Types of downlink packets, and functions to make them from loaded buffers.
 
 struct Status {
-	// TODO: in spec, spacecraft_id is 16bit (2 chars), so this is 3 to
-	//       accomodate null terminator.
-	char spacecraft_id[3];
+	// TODO #choose: keep as 2 chars (accurate) or 3 (null terminated, easier
+	//               printing)
+	char spacecraft_id[2];
 	uint32_t time;
 	bool time_source;
-	char sequence_id[3];
+	char sequence_id[2];
 	// TODO #note: to be 8bit reals x 5
 	uint8_t obc_temperature;
 	uint8_t battery_temperature;
@@ -33,7 +33,7 @@ struct Status {
 };
 
 struct GPS {
-	char sequence_id[3];
+	char sequence_id[2];
 	uint32_t timestamp;
 	float lat;
 	float lon;
@@ -46,7 +46,7 @@ struct GPS {
 };
 
 struct IMU {
-	char sequence_id[3];
+	char sequence_id[2];
 	uint32_t timestamp;
 	// TODO #note: to be 16bit reals x 5 x 9
 	uint16_t Mag_X[5];
@@ -61,7 +61,7 @@ struct IMU {
 };
 
 struct Health {
-	char sequence_id[3];
+	char sequence_id[2];
 	uint32_t timestamp;
 	// TODO #note: to be 8bit reals x 4
 	uint8_t obc_temperature;
@@ -131,7 +131,7 @@ struct Health {
 };
 
 struct Img {
-	char sequence_id[3];
+	char sequence_id[2];
 	uint32_t timestamp;
 	uint8_t image_id;
 	uint16_t fragment_id;
@@ -141,7 +141,7 @@ struct Img {
 
 struct Config {
 	// TODO #incomplete: Missing Conf struct
-	char sequence_id[3];
+	char sequence_id[2];
 	uint32_t timestamp;
 };
 
