@@ -5,11 +5,9 @@ corresponding structs */
 
 void from_buffer (GPS& g, Buffer& b) {
 	b.setPos(248);
-//	char* sequence_id = (char*)((uint16_t)b.get(16));
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { (char)(seq_id >> 8), (char)(seq_id & 0xFF) };
 	std::copy(sequence_id, sequence_id+2, g.sequence_id);
-//	g.sequence_id[2] = '\0';
 	g.timestamp = b.get(32);
 	g.lat = (float)b.get(32);
 	g.lon = (float)b.get(32);
@@ -22,11 +20,9 @@ void from_buffer (GPS& g, Buffer& b) {
 
 void from_buffer (IMU& i, Buffer& b) {
 	b.setPos(248);
-//	char* sequence_id = (char*)((uint16_t)b.get(16));
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { (char)(seq_id >> 8), (char)(seq_id & 0xFF) };
 	std::copy(sequence_id, sequence_id+2, i.sequence_id);
-//	i.sequence_id[2] = '\0';
 	i.timestamp = b.get(32);
 	uint16_t mag_x[5];
 	for (int i=0; i<5; i++) { mag_x[i] = (uint16_t)b.get(16); }
@@ -59,11 +55,9 @@ void from_buffer (IMU& i, Buffer& b) {
 
 void from_buffer (Img& i, Buffer& b) {
 	b.setPos(248);
-//	char* sequence_id = (char*)((uint16_t)b.get(16));
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { (char)(seq_id >> 8), (char)(seq_id & 0xFF) };
 	std::copy(sequence_id, sequence_id+2, i.sequence_id);
-//	i.sequence_id[2] = '\0';
 	i.timestamp = b.get(32);
 	i.image_id = (uint8_t)b.get(8);
 	i.fragment_id = (uint16_t)b.get(16);
@@ -74,11 +68,9 @@ void from_buffer (Img& i, Buffer& b) {
 
 void from_buffer (Health& h, Buffer& b) {
 	b.setPos(248);
-//	char* sequence_id = (char*)((uint16_t)b.get(16));
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { (char)(seq_id >> 8), (char)(seq_id & 0xFF) };
 	std::copy(sequence_id, sequence_id+2, h.sequence_id);
-//	h.sequence_id[2] = '\0';
 	h.timestamp = b.get(32);
 	h.obc_temperature = (uint8_t)b.get(8);
 	h.rx_temperature = (uint8_t)b.get(8);
@@ -148,19 +140,14 @@ void from_buffer (Health& h, Buffer& b) {
 void from_buffer (Status& s, Buffer& b) {
 	// TODO #bug: will the pointery stuff get reclaimed after the function?
 	b.setPos(80);
-//	char* spacecraft_id = (char*)((uint16_t)b.get(16));
 	uint16_t spc_id = (uint16_t)b.get(16);
-//	char spacecraft_id[2] = { (char)(spc_id & 0xFF), (char)(spc_id >> 8) };
 	char spacecraft_id[2] = { (char)(spc_id >> 8), (char)(spc_id & 0xFF) };
 	std::copy(spacecraft_id, spacecraft_id+2, s.spacecraft_id);
-//	s.spacecraft_id[2] = '\0';
 	s.time = b.get(32);
 	s.time_source = (bool)b.get(1);
-//	char* sequence_id = (char*)((uint16_t)b.get(16));
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { (char)(seq_id & 0xFF), (char)(seq_id >> 8) };
 	std::copy(sequence_id, sequence_id+2, s.sequence_id);
-//	s.sequence_id[2] = '\0';
 	s.obc_temperature = (uint8_t)b.get(8);
 	s.battery_temperature = (uint8_t)b.get(8);
 	s.battery_voltage = (uint8_t)b.get(8);
