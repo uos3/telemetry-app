@@ -57,14 +57,20 @@ int main(int argc, char *argv[]) {
 	Packet p;
 	from_buffer(p, b);
 
-	qDebug() << "type:" << (int)p.type;
+	qDebug() << "\ntype:" << (int)p.type;
 	qDebug() << "status:" << p.status.spacecraft_id[0]
 						  << p.status.spacecraft_id[1]
 			 << "  status end:" << p.status.rx_noisefloor
-			 << "  data:" << (uint8_t)p.payload.gps.sequence_id[0]
+			 << "\ndata:" << (uint8_t)p.payload.gps.sequence_id[0]
 						  << (uint8_t)p.payload.gps.sequence_id[1]
-			 << "  data end:" << (uint8_t)p.payload.gps.TDOP;
+			 << "  data end:" << p.payload.gps.TDOP;
 	qDebug("hash: %.16s  crc: %.2s\n", p.hash, p.crc);
+	/* for testinput.bin, should get:
+		type: 2
+		status: B B   status end: 92
+		data: 251 44  data end: 209
+		hash: UUUUUUUUUUUUUUUU crc: UU
+	*/
 
 	return a.exec();
 }
