@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
     MainWindow w;
 	w.show();
 
-	// test packet stuff
+	// TEST PACKET STUFF
+	// read packet
 	Buffer b;
 	b.from_file("testinput.bin", packSize);
 	qDebug() << "\nbuffer:\n";
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]) {
 		p << "\n";
 	} b.setPos(0);
 
+	// parse
 	Packet p;
 	from_buffer(p, b);
 	qDebug() << "\ntype:" << (int)p.type;

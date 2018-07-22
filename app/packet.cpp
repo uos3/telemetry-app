@@ -196,11 +196,14 @@ void from_buffer (Packet& p, Buffer& b) {
 			// TODO #bug: Needs finishing
 			break;
 		default:
-			throw std::runtime_error("invalid payload type while parsing packet.");
+			std::string msg = "invalid payload type \"";
+			msg += std::to_string((int)p.type);
+			msg += "\" while parsing packet.";
+			throw std::runtime_error(msg);
 			break;
 	}
 	// TODO #verify: assumes crc & hash occupy last 144 bits of packet (as
 	//               opposed to the 144 bits that come after the payload).
-	strncpy(p.hash, b.getBuf()+144, 16);
-	strncpy(p.crc, b.getBuf()+160, 2);
+	strncpy(p.hash, b.getBuf()+b.getLen()-18*8, 16);
+	strncpy(p.crc, b.getBuf()+b.getLen()-2*8, 2);
 }

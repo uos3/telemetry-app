@@ -11,7 +11,6 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 	if (is) {
 		is.seekg(0, is.end);
 		uint64_t length = static_cast<uint64_t>(is.tellg()); // length of the whole file
-		qDebug() << "length:" << length;
 		if (size == 0) { size = length; } else { size /= 8; }
 		is.seekg(length-size, is.beg);
 
