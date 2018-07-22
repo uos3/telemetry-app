@@ -14,7 +14,7 @@ public:
     // TODO #completeness: custom copy constructor, assignment operator.
 
 	// Methods
-	void from_file (std::string fname, int size=0);
+	void from_file (std::string fname, uint64_t size=0);
 	uint32_t get (uint32_t start_bit, size_t num_bits);
 	uint32_t get (size_t num_bits);
 

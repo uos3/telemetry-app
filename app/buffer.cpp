@@ -6,18 +6,19 @@ Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
 
 // Gets raw file and stores latest packet into buffer. default size=0 means
 // read the whole file, size!=0 means read last 'size' bytes.
-void Buffer::from_file (std::string fname, int size) {
+void Buffer::from_file (std::string fname, uint64_t size) {
 	std::ifstream is (fname, std::ifstream::binary);
 	if (is) {
 		is.seekg(0, is.end);
-		int length = is.tellg(); // length of the whole file
-		if (size == 0) { size = length; }
+		uint64_t length = static_cast<uint64_t>(is.tellg()); // length of the whole file
+		qDebug() << "length:" << length;
+		if (size == 0) { size = length; } else { size /= 8; }
 		is.seekg(length-size, is.beg);
 
 		char* buffer = new char[size+1];
 
 		qDebug() << "Reading " << size << " characters... ";
-		is.read(buffer,size);
+		is.read(buffer, size);
 
 		if (is) {
 			qDebug() << "all characters read successfully.";
