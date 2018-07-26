@@ -6,11 +6,13 @@
 #include <cstring>
 #include <algorithm>
 
+#include <cereal/cereal.hpp>
+
 // Types of downlink packets, and functions to make them from loaded buffers.
 
 struct Status {
 	// TODO #choose: keep as 2 chars (accurate) or 3 (null terminated, easier
-	//               printing)
+	//			   printing)
 	char spacecraft_id[2];
 	uint32_t time;
 	bool time_source;
@@ -30,6 +32,19 @@ struct Status {
 	uint8_t tx_temperature;
 	uint8_t pa_temperature;
 	uint8_t rx_noisefloor;
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		ar(CEREAL_NVP(spacecraft_id), CEREAL_NVP(time),
+		   CEREAL_NVP(time_source), CEREAL_NVP(sequence_id),
+		   CEREAL_NVP(obc_temperature), CEREAL_NVP(battery_temperature),
+		   CEREAL_NVP(battery_voltage),  CEREAL_NVP(battery_current),
+		   CEREAL_NVP(charge_current), CEREAL_NVP(antenna_deployment),
+		   CEREAL_NVP(data_pending),  CEREAL_NVP(reboot_count),
+		   CEREAL_NVP(rails_status), CEREAL_NVP(rx_temperature),
+		   CEREAL_NVP(tx_temperature),  CEREAL_NVP(pa_temperature),
+		   CEREAL_NVP(rx_noisefloor));
+	}
 };
 
 struct GPS {
@@ -43,6 +58,13 @@ struct GPS {
 	uint8_t VDOP;
 	uint8_t PDOP;
 	uint8_t TDOP;
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(lat),
+		   CEREAL_NVP(lon), CEREAL_NVP(alt), CEREAL_NVP(HDOP), CEREAL_NVP(VDOP),
+		   CEREAL_NVP(PDOP), CEREAL_NVP(TDOP));
+	}
 };
 
 struct IMU {
@@ -58,6 +80,14 @@ struct IMU {
 	uint16_t Accel_X[5];
 	uint16_t Accel_Y[5];
 	uint16_t Accel_Z[5];
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(Mag_X),
+		   CEREAL_NVP(Mag_Y), CEREAL_NVP(Mag_Z), CEREAL_NVP(Gyro_X),
+		   CEREAL_NVP(Gyro_Y), CEREAL_NVP(Gyro_Z), CEREAL_NVP(Accel_X),
+		   CEREAL_NVP(Accel_Y), CEREAL_NVP(Accel_Z));
+	}
 };
 
 struct Health {
@@ -128,6 +158,40 @@ struct Health {
 	uint16_t _3v3_current;
 	uint16_t _5v_voltage;
 	uint16_t _5v_current;
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp),
+		   CEREAL_NVP(sequence_id),  CEREAL_NVP(timestamp),
+		   CEREAL_NVP(obc_temperature), CEREAL_NVP(rx_temperature),
+		   CEREAL_NVP(tx_temperature),  CEREAL_NVP(pa_temperature),
+		   CEREAL_NVP(reboot_count), CEREAL_NVP(data_packets_pending),
+		   CEREAL_NVP(antenna_switch),  CEREAL_NVP(rx_noisefloor),
+		   CEREAL_NVP(detected_flash_errors),  CEREAL_NVP(detected_ram_errors),
+		   CEREAL_NVP(battery_voltage), CEREAL_NVP(battery_current),
+		   CEREAL_NVP(battery_temperature),  CEREAL_NVP(charge_current),
+		   CEREAL_NVP(mppt_voltage), CEREAL_NVP(solar_n1_current),
+		   CEREAL_NVP(solar_n2_current),  CEREAL_NVP(solar_e1_current),
+		   CEREAL_NVP(solar_e2_current), CEREAL_NVP(solar_s1_current),
+		   CEREAL_NVP(solar_s2_current),  CEREAL_NVP(solar_w1_current),
+		   CEREAL_NVP(solar_w2_current), CEREAL_NVP(solar_t1_current),
+		   CEREAL_NVP(solar_t2_current),  CEREAL_NVP(rails_switch_status),
+		   CEREAL_NVP(rails_overcurrent_status),  CEREAL_NVP(rail_1_boot_count),
+		   CEREAL_NVP(rail_1_overcurrent_count), CEREAL_NVP(rail_1_voltage),
+		   CEREAL_NVP(rail_1_current),  CEREAL_NVP(rail_2_boot_count),
+		   CEREAL_NVP(rail_2_overcurrent_count),  CEREAL_NVP(rail_2_voltage),
+		   CEREAL_NVP(rail_2_current), CEREAL_NVP(rail_3_boot_count),
+		   CEREAL_NVP(rail_3_overcurrent_count),  CEREAL_NVP(rail_3_voltage),
+		   CEREAL_NVP(rail_3_current),  CEREAL_NVP(rail_4_boot_count),
+		   CEREAL_NVP(rail_4_overcurrent_count), CEREAL_NVP(rail_4_voltage),
+		   CEREAL_NVP(rail_4_current),  CEREAL_NVP(rail_5_boot_count),
+		   CEREAL_NVP(rail_5_overcurrent_count),  CEREAL_NVP(rail_5_voltage),
+		   CEREAL_NVP(rail_5_current), CEREAL_NVP(rail_6_boot_count),
+		   CEREAL_NVP(rail_6_overcurrent_count),  CEREAL_NVP(rail_6_voltage),
+		   CEREAL_NVP(rail_6_current),  CEREAL_NVP(_3v3_voltage),
+		   CEREAL_NVP(_3v3_current),  CEREAL_NVP(_5v_voltage),
+		   CEREAL_NVP(_5v_current));
+	}
 };
 
 struct Img {
@@ -137,12 +201,24 @@ struct Img {
 	uint16_t fragment_id;
 	uint16_t num_fragments;
 	char image_data[6]; // TODO: replace once size is finalized
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp),
+		   CEREAL_NVP(image_id), CEREAL_NVP(fragment_id),
+		   CEREAL_NVP(num_fragments), CEREAL_NVP(image_data));
+	}
 };
 
 struct Config {
 	// TODO #incomplete: Missing Conf struct
 	char sequence_id[2];
 	uint32_t timestamp;
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp));
+	}
 };
 
 union Payload {
@@ -162,6 +238,43 @@ struct Packet {
 	Status status;
 	Payload payload;
 	uint32_t downlink_time;
+
+	template <class Archive>
+	void serialize (Archive& ar) {
+		switch (type) {
+			case PayloadType::GPS:
+				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				   CEREAL_NVP(status), CEREAL_NVP(payload.gps),
+				   CEREAL_NVP(downlink_time));
+				break;
+			case PayloadType::IMU:
+				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				   CEREAL_NVP(status), CEREAL_NVP(payload.imu),
+				   CEREAL_NVP(downlink_time));
+				break;
+			case PayloadType::Health:
+				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				   CEREAL_NVP(status), CEREAL_NVP(payload.health),
+				   CEREAL_NVP(downlink_time));
+				break;
+			case PayloadType::Img:
+				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				   CEREAL_NVP(status), CEREAL_NVP(payload.img),
+				   CEREAL_NVP(downlink_time));
+				break;
+			case PayloadType::Config:
+				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				   CEREAL_NVP(status), CEREAL_NVP(payload.config),
+				   CEREAL_NVP(downlink_time));
+				break;
+			default:
+				std::string msg = "invalid payload type \"";
+				msg += std::to_string(static_cast<int>(type));
+				msg += "\" while parsing packet.";
+				throw std::runtime_error(msg);
+				break;
+		}
+	}
 };
 
 

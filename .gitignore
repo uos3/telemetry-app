@@ -2,3 +2,4 @@ app/secrets
 build-*
 *.user.*
 app/app.pro.user
+app/cereal
