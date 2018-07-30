@@ -1,8 +1,8 @@
 # telemetry-app
 
-Main GS GUI application.
+Main UoS³ telemetry application
 
-Purpose: View received packets from CubeSat, and upload onto server.
+Purpose: Parse received packets from CubeSat, and upload onto server.
 
 # TODO
 
@@ -14,7 +14,7 @@ Purpose: View received packets from CubeSat, and upload onto server.
 
 ## less-near future
 
-1. Integrate with PHP server. (Partially done)
+1. Integrate with data server. (Partially done)
 2. Receive new upstream data from decoder-end. (TBC)
 3. Be able to add timestamps to fresh data and push to db. (Done)
 
@@ -22,6 +22,6 @@ Purpose: View received packets from CubeSat, and upload onto server.
 
 Currently:
 
-* [Qt](https://www.qt.io)
-* [cereal (1.2.2)](https://uscilab.github.io/cereal)
-	* **to use**: [download](https://github.com/USCiLab/cereal/releases/tag/v1.2.2), extract, copy the `include/cereal` folder into `app/`.
++ [Qt](https://www.qt.io)
++ [cereal (1.2.2)](https://uscilab.github.io/cereal)
+	+ **to use**: [download](https://github.com/USCiLab/cereal/releases/tag/v1.2.2), extract, copy the `include/cereal` folder into `app/`.
