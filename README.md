@@ -25,3 +25,11 @@ Currently:
 + [Qt](https://www.qt.io)
 + [cereal (1.2.2)](https://uscilab.github.io/cereal)
 	+ **to use**: [download](https://github.com/USCiLab/cereal/releases/tag/v1.2.2), extract, copy the `include/cereal` folder into `app/`.
+
+# Authors
+
+Charles West-Taylor
+
+Hubert Khoo Hui Boo
+
+Mohammed Nawabuddin
