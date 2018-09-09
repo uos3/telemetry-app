@@ -8,7 +8,7 @@
 
 #include "uploader.h"
 #include "db.h"
-#include "secrets/secrets.h"
+//#include "secrets/secrets.h"
 #include "packet.h"
 #include "buffer.h"
 #include "cli.h"
@@ -16,9 +16,9 @@
 static const int packSize = 3136; // Number of bits per packet
 
 int main (int argc, char *argv[]) {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
 
 	// TEST PACKET STUFF
 	// read packet

@@ -22,12 +22,14 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 		if (is) {
 			qDebug() << "all characters read successfully.";
 			buffer[size] = '\0';
-		} else { qDebug() << "error: only " << is.gcount() << " could be read"; }
+		} else { throw std::runtime_error("error reading file " + fname + "."); }
 		is.close();
 
 		this->buf = buffer;
 		this->len = size;
-	} else { qDebug() << "couldn't read file"; }
+	} else {
+		throw std::runtime_error("couldn't read file " + fname + " -- are you sure it exists?");
+	}
 }
 
 uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
