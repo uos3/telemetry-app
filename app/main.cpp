@@ -15,10 +15,9 @@
 
 static const int packSize = 3136; // Number of bits per packet
 
-int main (int argc, char *argv[]) {
+int main (int argc, char* argv[]) {
 	QApplication a(argc, argv);
 	MainWindow w;
-	w.show();
 
 	// TEST PACKET STUFF
 	// read packet
@@ -49,8 +48,13 @@ int main (int argc, char *argv[]) {
 //		hash: UUUUUUUUUUUUUUUU crc: UU
 //	*/
 
-	const char* args[3] = { "app.exe", "parse", "testinput.bin" }; // simulated cli...
-	cli(3, const_cast<char**>(args));
+//	const char* args[3] = { "app", "parse", "testinput.bin" }; // simulated cli...
+//	cli(3, const_cast<char**>(args));
+
+	if (!cli(argc, argv)) {
+		w.show();
+		return a.exec();
+	} else { return 0; }
 
 	return a.exec();
 }

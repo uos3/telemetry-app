@@ -8,6 +8,6 @@
 
 int cli (int argc, char *argv[]);
 
-int parse (char* fname);
+void parse (char* fname);
 
 #endif // CLI_H
