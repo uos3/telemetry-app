@@ -1,6 +1,6 @@
 #include "db.h"
 
-DB::DB(std::string hostname, std::string dbname, std::string username, std::string password) {
+DB::DB (std::string hostname, std::string dbname, std::string username, std::string password) {
 // set up db
 	// 'QMYSQL driver not loaded' -> https://stackoverflow.com/a/47334605
 	db = QSqlDatabase::addDatabase("QMYSQL");

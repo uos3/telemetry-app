@@ -8,10 +8,10 @@
 
 class Buffer {
 public:
-    // Construction / Destruction
-    Buffer();
-    ~Buffer();
-    // TODO #completeness: custom copy constructor, assignment operator.
+	// Construction / Destruction
+	Buffer();
+	~Buffer();
+	// TODO #completeness: custom copy constructor, assignment operator.
 
 	// Methods
 	void from_file (std::string fname, uint64_t size=0);

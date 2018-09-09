@@ -1,10 +1,10 @@
 #include "uploader.h"
 
-Uploader::Uploader(QString target) :
+Uploader::Uploader (QString target) :
 	manager(new QNetworkAccessManager(this)),
 	target(target) { }
 
-void Uploader::upload(std::vector<std::tuple<QString, QString>> body) {
+void Uploader::upload (std::vector<std::tuple<QString, QString>> body) {
 // upload data in (string) key-value form to the (a) server, via POST
 	QUrl url(target);
 	QNetworkRequest request(url);
@@ -23,7 +23,7 @@ void Uploader::upload(std::vector<std::tuple<QString, QString>> body) {
 	manager->post(request, params.query().toUtf8());
 }
 
-void Uploader::upload(QByteArray body) {
+void Uploader::upload (QByteArray body) {
 // upload data in byte array form to the (a) server, via POST
 	// TODO: can't really test this properly until I have a sample packet in
 	//       byte-array form to send.
@@ -56,5 +56,5 @@ void Uploader::replyFinished (QNetworkReply* reply) {
 }
 
 // Getters / Setters
-QString Uploader::getTarget() { return this->target; }
+QString Uploader::getTarget () { return this->target; }
 void Uploader::setTarget (QString target) { this->target = target; }
