@@ -16,11 +16,11 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 
 		char* buffer = new char[size+1];
 
-		qDebug() << "Reading " << size << " characters... ";
+//		qDebug() << "Reading " << size << " characters... ";
 		is.read(buffer, size);
 
 		if (is) {
-			qDebug() << "all characters read successfully.";
+//			qDebug() << "all characters read successfully.";
 			buffer[size] = '\0';
 		} else { throw std::runtime_error("error reading file " + fname + "."); }
 		is.close();
