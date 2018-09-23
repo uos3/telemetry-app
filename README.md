@@ -61,7 +61,7 @@ You have two options:
 *(if you want to develop the application, or if 'just build' isn't working on its own)*
 
 1. Clone the repo.
-2. Install qt creator: `$ sudo apt install qt5creator`.
+2. Install qt creator: `$ sudo apt install qtcreator`.
 3. (For database functionality) install mysql, and the database driver `$ sudo apt install mysql-server libqt5sql5-mysql`
 4. [Download cereal](https://uscilab.github.io/cereal), and put the `cereal-X.X.X/include/cereal` folder into `app/` (so you have eg. `telemetry-app/app/cereal/cereal.hpp`)
 5. Launch Qt Creator, and import the project by pointing it to `/path/to/the/repo/app/app.pro`.
