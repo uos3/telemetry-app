@@ -23,7 +23,7 @@ public:
 	QSqlQuery get (QString table, QString field="*");
 	static QList<QPair<QString, QString>> row (QSqlQuery qu, QString fields);
 	QTableView* table (QString table, QString fields);
-	bool store_packet (Packet p);
+	bool store_packet (Packet& p);
 
 	// Getters / Setters
 private:

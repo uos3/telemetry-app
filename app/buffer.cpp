@@ -1,17 +1,31 @@
 #include "buffer.h"
 
-Buffer::Buffer () { }
+Buffer::Buffer () : buf(nullptr), len(0) { }
 
 Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
 
 // Gets raw file and stores latest packet into buffer. default size=0 means
 // read the whole file, size!=0 means read last 'size' bytes.
 void Buffer::from_file (std::string fname, uint64_t size) {
+	if (this->buf != nullptr) {
+		// if we've loaded something before, clear the old buffer to load again.
+		delete[] this->buf;
+		this->len = 0;
+	}
+
 	std::ifstream is (fname, std::ifstream::binary);
 	if (is) {
 		is.seekg(0, is.end);
 		uint64_t length = static_cast<uint64_t>(is.tellg()); // length of the whole file
-		if (size == 0) { size = length; } else { size /= 8; }
+		if (size == 0) {
+			size = length;
+		} else {
+			// TODO #robustness: something better than this.
+			Q_ASSERT_X(size/8 <= length,
+			           "buffer::from_file",
+			           "tried to read beyond end of file.");
+			size /= 8;
+		}
 		is.seekg(length-size, is.beg);
 
 		char* buffer = new char[size+1];
@@ -28,7 +42,7 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 		this->buf = buffer;
 		this->len = size;
 	} else {
-		throw std::runtime_error("couldn't read file " + fname + " -- are you sure it exists?");
+		throw std::runtime_error("couldn't read " + fname + " -- are you sure it exists?");
 	}
 }
 

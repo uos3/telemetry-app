@@ -37,7 +37,8 @@ SOURCES += \
     db.cpp \
     buffer.cpp \
     packet.cpp \
-    cli.cpp
+    cli.cpp \
+    filehandler.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     db.h \
     packet.h \
     buffer.h \
-    cli.h
+    cli.h \
+    filehandler.h
 
 FORMS += \
         mainwindow.ui

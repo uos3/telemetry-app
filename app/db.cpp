@@ -3,11 +3,13 @@
 DB::DB (std::string hostname, std::string dbname, std::string username, std::string password) {
 // set up db
 	// 'QMYSQL driver not loaded' -> https://stackoverflow.com/a/47334605
+	// TODO #enhancement: would prob be better to use sqlite than mysql
 	db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName(QString::fromStdString(hostname));
 	db.setDatabaseName(QString::fromStdString(dbname));
 	db.setUserName(QString::fromStdString(username));
 	db.setPassword(QString::fromStdString(password));
+	// TODO #bug: db is never closed -- need destructor
 	if (db.open()) {
 		qDebug("db opened successfully.");
 	} else {
@@ -63,7 +65,7 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 // 	if (comma) { query += ", "; }
 // }
 
-bool DB::store_packet (Packet p) {
+bool DB::store_packet (Packet& p) {
 	QSqlQuery query;
 	QString query_str = "BEGIN;\n";
 	QTextStream stream(&query_str);
