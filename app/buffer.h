@@ -22,10 +22,10 @@ public:
 	static float parse_float (uint8_t real);
 
 	// Getters / Setters
-	char* getBuf ();
-	uint64_t getLen ();
-	uint64_t getPos ();
-	void setPos (uint64_t pos);
+	char* get_buf ();
+	uint64_t get_len ();
+	uint64_t get_pos ();
+	void set_pos (uint64_t pos);
 protected:
 	std::unique_ptr<char[]> buf;
 	uint64_t len;

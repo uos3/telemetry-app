@@ -18,7 +18,7 @@ void Uploader::upload (std::vector<std::tuple<QString, QString>> body) {
 	}
 
 	QObject::connect(manager, &QNetworkAccessManager::finished,
-					 this, &Uploader::replyFinished);
+	                 this, &Uploader::reply_finished);
 
 	manager->post(request, params.query().toUtf8());
 }
@@ -34,7 +34,7 @@ void Uploader::upload (QByteArray body) {
 					  "application/x-www-form-urlencoded");
 
 	QObject::connect(manager, &QNetworkAccessManager::finished,
-					 this, &Uploader::replyFinished);
+	                 this, &Uploader::reply_finished);
 
 	manager->post(request, body);
 }
@@ -47,7 +47,7 @@ void Uploader::upload () {
 }
 
 // Slots
-void Uploader::replyFinished (QNetworkReply* reply) {
+void Uploader::reply_finished (QNetworkReply* reply) {
 	QByteArray data = reply->readAll();
 	reply->deleteLater();
 
@@ -56,5 +56,5 @@ void Uploader::replyFinished (QNetworkReply* reply) {
 }
 
 // Getters / Setters
-QString Uploader::getTarget () { return this->target; }
-void Uploader::setTarget (QString target) { this->target = target; }
+QString Uploader::get_target () { return this->target; }
+void Uploader::set_target (QString target) { this->target = target; }

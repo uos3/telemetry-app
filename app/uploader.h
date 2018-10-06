@@ -22,11 +22,11 @@ public:
 	void upload();
 
 	// Getters / Setters
-	QString getTarget();
-	void setTarget (QString target);
+	QString get_target();
+	void set_target (QString target);
 
 public slots:
-	void replyFinished (QNetworkReply* reply);
+	void reply_finished (QNetworkReply* reply);
 
 private:
 	// Members

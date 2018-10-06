@@ -4,7 +4,7 @@
 corresponding structs */
 
 void from_buffer (GPS& g, Buffer& b) {
-	b.setPos(248);
+	b.set_pos(248);
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { static_cast<char>((seq_id >> 8)),
 							static_cast<char>((seq_id & 0xFF)) };
@@ -20,7 +20,7 @@ void from_buffer (GPS& g, Buffer& b) {
 }
 
 void from_buffer (IMU& i, Buffer& b) {
-	b.setPos(248);
+	b.set_pos(248);
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { static_cast<char>((seq_id >> 8)),
 							static_cast<char>((seq_id & 0xFF)) };
@@ -56,7 +56,7 @@ void from_buffer (IMU& i, Buffer& b) {
 }
 
 void from_buffer (Img& i, Buffer& b) {
-	b.setPos(248);
+	b.set_pos(248);
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { static_cast<char>((seq_id >> 8)),
 							static_cast<char>((seq_id & 0xFF)) };
@@ -70,7 +70,7 @@ void from_buffer (Img& i, Buffer& b) {
 }
 
 void from_buffer (Health& h, Buffer& b) {
-	b.setPos(248);
+	b.set_pos(248);
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
 	char sequence_id[2] = { static_cast<char>((seq_id >> 8)),
 							static_cast<char>((seq_id & 0xFF)) };
@@ -144,7 +144,7 @@ void from_buffer (Health& h, Buffer& b) {
 }
 
 void from_buffer (Status& s, Buffer& b) {
-	b.setPos(80);
+	b.set_pos(80);
 	uint16_t spc_id = static_cast<uint16_t>(b.get(16));
 	char spacecraft_id[2] = { static_cast<char>((spc_id >> 8)),
 							static_cast<char>((spc_id & 0xFF)) };
@@ -176,7 +176,7 @@ void from_buffer (Status& s, Buffer& b) {
 }
 
 void from_buffer (Packet& p, Buffer& b) {
-	b.setPos(64);
+	b.set_pos(64);
 	p.type = static_cast<PayloadType>(b.get(16));
 	from_buffer(p.status, b);
 	switch (p.type) {
@@ -204,6 +204,6 @@ void from_buffer (Packet& p, Buffer& b) {
 	}
 	// TODO #verify: assumes crc & hash occupy last 144 bits of packet (as
 	//			   opposed to the 144 bits that come after the payload).
-	strncpy(p.hash, b.getBuf()+b.getLen()-18*8, 16);
-	strncpy(p.crc, b.getBuf()+b.getLen()-2*8, 2);
+	strncpy(p.hash, b.get_buf()+b.get_len()-18*8, 16);
+	strncpy(p.crc, b.get_buf()+b.get_len()-2*8, 2);
 }

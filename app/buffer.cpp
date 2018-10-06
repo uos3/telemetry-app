@@ -92,7 +92,7 @@ float Buffer::parse_float (uint8_t in) {
 	return f;
 }
 
-char* Buffer::getBuf () { return this->buf.get(); }
-uint64_t Buffer::getLen () { return this->len; }
-uint64_t Buffer::getPos () { return this->pos; }
-void Buffer::setPos (uint64_t pos) { this->pos = pos; }
+char* Buffer::get_buf () { return this->buf.get(); }
+uint64_t Buffer::get_len () { return this->len; }
+uint64_t Buffer::get_pos () { return this->pos; }
+void Buffer::set_pos (uint64_t pos) { this->pos = pos; }
