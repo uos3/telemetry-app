@@ -1,17 +1,17 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#include <fstream>
-#include <string.h>
 #include <QDebug>
+
+#include <fstream>
+#include <memory>
+#include <string.h>
 
 
 class Buffer {
 public:
 	// Construction / Destruction
 	Buffer();
-	~Buffer();
-	// TODO #completeness: custom copy constructor, assignment operator.
 
 	// Methods
 	void from_file (std::string fname, uint64_t size=0);
@@ -27,8 +27,7 @@ public:
 	uint64_t getPos ();
 	void setPos (uint64_t pos);
 protected:
-	// TODO #refactor: use a QByteArray?
-	char* buf;
+	std::unique_ptr<char[]> buf;
 	uint64_t len;
 	uint64_t pos = 0;
 };

@@ -2,14 +2,12 @@
 
 Buffer::Buffer () : buf(nullptr), len(0) { }
 
-Buffer::~Buffer () { if (this->buf) { delete[] this->buf; } }
-
 // Gets raw file and stores latest packet into buffer. default size=0 means
 // read the whole file, size!=0 means read last 'size' bytes.
 void Buffer::from_file (std::string fname, uint64_t size) {
-	if (this->buf != nullptr) {
+	if (!this->buf) {
 		// if we've loaded something before, clear the old buffer to load again.
-		delete[] this->buf;
+		this->buf.reset();
 		this->len = 0;
 	}
 
@@ -17,7 +15,7 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 	if (is) {
 		is.seekg(0, is.end);
 		uint64_t length = static_cast<uint64_t>(is.tellg()); // length of the whole file
-		if (size == 0) {
+		if (!size) {
 			size = length;
 		} else {
 			// TODO #robustness: something better than this.
@@ -28,18 +26,16 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 		}
 		is.seekg(length-size, is.beg);
 
-		char* buffer = new char[size+1];
+		std::unique_ptr<char[]> buffer(new char[size]);
 
-//		qDebug() << "Reading " << size << " characters... ";
-		is.read(buffer, size);
+		is.read(buffer.get(), size);
 
-		if (is) {
-//			qDebug() << "all characters read successfully.";
-			buffer[size] = '\0';
-		} else { throw std::runtime_error("error reading file " + fname + "."); }
+		if (!is) {
+			throw std::runtime_error("error reading file " + fname + ".");
+		}
 		is.close();
 
-		this->buf = buffer;
+		buf.swap(buffer);
 		this->len = size;
 	} else {
 		throw std::runtime_error("couldn't read " + fname + " -- are you sure it exists?");
@@ -96,7 +92,7 @@ float Buffer::parse_float (uint8_t in) {
 	return f;
 }
 
-char* Buffer::getBuf () { return this->buf; }
+char* Buffer::getBuf () { return this->buf.get(); }
 uint64_t Buffer::getLen () { return this->len; }
 uint64_t Buffer::getPos () { return this->pos; }
 void Buffer::setPos (uint64_t pos) { this->pos = pos; }
