@@ -1,6 +1,8 @@
 #include "db.h"
 
-DB::DB (std::string hostname, std::string dbname, std::string username, std::string password) {
+DB::DB (std::string hostname, std::string dbname,
+        std::string username, std::string password) :
+dbname(dbname), hostname(hostname) {
 // set up db
 	// 'QMYSQL driver not loaded' -> https://stackoverflow.com/a/47334605
 	// TODO #enhancement: would prob be better to use sqlite than mysql
@@ -285,3 +287,6 @@ bool DB::store_packet (Packet& p) {
 	qDebug() << query_str;
 	return query.exec(query_str);
 }
+
+std::string DB::get_name () { return this->dbname; }
+std::string DB::get_hostname () { return this->hostname; }

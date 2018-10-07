@@ -26,9 +26,13 @@ public:
 	bool store_packet (Packet& p);
 
 	// Getters / Setters
+	std::string get_name ();
+	std::string get_hostname ();
 private:
 	// Members
 	QSqlDatabase db;
+	std::string dbname;
+	std::string hostname;
 
 	// Methods
 //	template <class T>
