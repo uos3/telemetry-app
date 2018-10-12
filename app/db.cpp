@@ -15,6 +15,15 @@ dbname(dbname), hostname(hostname) {
 	if (db.open()) {
 		qDebug("db opened successfully.");
 	} else {
+
+        //qDebug(db.lastError()::ErrorType);
+        if (db.isOpenError())
+        {
+            // We had an error opening the database
+            // We should try to check to see what the error was and output it as debug
+            qDebug("Open DB Error");
+            qDebug() << db.lastError().type();
+        }
 		qDebug("db failed to open.");
 	}
 }

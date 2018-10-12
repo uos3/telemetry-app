@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QSqlError>
 #include <QTableView>
 #include <QTextStream>
 #include <string>
