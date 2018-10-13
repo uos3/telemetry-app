@@ -19,7 +19,10 @@ secondwindow::secondwindow(QWidget *parent) :
     ui(new Ui::secondwindow)
 {
     ui->setupUi(this);
-    DB("localhost","testdata","test_account","password");
+	// TODO #fix: use new syntax, eg.
+	//            DB db("localhost", "testdata");
+	//            db.connect("test_account", "password");
+//    DB("localhost","testdata","test_account","password");
     QSqlQuery query;
     if (query.exec(column_query_string)){
         qDebug("Information columns success");

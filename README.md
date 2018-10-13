@@ -69,7 +69,7 @@ You have two options:
 
 # Authors
 
-Charles West-Taylor
+Charlie West-Taylor
 
 Hubert Khoo Hui Boo
 

@@ -15,6 +15,9 @@ MainWindow::MainWindow (QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+	// TODO #fix: use new syntax, eg.
+	//            DB db("localhost", "testdata");
+	//            db.connect("test_account", "password");
 //	DB("localhost","dummy_data","test_account","password");
 	qDebug() << global_counter;
 }
