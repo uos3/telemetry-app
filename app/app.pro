@@ -33,6 +33,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+        secondwindow.cpp \
+        topwindow.cpp \
     uploader.cpp \
     db.cpp \
     buffer.cpp \
@@ -42,6 +44,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
+        secondwindow.h \
+        topwindow.h\
     uploader.h \
     db.h \
     packet.h \
@@ -50,4 +54,6 @@ HEADERS += \
     filehandler.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        secondwindow.ui \
+        topwindow.ui \
