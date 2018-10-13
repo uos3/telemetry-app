@@ -15,7 +15,7 @@ MainWindow::MainWindow (QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	DB("localhost","dummy_data","test_account","password");
+//	DB("localhost","dummy_data","test_account","password");
 	qDebug() << global_counter;
 }
 

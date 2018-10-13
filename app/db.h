@@ -14,12 +14,16 @@
 class DB {
 public:
 	// Construction / Destruction
-	DB(std::string hostname,
-	   std::string dbname,
-	   std::string username,
-	   std::string password);
+	DB(std::string hostname, std::string dbname);
+
+	DB(const DB& other);
+
+	DB& operator=(const DB& other);
+
+	~DB();
 
 	// Methods
+	bool connect (std::string username, std::string password);
 	QSqlQuery get (QString table, QString field="*");
 	static QList<QPair<QString, QString>> row (QSqlQuery qu, QString fields);
 	QTableView* table (QString table, QString fields);

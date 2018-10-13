@@ -30,8 +30,10 @@ int main (int argc, char* argv[]) {
 
 		cereal::JSONOutputArchive archive(std::cout);
 		f.add_output(archive);
-		DB db("localhost", "mycooldb", secrets::username, secrets::password);
-		f.add_output(db);
+
+		DB db("localhost", "mycooldb");
+		if (db.connect(secrets::username, secrets::password))
+			f.add_output(db);
 
 		// Display the GUI.
 		MainWindow w;
