@@ -24,3 +24,4 @@ Makefile
 debug/packet.o
 debug/moc_filehandler.o
 ui_mainwindow.h
+debug/
