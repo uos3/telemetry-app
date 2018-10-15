@@ -21,8 +21,16 @@ dbname(dbname), hostname(hostname) {
         {
             // We had an error opening the database
             // We should try to check to see what the error was and output it as debug
+
             qDebug("Open DB Error");
+
             qDebug() << db.lastError().type();
+
+            // 0 = No Error
+            // 1 = Connection Error
+            // 2 = SQL Statment Syntax Error
+            // 3 = Transaction Failed Error
+            // 4 = Unknown Error
         }
 		qDebug("db failed to open.");
 	}
