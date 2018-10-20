@@ -11,6 +11,8 @@
 
 #include "packet.h"
 
+// TODO #enhancement: make this a QThread (or perhaps a QRunnable, dispatching
+//                    from a QThreadPool on query)
 class DB {
 public:
 	// Construction / Destruction
@@ -26,6 +28,8 @@ public:
 	bool connect (std::string username, std::string password);
 	QSqlQuery get (QString table, QString field="*");
 	static QList<QPair<QString, QString>> row (QSqlQuery qu, QString fields);
+	// TODO #refactor: this sort of code should be in a UI class (once those are
+	//                 in), to separate view from model.
 	QTableView* table (QString table, QString fields);
 	bool store_packet (Packet& p);
 

@@ -90,6 +90,8 @@ bool DB::store_packet (Packet& p) {
 	QTextStream stream(&query_str);
 
 	// packet
+	// TODO #finish: add packBIN here -- means either adding corresponding field
+	//               in packet struct, or taking it as an additional argument.
 	stream << "INSERT INTO PACKETS (packCHK, packHASH, seqStat, seqPayload, \
 		payloadType, downlinkTime) VALUES (" <<
 	p.crc << ", " <<
