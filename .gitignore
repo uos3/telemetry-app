@@ -1,5 +1,8 @@
-app/secrets
-build-*
-*.user.*
 app/app.pro.user
 app/cereal
+app/secrets
+build*
+bin*
+*Makefile
+*.qmake.*
+*.user.*
