@@ -13,11 +13,14 @@
 
 // TODO #enhancement: make this a QThread (or perhaps a QRunnable, dispatching
 //                    from a QThreadPool on query)
+// TODO #enhancement: probably better to make this a subclass of QSqlDatabase,
+//                    use QSqlQueries properly (eg. binding values and such),
+//                    and getting rid of a few of the methods here (all public
+//                    except store_packet?).
 class DB {
 public:
 	// Construction / Destruction
 	DB(std::string hostname, std::string dbname);
-
 	DB(const DB& other);
 
 	DB& operator=(const DB& other);
@@ -31,6 +34,11 @@ public:
 	// TODO #refactor: this sort of code should be in a UI class (once those are
 	//                 in), to separate view from model.
 	QTableView* table (QString table, QString fields);
+
+	/// \brief Stores a packet in the database.
+	/// \param p The packet to be stored.
+	/// \returns Whether or not the query to store the packet was successfully
+	///          executed.
 	bool store_packet (Packet& p);
 
 	// Getters / Setters
@@ -43,8 +51,11 @@ private:
 	std::string hostname;
 
 	// Methods
-//	template <class T>
-//	void add_to_query (QString& query, const T& x, bool comma=true);
+	/// \brief Converts an int32 unix timestamp into a string, formatted for
+	///        entry in a MySQL database as a timestamp.
+	/// \param tstamp The timestamp to convert.
+	/// \returns The formatted string.
+	QString time_string (uint32_t tstamp);
 };
 
 #endif // DB_H
