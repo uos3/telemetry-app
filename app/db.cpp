@@ -82,6 +82,18 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 
 // TODO #enhancement: bind values properly -- allows for easily passing the
 //                    binary.
+//                    * turn the 'insert into ___ (...) values (...)' into a
+//                      string with placeholder values.
+//                    * call bindValue(":thing", thing) instead of adding to
+//                      the stream.
+//                    * hopefully you can call prepare after binding values?
+//                      then it's easier to build up the different statements
+//                      based on a condition.
+//                      * eg. then you can switch to make the stream based on
+//                        payload type, but can still call things like
+//                        bindValue(":crc", p.crc) as you go.
+//                    * would be a lot more natural to do this with
+//                      transactions. are these guaranteed to be supported?
 bool DB::store_packet (Packet& p) {
 	QSqlQuery query;
 	QString query_str = "BEGIN;\n";

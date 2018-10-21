@@ -262,6 +262,8 @@ struct Packet {
 };
 
 
+/// \brief Parses a raw binary packet into a Packet struct, containing the
+///        appropriate payload.
 void from_buffer (GPS& g, Buffer& b);
 void from_buffer (IMU& i, Buffer& b);
 void from_buffer (Img& i, Buffer& b);

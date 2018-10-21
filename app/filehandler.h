@@ -18,14 +18,22 @@ public:
 	                      const uint32_t packet_size=0,
 	                      QObject *parent = nullptr);
 
+	/// \brief Adds a database to the list of things to output newly parsed
+	///        packets into.
 	void add_output (DB& db);
 
+	/// \brief Adds a json output archive to the list of things to output newly
+	///        parsed packets into.
 	void add_output (cereal::JSONOutputArchive& json);
 
 signals:
+	/// \brief A new packet has been parsed.
 	void new_packet (Packet packet);
 
 public slots:
+	/// \brief The binary file containing packets has been changed (ie. a new
+	///        packet has been inserted) -- parses, then passes the Packet to
+	///        all the added outputs.
 	void file_changed ();
 
 private:
