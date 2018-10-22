@@ -17,8 +17,15 @@ public:
 	Uploader(QString target = "http://localhost:8080");
 
 	// Methods
+	/// \brief Upload data in (string) key-value form to the/a server, via POST.
+	/// \param body The list of (key, value) pairs to upload.
 	void upload(std::vector<std::tuple<QString, QString>> body);
+
+	/// \brief Upload data in byte array form to the/a server, via POST.
 	void upload(QByteArray body);
+
+	/// \brief Upload sample data in (string) key-value form to the (a) server,
+	///        via POST.
 	void upload();
 
 	// Getters / Setters

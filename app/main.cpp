@@ -28,11 +28,17 @@ int main (int argc, char* argv[]) {
 		// Watch our binary file for new packets to be parsed/stored.
 		FileHandler f(file_path, packet_size);
 
-		cereal::JSONOutputArchive archive(std::cout);
-		f.add_output(archive);
+		/* cereal::JSONOutputArchive archive(std::cout); */
+		/* f.add_output(archive); */
 
-		f.add_output(db);
-        DB db("localhost", "mycooldb", secrets::username, secrets::password);
+		DB db("localhost", "cubesat");
+		if (db.connect(secrets::username, secrets::password)) {
+			qDebug() << "DB connected successfully.";
+			f.add_output(db);
+		} else {
+			qWarning() << "DB failed to connect.";
+		}
+
 
 		// Display the GUI.
 		MainWindow w;

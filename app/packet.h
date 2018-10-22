@@ -11,13 +11,10 @@
 // Types of downlink packets, and functions to make them from loaded buffers.
 
 struct Status {
-	// TODO #choose: keep as 2 chars (accurate) or 3 (null terminated, easier
-	//			   printing)
 	char spacecraft_id[2];
 	uint32_t time;
 	bool time_source;
 	char sequence_id[2];
-	// TODO #note: to be 8bit reals x 5
 	uint8_t obc_temperature;
 	uint8_t battery_temperature;
 	uint8_t battery_voltage;
@@ -27,7 +24,6 @@ struct Status {
 	uint16_t data_pending;
 	uint8_t reboot_count;
 	bool rails_status[6];
-	// TODO #note: to be 8bit reals x 4
 	uint8_t rx_temperature;
 	uint8_t tx_temperature;
 	uint8_t pa_temperature;
@@ -53,47 +49,44 @@ struct GPS {
 	float lat;
 	float lon;
 	float alt;
-	// TODO #note: to be 8bit reals x 4
-	uint8_t HDOP;
-	uint8_t VDOP;
-	uint8_t PDOP;
-	uint8_t TDOP;
+	uint8_t hdop;
+	uint8_t vdop;
+	uint8_t pdop;
+	uint8_t tdop;
 
 	template <class Archive>
 	void serialize (Archive& ar) {
 		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(lat),
-		   CEREAL_NVP(lon), CEREAL_NVP(alt), CEREAL_NVP(HDOP), CEREAL_NVP(VDOP),
-		   CEREAL_NVP(PDOP), CEREAL_NVP(TDOP));
+		   CEREAL_NVP(lon), CEREAL_NVP(alt), CEREAL_NVP(hdop), CEREAL_NVP(vdop),
+		   CEREAL_NVP(pdop), CEREAL_NVP(tdop));
 	}
 };
 
 struct IMU {
 	char sequence_id[2];
 	uint32_t timestamp;
-	// TODO #note: to be 16bit reals x 5 x 9
-	uint16_t Mag_X[5];
-	uint16_t Mag_Y[5];
-	uint16_t Mag_Z[5];
-	uint16_t Gyro_X[5];
-	uint16_t Gyro_Y[5];
-	uint16_t Gyro_Z[5];
-	uint16_t Accel_X[5];
-	uint16_t Accel_Y[5];
-	uint16_t Accel_Z[5];
+	uint16_t mag_x[5];
+	uint16_t mag_y[5];
+	uint16_t mag_z[5];
+	uint16_t gyro_x[5];
+	uint16_t gyro_y[5];
+	uint16_t gyro_z[5];
+	uint16_t accel_x[5];
+	uint16_t accel_y[5];
+	uint16_t accel_z[5];
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(Mag_X),
-		   CEREAL_NVP(Mag_Y), CEREAL_NVP(Mag_Z), CEREAL_NVP(Gyro_X),
-		   CEREAL_NVP(Gyro_Y), CEREAL_NVP(Gyro_Z), CEREAL_NVP(Accel_X),
-		   CEREAL_NVP(Accel_Y), CEREAL_NVP(Accel_Z));
+		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(mag_x),
+		   CEREAL_NVP(mag_y), CEREAL_NVP(mag_z), CEREAL_NVP(gyro_x),
+		   CEREAL_NVP(gyro_y), CEREAL_NVP(gyro_z), CEREAL_NVP(accel_x),
+		   CEREAL_NVP(accel_y), CEREAL_NVP(accel_z));
 	}
 };
 
 struct Health {
 	char sequence_id[2];
 	uint32_t timestamp;
-	// TODO #note: to be 8bit reals x 4
 	uint8_t obc_temperature;
 	uint8_t rx_temperature;
 	uint8_t tx_temperature;
@@ -101,12 +94,9 @@ struct Health {
 	uint8_t reboot_count;
 	uint16_t data_packets_pending;
 	bool antenna_switch;
-	// TODO #note: to be 8bit real
 	uint8_t rx_noisefloor;
 	uint8_t detected_flash_errors;
 	uint8_t detected_ram_errors;
-	// all floats from here on will be 10bit coming in.
-	// TODO #note: to be 10bit reals x 15
 	uint16_t battery_voltage;
 	uint16_t battery_current;
 	uint16_t battery_temperature;
@@ -126,32 +116,26 @@ struct Health {
 	bool rails_overcurrent_status[6];
 	uint16_t rail_1_boot_count;
 	uint16_t rail_1_overcurrent_count;
-	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_1_voltage;
 	uint16_t rail_1_current;
 	uint16_t rail_2_boot_count;
 	uint16_t rail_2_overcurrent_count;
-	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_2_voltage;
 	uint16_t rail_2_current;
 	uint16_t rail_3_boot_count;
 	uint16_t rail_3_overcurrent_count;
-	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_3_voltage;
 	uint16_t rail_3_current;
 	uint16_t rail_4_boot_count;
 	uint16_t rail_4_overcurrent_count;
-	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_4_voltage;
 	uint16_t rail_4_current;
 	uint16_t rail_5_boot_count;
 	uint16_t rail_5_overcurrent_count;
-	// TODO #note: to be 10bit reals x 2
 	uint16_t rail_5_voltage;
 	uint16_t rail_5_current;
 	uint16_t rail_6_boot_count;
 	uint16_t rail_6_overcurrent_count;
-	// TODO #note: to be 10bit reals x 6
 	uint16_t rail_6_voltage;
 	uint16_t rail_6_current;
 	uint16_t _3v3_voltage;
@@ -162,7 +146,6 @@ struct Health {
 	template <class Archive>
 	void serialize (Archive& ar) {
 		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp),
-		   CEREAL_NVP(sequence_id),  CEREAL_NVP(timestamp),
 		   CEREAL_NVP(obc_temperature), CEREAL_NVP(rx_temperature),
 		   CEREAL_NVP(tx_temperature),  CEREAL_NVP(pa_temperature),
 		   CEREAL_NVP(reboot_count), CEREAL_NVP(data_packets_pending),
@@ -211,9 +194,10 @@ struct Img {
 };
 
 struct Config {
-	// TODO #incomplete: Missing Conf struct
 	char sequence_id[2];
 	uint32_t timestamp;
+
+	// TODO #finish
 
 	template <class Archive>
 	void serialize (Archive& ar) {
@@ -278,6 +262,8 @@ struct Packet {
 };
 
 
+/// \brief Parses a raw binary packet into a Packet struct, containing the
+///        appropriate payload.
 void from_buffer (GPS& g, Buffer& b);
 void from_buffer (IMU& i, Buffer& b);
 void from_buffer (Img& i, Buffer& b);

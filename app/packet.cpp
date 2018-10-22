@@ -13,10 +13,10 @@ void from_buffer (GPS& g, Buffer& b) {
 	g.lat = static_cast<float>(b.get(32));
 	g.lon = static_cast<float>(b.get(32));
 	g.alt = static_cast<float>(b.get(32));
-	g.HDOP = static_cast<uint8_t>(b.get(8));
-	g.VDOP = static_cast<uint8_t>(b.get(8));
-	g.PDOP = static_cast<uint8_t>(b.get(8));
-	g.TDOP = static_cast<uint8_t>(b.get(8));
+	g.hdop = static_cast<uint8_t>(b.get(8));
+	g.vdop = static_cast<uint8_t>(b.get(8));
+	g.pdop = static_cast<uint8_t>(b.get(8));
+	g.tdop = static_cast<uint8_t>(b.get(8));
 }
 
 void from_buffer (IMU& i, Buffer& b) {
@@ -28,31 +28,31 @@ void from_buffer (IMU& i, Buffer& b) {
 	i.timestamp = b.get(32);
 	uint16_t mag_x[5];
 	for (int i=0; i<5; i++) { mag_x[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(mag_x, mag_x+5, i.Mag_X);
+	std::copy(mag_x, mag_x+5, i.mag_x);
 	uint16_t mag_y[5];
 	for (int i=0; i<5; i++) { mag_y[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(mag_y, mag_y+5, i.Mag_Y);
+	std::copy(mag_y, mag_y+5, i.mag_y);
 	uint16_t mag_z[5];
 	for (int i=0; i<5; i++) { mag_z[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(mag_z, mag_z+5, i.Mag_Z);
+	std::copy(mag_z, mag_z+5, i.mag_z);
 	uint16_t gyro_x[5];
 	for (int i=0; i<5; i++) { gyro_x[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(gyro_x, gyro_x+5, i.Gyro_X);
+	std::copy(gyro_x, gyro_x+5, i.gyro_x);
 	uint16_t gyro_y[5];
 	for (int i=0; i<5; i++) { gyro_y[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(gyro_y, gyro_y+5, i.Gyro_Y);
+	std::copy(gyro_y, gyro_y+5, i.gyro_y);
 	uint16_t gyro_z[5];
 	for (int i=0; i<5; i++) { gyro_z[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(gyro_z, gyro_z+5, i.Gyro_Z);
+	std::copy(gyro_z, gyro_z+5, i.gyro_z);
 	uint16_t accel_x[5];
 	for (int i=0; i<5; i++) { accel_x[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(accel_x, accel_x+5, i.Accel_X);
+	std::copy(accel_x, accel_x+5, i.accel_x);
 	uint16_t accel_y[5];
 	for (int i=0; i<5; i++) { accel_y[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(accel_y, accel_y+5, i.Accel_Y);
+	std::copy(accel_y, accel_y+5, i.accel_y);
 	uint16_t accel_z[5];
 	for (int i=0; i<5; i++) { accel_z[i] = static_cast<uint16_t>(b.get(16)); }
-	std::copy(accel_z, accel_z+5, i.Accel_Z);
+	std::copy(accel_z, accel_z+5, i.accel_z);
 }
 
 void from_buffer (Img& i, Buffer& b) {

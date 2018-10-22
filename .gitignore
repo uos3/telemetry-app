@@ -1,8 +1,6 @@
-app/secrets
-build-*
-*.user.*
 app/app.pro.user
 app/cereal
+<<<<<<< HEAD
 object_script.app.Release
 object_script.app.Debug
 debug/uploader.o
@@ -25,3 +23,11 @@ debug/packet.o
 debug/moc_filehandler.o
 ui_mainwindow.h
 debug/
+=======
+app/secrets
+build*
+bin*
+*Makefile
+*.qmake.*
+*.user.*
+>>>>>>> master

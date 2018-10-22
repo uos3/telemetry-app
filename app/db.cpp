@@ -1,7 +1,8 @@
 #include "db.h"
 
-DB::DB (std::string hostname, std::string dbname,
-        std::string username, std::string password) :
+#include <ctime>
+
+DB::DB (std::string hostname, std::string dbname) :
 dbname(dbname), hostname(hostname) {
 // set up db
 	// 'QMYSQL driver not loaded' -> https://stackoverflow.com/a/47334605
@@ -9,8 +10,6 @@ dbname(dbname), hostname(hostname) {
 	db = QSqlDatabase::addDatabase("QMYSQL");
 	db.setHostName(QString::fromStdString(hostname));
 	db.setDatabaseName(QString::fromStdString(dbname));
-	db.setUserName(QString::fromStdString(username));
-	db.setPassword(QString::fromStdString(password));
 	// TODO #bug: db is never closed -- need destructor
 	if (db.open()) {
 		qDebug("db opened successfully.");
@@ -34,6 +33,32 @@ dbname(dbname), hostname(hostname) {
         }
 		qDebug("db failed to open.");
 	}
+}
+
+DB::DB(const DB& other) : dbname(other.dbname), hostname(other.hostname) {
+	db = QSqlDatabase::addDatabase("QMYSQL");
+	db.setHostName(QString::fromStdString(hostname));
+	db.setDatabaseName(QString::fromStdString(dbname));
+}
+
+DB& DB::operator=(const DB& other) {
+	if (db.isOpen()) { db.close(); }
+
+	dbname = other.dbname;
+	hostname = other.hostname;
+	db.setHostName(QString::fromStdString(hostname));
+	db.setDatabaseName(QString::fromStdString(dbname));
+
+	return *this;
+}
+
+DB::~DB () {
+	if (db.isOpen()) { db.close(); }
+}
+
+bool DB::connect (std::string username, std::string password) {
+	return db.open(QString::fromStdString(username),
+	               QString::fromStdString(password));
 }
 
 QSqlQuery DB::get (QString table, QString field) {
@@ -78,71 +103,73 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 	return list;
 }
 
-// template <class T>
-// void DB::add_to_query (QString& query, const T& x, bool comma) {
-// 	query += std::to_string(x);
-// 	if (comma) { query += ", "; }
-// }
-
+// TODO #enhancement: bind values properly -- allows for easily passing the
+//                    binary.
+//                    * turn the 'insert into ___ (...) values (...)' into a
+//                      string with placeholder values.
+//                    * call bindValue(":thing", thing) instead of adding to
+//                      the stream.
+//                    * hopefully you can call prepare after binding values?
+//                      then it's easier to build up the different statements
+//                      based on a condition.
+//                      * eg. then you can switch to make the stream based on
+//                        payload type, but can still call things like
+//                        bindValue(":crc", p.crc) as you go.
+//                    * would be a lot more natural to do this with
+//                      transactions. are these guaranteed to be supported?
 bool DB::store_packet (Packet& p) {
 	QSqlQuery query;
 	QString query_str = "BEGIN;\n";
 	QTextStream stream(&query_str);
 
 	// packet
-	stream << "INSERT INTO PACKETS (packCHK, packHASH, seqStat, seqPayload, \
-		payloadType, downlinkTime) VALUES (" <<
+	// TODO #finish: add frame_bin here -- means either adding corresponding
+	//               field in packet struct, or taking it as an additional
+	//               argument.
+	stream << "insert into frames (frame_chksum, frame_hash, seq_status, \
+	           seq_payload, payload_type, downlink_time) values (" <<
 	p.crc << ", " <<
 	p.hash << ", " <<
 	p.status.sequence_id << ", ";
 	switch (p.type) {
 		case PayloadType::GPS :
-//			query_str += p.payload.gps.sequence_id; comma();
 			stream << p.payload.gps.sequence_id << ", ";
-//			query_str += static_cast<int>(p.type); comma();
-			stream << static_cast<int>(p.type) << ", ";
+			stream << "'gps', ";
 			break;
 		case PayloadType::IMU :
-//			query_str += p.payload.imu.sequence_id; comma();
 			stream << p.payload.imu.sequence_id << ", ";
-//			query_str += static_cast<int>(p.type); comma();
-			stream << static_cast<int>(p.type) << ", ";
+			stream << "'imu', ";
 			break;
 		case PayloadType::Health :
-//			query_str += p.payload.health.sequence_id; comma();
 			stream << p.payload.health.sequence_id << ", ";
-//			query_str += static_cast<int>(p.type); comma();
-			stream << static_cast<int>(p.type) << ", ";
+			stream << "'health', ";
 			break;
 		case PayloadType::Img :
-//			query_str += p.payload.img.sequence_id; comma();
 			stream << p.payload.img.sequence_id << ", ";
-//			query_str += static_cast<int>(p.type); comma();
-			stream << static_cast<int>(p.type) << ", ";
+			stream << "'img', ";
 			break;
 		case PayloadType::Config :
-//			query_str += p.payload.config.sequence_id; comma();
 			stream << p.payload.config.sequence_id << ", ";
-//			query_str += static_cast<int>(p.type); comma();
-			stream << static_cast<int>(p.type) << ", ";
+			stream << "'config', ";
 			break;
 		default:
-			// TODO #completeness: deal with this better
-			qDebug() << "payload type not supported!";
-			break;
+			qCritical() << "payload type not supported!";
+			return false;
 	}
-	stream << p.downlink_time << ");\n";
+	stream << time_string(p.downlink_time) << ");\n";
 
 	// status
-	stream << "INSERT INTO STATUS (packID, seqStat, SCID, SCTime, \
-	    timeSource, OBCTemp, battTemp, battVolt, battCurrent, chargeCurrent, \
-	    antDep, dataPending, rebootCnt, rails1, rails2, rails3, rails4, \
-		rails5, rails6, RXTemp, TXTemp, PATemp, RXNoiseFloor) VALUES (" <<
+	stream << "insert into status (frame_id, spacecraft_id, spacecraft_time, \
+	           time_source, seq_status, obc_temperature, battery_temperature, \
+	           battery_voltage, battery_current, charge_current, \
+	           antenna_deployment, data_pending, reboot_count, rails_1, \
+	           rails_2, rails_3, rails_4, rails_5, rails_6, rx_temperature, \
+	           tx_temperature, pa_temperature, rx_noisefloor) VALUES (" <<
 	"last_insert_id(), " <<
-	p.status.sequence_id << ", " <<
 	p.status.spacecraft_id << ", " <<
-	p.status.time << ", " <<
+	time_string(p.status.time) << ", " <<
 	p.status.time_source << ", " <<
+	p.status.sequence_id << ", " <<
 	p.status.obc_temperature << ", " <<
 	p.status.battery_temperature << ", " <<
 	p.status.battery_voltage << ", " <<
@@ -165,55 +192,77 @@ bool DB::store_packet (Packet& p) {
 	// payload
 	switch (p.type) {
 		case PayloadType::GPS :
-			stream << "INSERT INTO GPS (packID, seqPayload, payloadTimeStamp, \
-					lat, lon, alt, HDOP, VDOP, PDOP, TDOP) VALUES (" <<
+			stream << "insert into gps (frame_id, seq_payload, \
+			           payload_timestamp, lat, lon, alt, hdop, vdop, pdop, \
+			           tdop) VALUES (" <<
 			"last_insert_id(), " <<
 			p.payload.gps.sequence_id << ", " <<
-			p.payload.gps.timestamp << ", " <<
+			time_string(p.payload.gps.timestamp) << ", " <<
 			p.payload.gps.lat << ", " <<
 			p.payload.gps.lon << ", " <<
 			p.payload.gps.alt << ", " <<
-			p.payload.gps.HDOP << ", " <<
-			p.payload.gps.VDOP << ", " <<
-			p.payload.gps.PDOP << ", " <<
-			p.payload.gps.TDOP << ");\n";
+			p.payload.gps.hdop << ", " <<
+			p.payload.gps.vdop << ", " <<
+			p.payload.gps.pdop << ", " <<
+			p.payload.gps.tdop << ");\n";
 			break;
 		case PayloadType::IMU :
-			stream << "INSERT INTO IMU (packID, seqPayload, payloadTimeStamp, \
-					magX, magY, magZ, gyroX, gyroY, gyroZ, accelX, accelY, accelZ) \
-					VALUES (" <<
+			stream << "insert into imu (frame_id, seq_payload, \
+				   payload_timestamp, mag_x_1, mag_x_2, mag_x_3, mag_x_4, \
+				   mag_x_5, mag_y_1, mag_y_2, mag_y_3, mag_y_4, mag_y_5, \
+				   mag_z_1, mag_z_2, mag_z_3, mag_z_4, mag_z_5, gyro_x_1, \
+				   gyro_x_2, gyro_x_3, gyro_x_4, gyro_x_5, gyro_y_1, gyro_y_2,\
+				   gyro_y_3, gyro_y_4, gyro_y_5, gyro_z_1, gyro_z_2, gyro_z_3,\
+				   gyro_z_4, gyro_z_5, accel_x_1, accel_x_2, accel_x_3, \
+				   accel_x_4, accel_x_5, accel_y_1, accel_y_2, accel_y_3, \
+				   accel_y_4, accel_y_5, accel_z_1, accel_z_2, accel_z_3, \
+				   accel_z_4, accel_z_5 values (" <<
 			"last_insert_id(), " <<
 			p.payload.imu.sequence_id << ", " <<
-			p.payload.imu.timestamp << ", " <<
-			p.payload.imu.Mag_X << ", " <<
-			p.payload.imu.Mag_Y << ", " <<
-			p.payload.imu.Mag_Z << ", " <<
-			p.payload.imu.Gyro_X << ", " <<
-			p.payload.imu.Gyro_Y << ", " <<
-			p.payload.imu.Gyro_Z << ", " <<
-			p.payload.imu.Accel_X << ", " <<
-			p.payload.imu.Accel_Y << ", " <<
-			p.payload.imu.Accel_Z << ");\n";
+			time_string(p.payload.imu.timestamp) << ", " <<
+			p.payload.imu.mag_x << ", " <<
+			p.payload.imu.mag_y << ", " <<
+			p.payload.imu.mag_z << ", " <<
+			p.payload.imu.gyro_x << ", " <<
+			p.payload.imu.gyro_y << ", " <<
+			p.payload.imu.gyro_z << ", " <<
+			p.payload.imu.accel_x << ", " <<
+			p.payload.imu.accel_y << ", " <<
+			p.payload.imu.accel_z << ");\n";
 			break;
 		case PayloadType::Health :
-			stream << "INSERT INTO HEALTH (packID, seqPayload, payloadTimeStamp, \
-					OBCTemp, RXTemp, TXTemp, PATemp, rebootCnt, dataPending, antSwitch, \
-					RXNoiseFloor, detectFlashErr, detectRAMErr, battVolt, battCurrent, \
-					battTemp, chargeCurrent, MPPTVolt, solarN1C, solarN2C, \
-					solarE1C, solarE2C, solarS1C, solarS2C, solarW1C, solarW2C, \
-					solarT1C, solarT2C, rails1Switch, rails2Switch, rails3Switch, \
-					rails4Switch, rails5Switch, rails6Switch, rails1Over, rails2Over, \
-					rails3Over, rails4Over, rails5Over, rails6Over, \
-					rails1Boot, rails1OverCnt, rails1Volt, rails1Curr, \
-					rails2Boot, rails2OverCnt, rails2Volt, rails2Curr, \
-					rails3Boot, rails3OverCnt, rails3Volt, rails3Curr, \
-					rails4Boot, rails4OverCnt, rails4Volt, rails4Curr, \
-					rails5Boot, rails5OverCnt, rails5Volt, rails5Curr, \
-					rails6Boot, rails6OverCnt, rails6Volt, rails6Curr, \
-					3V3Volt, 3V3Curr, 5VVolt, 5VCurr) VALUES (" <<
+			stream << "insert into health (frame_id, seq_payload, \
+			           payload_timestamp, obc_temperature, rx_temperature, \
+			           tx_temperature, pa_temperature, reboot_count, \
+			           data_packets_pending, antenna_switch, rx_noisefloor, \
+			           detected_flash_errors, detected_ram_errors, \
+			           battery_voltage, battery_current, battery_temperature, \
+			           charge_current, mppt_voltage, solar_n1_current, \
+			           solar_n2_current, solar_e1_current, solar_e2_current, \
+			           solar_s1_current, solar_s2_current, solar_w1_current, \
+			           solar_w2_current, solar_t1_current, solar_t2_current, \
+			           rails_switch_status_1, rails_switch_status_2, \
+			           rails_switch_status_3, rails_switch_status_4, \
+			           rails_switch_status_5, rails_switch_status_6, \
+			           rails_overcurrent_status_1, rails_overcurrent_status_2,\
+			           rails_overcurrent_status_3, rails_overcurrent_status_4,\
+			           rails_overcurrent_status_5, rails_overcurrent_status_6,\
+			           rail_1_boot_count, rail_1_overcurrent_count, \
+			           rail_1_voltage, rail_1_current, rail_2_boot_count, \
+			           rail_2_overcurrent_count, rail_2_voltage, \
+			           rail_2_current, rail_3_boot_count, \
+			           rail_3_overcurrent_count, rail_3_voltage, \
+			           rail_3_current, rail_4_boot_count, \
+			           rail_4_overcurrent_count, rail_4_voltage, \
+			           rail_4_current, rail_5_boot_count, \
+			           rail_5_overcurrent_count, rail_5_voltage, \
+			           rail_5_current, rail_6_boot_count, \
+			           rail_6_overcurrent_count, rail_6_voltage, \
+			           rail_6_current, 3v3_voltage, 3v3_current, 5v_voltage, \
+					   5v_current) values (" <<
 			"last_insert_id(), " <<
 			p.payload.health.sequence_id << ", " <<
-			p.payload.health.timestamp << ", " <<
+			time_string(p.payload.health.timestamp) << ", " <<
 			p.payload.health.obc_temperature << ", " <<
 			p.payload.health.rx_temperature << ", " <<
 			p.payload.health.tx_temperature << ", " <<
@@ -281,28 +330,42 @@ bool DB::store_packet (Packet& p) {
 			p.payload.health._5v_current << ");\n";
 			break;
 		case PayloadType::Img :
-			stream << "INSERT INTO IMG (packID, seqPayload, payloadTimeStamp, \
-					imgID, fragID, fragNums, imgData) VALUES (" <<
+			stream << "insert into img (frame_id, seq_payload, \
+			           payload_timestamp, image_id, fragment_id, \
+			           num_fragments) values (" <<
 			"last_insert_id(), " <<
 			p.payload.img.sequence_id << ", " <<
-			p.payload.img.timestamp << ", " <<
+			time_string(p.payload.img.timestamp) << ", " <<
 			p.payload.img.image_id << ", " <<
 			p.payload.img.fragment_id << ", " <<
 			p.payload.img.num_fragments << ", " <<
 			p.payload.img.image_data << ");\n";
 			break;
 		case PayloadType::Config :
-			// TODO #bug: Conf needs finishing
+			// TODO #finish
 			break;
 		default:
-			// TODO #completeness: deal with this better
-			qDebug() << "payload type not supported!";
-			break;
+			qCritical() << "payload type not supported!";
+		    return false;
 	}
 
-	stream << "COMMIT;";
+	stream << "commit;";
 	qDebug() << query_str;
-	return query.exec(query_str);
+	if (query.exec(query_str)) {
+		qDebug() << "packet stored in DB successfully.";
+		return true;
+	} else {
+		qCritical() << "failed to insert packet into DB.";
+		return false;
+	}
+}
+
+QString DB::time_string (uint32_t tstamp) {
+	time_t t = static_cast<time_t>(tstamp);
+	tm* st = localtime(&t);
+	char s[20];
+	strftime(s, 20, "%F %T", st);
+	return QString(s);
 }
 
 std::string DB::get_name () { return this->dbname; }

@@ -18,6 +18,22 @@ TEMPLATE = app
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
 
+CONFIG(debug, debug|release) {
+    DESTDIR = ../bin/debug
+    DLLDESTDIR = ../bin/debug
+    OBJECTS_DIR = ../build/debug
+    MOC_DIR = ../build/debug
+    UI_DIR = ../build/debug
+    RCC_DIR = ../build/debug
+} else {
+    DESTDIR = ../bin/release
+    DLLDESTDIR = ../bin/release
+    OBJECTS_DIR = ../build/release
+    MOC_DIR = ../build/release
+    UI_DIR = ../build/release
+    RCC_DIR = ../build/release
+}
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -31,10 +47,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-        secondwindow.cpp \
-        topwindow.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    secondwindow.cpp \
+    topwindow.cpp \
     uploader.cpp \
     db.cpp \
     buffer.cpp \
@@ -43,9 +59,9 @@ SOURCES += \
     filehandler.cpp
 
 HEADERS += \
-        mainwindow.h \
-        secondwindow.h \
-        topwindow.h\
+    mainwindow.h \
+    secondwindow.h \
+    topwindow.h\
     uploader.h \
     db.h \
     packet.h \
@@ -54,6 +70,6 @@ HEADERS += \
     filehandler.h
 
 FORMS += \
-        mainwindow.ui \
-        secondwindow.ui \
-        topwindow.ui \
+    mainwindow.ui \
+    secondwindow.ui \
+    topwindow.ui \
