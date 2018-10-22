@@ -15,7 +15,7 @@
 #include "filehandler.h"
 #include "mainwindow.h"
 #include "packet.h"
-//#include "secrets/secrets.h"
+#include "secrets/secrets.h"
 #include "uploader.h"
 
 static const std::string file_path = "input.bin";
@@ -31,9 +31,8 @@ int main (int argc, char* argv[]) {
 		cereal::JSONOutputArchive archive(std::cout);
 		f.add_output(archive);
 
-        //DB db("localhost", "mycooldb", secrets::username, secrets::password);
-        DB db("localhost", "TestSortedData", "UoS3User", "UoS3Pass");
 		f.add_output(db);
+        DB db("localhost", "mycooldb", secrets::username, secrets::password);
 
 		// Display the GUI.
 		MainWindow w;
