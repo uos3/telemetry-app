@@ -21,7 +21,11 @@ dbname(dbname), hostname(hostname) {
             // We had an error opening the database
             // We should try to check to see what the error was and output it as debug
 
-            qDebug("Open DB Error");
+            qDebug("Open DB Error in db.cpp");
+            qDebug("Hostname: ");
+            qDebug(hostname.c_str());
+            qDebug("DBName: ");
+            qDebug(dbname.c_str());
 
             qDebug() << db.lastError().type();
 
