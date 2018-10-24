@@ -1,11 +1,16 @@
 #include "filehandler.h"
+#include <QDebug>
 
 FileHandler::FileHandler (const std::string fname,
                           const uint32_t packet_size,
                           QObject *parent) :
 QObject(parent), fname(fname), packet_size(packet_size), watcher(this),
 buffer(), packet() {
+    qDebug("FileHandler: Watching file %s .", fname.c_str());
+
+
 	watcher.addPath(QString::fromStdString(this->fname));
+
 
 	connect(&watcher, &QFileSystemWatcher::fileChanged,
 	        this, &FileHandler::file_changed);

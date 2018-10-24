@@ -3,6 +3,7 @@
 
 #include <QFileSystemWatcher>
 #include <QObject>
+#include <QDebug>
 
 #include <cereal/archives/json.hpp>
 
