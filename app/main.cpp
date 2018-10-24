@@ -13,7 +13,7 @@
 #include "cli.h"
 #include "db.h"
 #include "filehandler.h"
-#include "mainwindow.h"
+#include "topwindow.h"
 #include "packet.h"
 #include "secrets/secrets.h"
 #include "uploader.h"
@@ -41,7 +41,7 @@ int main (int argc, char* argv[]) {
 
 
 		// Display the GUI.
-		MainWindow w;
+        topwindow w;
 		w.show();
 
 		return a.exec();

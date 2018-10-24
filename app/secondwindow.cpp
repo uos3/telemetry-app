@@ -8,8 +8,8 @@
 #include <QDesktopWidget>
 #include <QApplication>
 
-QString current_query_string = "SELECT * FROM new_schema.status";
-QString column_query_string = "SELECT column_name FROM information_schema.columns WHERE table_name = 'status' and table_schema = 'new_schema' ";
+QString current_query_string = "SELECT * FROM cubesat.status";
+QString column_query_string = "SELECT column_name FROM information_schema.columns WHERE table_name = 'status' and table_schema = 'cubesat'";
 QString result = "";
 QStringList column_names;
 int result_2 = 0;
