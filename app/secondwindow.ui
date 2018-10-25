@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>827</width>
-    <height>528</height>
+    <width>1285</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,20 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Forward 10</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="5">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Back 10</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QTableWidget" name="new_table">
        <property name="verticalScrollBarPolicy">
@@ -35,17 +49,17 @@
        </attribute>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
+     <item row="1" column="5">
       <widget class="QPushButton" name="pushButton_3">
        <property name="text">
         <string>REFRESH</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="text">
+        <string>Latest Data</string>
        </property>
       </widget>
      </item>

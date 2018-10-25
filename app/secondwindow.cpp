@@ -13,6 +13,7 @@ QString column_query_string = "SELECT column_name FROM information_schema.column
 QString result = "";
 QStringList column_names;
 int result_2 = 0;
+int startPosition = 0;
 
 secondwindow::secondwindow(QWidget *parent) :
     QWidget(parent),
@@ -36,7 +37,7 @@ secondwindow::secondwindow(QWidget *parent) :
         column_names.append(query.value(testiteration).toString());
     }
     setWindowTitle("CURRENT DATA");
-    ui -> new_table ->setRowCount(5);
+    ui -> new_table ->setRowCount(10);
     ui -> new_table ->setColumnCount(query.size());
     ui -> new_table ->setHorizontalHeaderLabels(column_names);
     ui -> new_table ->horizontalHeader()->setStretchLastSection(true);
@@ -62,6 +63,8 @@ void secondwindow::on_pushButton_3_clicked()
     QSqlRecord rec = q_1.record();
     int testiteration = rec.indexOf("Column_name");
     int no_columns = q_1.size();
+    
+    qDebug() << no_columns;
     while(q_1.next()){
         column_names.append(q_1.value(testiteration).toString());
     }
@@ -73,16 +76,25 @@ void secondwindow::on_pushButton_3_clicked()
     }else {
         qDebug("query unsuccesful");
     }
-    for (int seek_counter =0 ; seek_counter < 5; ++seek_counter){
-        q.next();
+    //q.seek(startPosition);
+    for (int seek_counter =0  ; seek_counter < 10; ++seek_counter){
+
         for (int row_counter = 0; row_counter < no_columns; ++row_counter){
             QString result = q.value(row_counter).toString();
+
             ui -> new_table ->setItem(seek_counter, row_counter,new QTableWidgetItem(result) );
         }
-        }
+        q.next();
+    }
 
 
     qDebug()<<q.seek(2);
     ui -> new_table ->resizeColumnsToContents();
     ui -> new_table ->showMaximized();
+}
+
+void secondwindow::on_pushButton_2_clicked()
+{
+    qDebug("Button 2 pressed! Go forward 5");
+    startPosition += 5;
 }
