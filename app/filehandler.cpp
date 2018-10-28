@@ -1,5 +1,7 @@
 #include "filehandler.h"
 
+#include <QByteArray>
+
 FileHandler::FileHandler (const std::string fname,
                           const uint32_t packet_size,
                           QObject *parent) :
@@ -36,8 +38,9 @@ void FileHandler::file_changed () {
 		(*oj)(CEREAL_NVP(packet));
 	}
 
+	QByteArray binary(buffer.get_buf(), buffer.get_len());
 	for (auto od : this->out_dbs) {
-		if (!od->store_packet(packet)) {
+		if (!od->store_packet(packet, binary)) {
 			qDebug("failed to store packet in db %s @ %s.",
 			       od->get_name().c_str(),
 			       od->get_hostname().c_str());

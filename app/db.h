@@ -1,15 +1,14 @@
 #ifndef DB_H
 #define DB_H
 
-#include <QDebug>
+#include "packet.h"
+
+#include <QByteArray>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlQueryModel>
 #include <QTableView>
-#include <QTextStream>
-#include <string>
 
-#include "packet.h"
+#include <string>
 
 // TODO #enhancement: make this a QThread (or perhaps a QRunnable, dispatching
 //                    from a QThreadPool on query)
@@ -62,7 +61,7 @@ public:
 	/// \param p The packet to be stored.
 	/// \returns Whether or not the query to store the packet was successfully
 	///          executed.
-	bool store_packet (Packet& p);
+	bool store_packet (Packet& p, QByteArray binary);
 
 	// Getters / Setters
 	std::string get_name ();
