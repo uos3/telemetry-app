@@ -24,7 +24,7 @@ private slots:
 private:
     Ui::secondwindow *ui;
 
-    QTableWidget * new_table;
+    QTableWidget * status_table;
 };
 
 #endif // SECONDWINDOW_H
