@@ -35,7 +35,7 @@ dbname(dbname), hostname(hostname) {
             // 3 = Transaction Failed Error
             // 4 = Unknown Error
         }
-		qDebug("db failed to open.");
+
 	}
 }
 
