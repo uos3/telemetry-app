@@ -3,7 +3,9 @@
 
 #include <QWidget>
 #include <QTableWidget>
+#include <QTableView>
 #include <QMainWindow>
+#include <QSqlTableModel>
 
 namespace Ui {
 class secondwindow;
@@ -18,13 +20,12 @@ public:
     ~secondwindow();
 
 private slots:
-    void on_pushButton_3_clicked();
-    void on_pushButton_2_clicked();
+    void on_refreshButton_clicked();
 
 private:
     Ui::secondwindow *ui;
-
-    QTableWidget * status_table;
+    QTableView *status_tableView;
+    QSqlTableModel *model;
 };
 
 #endif // SECONDWINDOW_H
