@@ -374,3 +374,5 @@ QString DB::time_string (uint32_t tstamp) {
 
 std::string DB::get_name () { return this->dbname; }
 std::string DB::get_hostname () { return this->hostname; }
+
+QSqlDatabase DB::get_database () {return this->db; }
