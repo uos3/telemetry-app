@@ -32,9 +32,9 @@ secondwindow::secondwindow(QWidget *parent) :
         qDebug("query unsuccessful");
     }
     QSqlRecord rec = query.record();
-    int testiteration = rec.indexOf("Column_name");
+    int column_name_index = rec.indexOf("Column_name");
     while(query.next()){
-        column_names.append(query.value(testiteration).toString());
+        column_names.append(query.value(column_name_index).toString());
     }
     setWindowTitle("CURRENT DATA");
     ui -> new_table ->setRowCount(10);
@@ -61,12 +61,12 @@ void secondwindow::on_pushButton_3_clicked()
         qDebug("query unsuccessful");
     }
     QSqlRecord rec = q_1.record();
-    int testiteration = rec.indexOf("Column_name");
-    int no_columns = q_1.size();
+    int column_name_index = rec.indexOf("Column_name");
+    int number_of_columns = q_1.size();
     
-    qDebug() << no_columns;
+    qDebug() << number_of_columns;
     while(q_1.next()){
-        column_names.append(q_1.value(testiteration).toString());
+        column_names.append(q_1.value(column_name_index).toString());
     }
 
     QSqlQuery q;
@@ -78,8 +78,10 @@ void secondwindow::on_pushButton_3_clicked()
     }
     //q.seek(startPosition);
     for (int seek_counter =0  ; seek_counter < 10; ++seek_counter){
+        // Itterate through the rows
 
-        for (int row_counter = 0; row_counter < no_columns; ++row_counter){
+        for (int row_counter = 0; row_counter < number_of_columns; ++row_counter){
+            // Itterate through the columns
             QString result = q.value(row_counter).toString();
 
             ui -> new_table ->setItem(seek_counter, row_counter,new QTableWidgetItem(result) );
