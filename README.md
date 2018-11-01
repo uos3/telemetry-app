@@ -1,4 +1,4 @@
-# telemetry-app
+﻿# telemetry-app
 
 Main UoS³ telemetry application
 
@@ -72,5 +72,7 @@ You have two options:
 Charlie West-Taylor
 
 Hubert Khoo Hui Boo
+
+James Robert Brown
 
 Mohammed Nawabuddin
