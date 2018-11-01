@@ -21,6 +21,7 @@ public:
 
 private slots:
     void on_refreshButton_clicked();
+    void on_generateGraphButton_clicked();
 
 private:
     Ui::secondwindow *ui;

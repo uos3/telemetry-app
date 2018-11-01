@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+   <item row="0" column="0" rowspan="4">
     <widget class="QTableView" name="status_tableView">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -27,7 +27,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="3">
     <widget class="QPushButton" name="refreshButton">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -37,6 +37,13 @@
      </property>
      <property name="text">
       <string>Refresh</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="generateGraphButton">
+     <property name="text">
+      <string>Generate Graph</string>
      </property>
     </widget>
    </item>

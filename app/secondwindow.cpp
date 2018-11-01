@@ -45,7 +45,7 @@ secondwindow::~secondwindow()
 
 void secondwindow::on_refreshButton_clicked()
 {
-    qDebug("THE REFRESH BUTTON WAS PRESSED");
+    // qDebug("THE REFRESH BUTTON WAS PRESSED");
     DB read_db("localhost", "cubesat");
     read_db.connect(secrets::username, secrets::password);
 
@@ -60,6 +60,30 @@ void secondwindow::on_refreshButton_clicked()
 
     view->setModel(this->model);
     view->show();
+}
+
+
+void secondwindow::on_generateGraphButton_clicked()
+{
+    qDebug("THE GRAPH BUTTON WAS PRESSED");
+    QItemSelectionModel *select = ui->status_tableView->selectionModel();
+
+    qDebug() << select->selectedColumns().length();
+    if (select->selectedColumns().length() == 1)
+    {
+
+        qDebug("We have one column");
+
+        int columnIndex = select->selectedIndexes().value(0).column();
+
+        qDebug() <<  select->selectedIndexes().length();
+        for (int i = 0; i <= select->selectedIndexes().length(); i++)
+        {
+            qDebug() << i;
+
+            qDebug() << ui->status_tableView->model()->data(ui->status_tableView->model()->index(i,columnIndex)).toString();
+        }
+    }
 }
 
 
