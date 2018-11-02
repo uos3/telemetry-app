@@ -56,7 +56,8 @@ SOURCES += \
     buffer.cpp \
     packet.cpp \
     cli.cpp \
-    filehandler.cpp
+    filehandler.cpp \
+    gpswindow.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -67,9 +68,11 @@ HEADERS += \
     packet.h \
     buffer.h \
     cli.h \
-    filehandler.h
+    filehandler.h \
+    gpswindow.h
 
 FORMS += \
     mainwindow.ui \
     secondwindow.ui \
     topwindow.ui \
+    gpswindow.ui

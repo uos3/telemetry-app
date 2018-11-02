@@ -13,30 +13,88 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="CurrentStatusButton">
+  <widget class="QPushButton" name="StatusButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>40</y>
+     <x>610</x>
+     <y>20</y>
      <width>190</width>
      <height>121</height>
     </rect>
    </property>
    <property name="text">
-    <string>CURRENT STATUS</string>
+    <string>STATUS</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>190</y>
+     <x>440</x>
+     <y>140</y>
      <width>111</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Show status data</string>
+    <string>Show all GPS data</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>150</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Show all status data</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="GPSButton">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>20</y>
+     <width>190</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>GPS</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="CurrentDataButton">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>190</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CURRENT DATA</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>140</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Show most recent 5 rows of data</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

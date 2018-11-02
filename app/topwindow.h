@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMainWindow>
 #include "secondwindow.h"
+#include "gpswindow.h"
 
 namespace Ui {
 class topwindow;
@@ -18,11 +19,14 @@ public:
     ~topwindow();
 public slots:
     void openSecondWindow();
+    void openGPSWindow();
 private slots:
-    void on_CurrentStatusButton_clicked();
-
+    void on_StatusButton_clicked();
+    void on_CurrentDataButton_clicked();
+    void on_GPSButton_clicked();
 private:
-    secondwindow *showNewWindow;
+    secondwindow *showNewSecondWindow;
+    gpswindow *showNewGPSWindow;
 private:
     Ui::topwindow *ui;
 };

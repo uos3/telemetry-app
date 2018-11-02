@@ -3,6 +3,8 @@
 #include "db.h"
 #include "QDateTime"
 #include "secondwindow.h"
+#include "gpswindow.h"
+
 
 topwindow::topwindow(QWidget *parent) :
     QWidget(parent),
@@ -17,12 +19,30 @@ topwindow::~topwindow()
 }
 void topwindow::openSecondWindow()
 {
-    showNewWindow = new secondwindow();
+    showNewSecondWindow = new secondwindow();
 
-    showNewWindow -> show();
+    showNewSecondWindow -> show();
 }
 
-void topwindow::on_CurrentStatusButton_clicked()
+void topwindow::openGPSWindow()
+{
+    showNewGPSWindow = new gpswindow();
+
+    showNewGPSWindow -> show();
+}
+
+
+void topwindow::on_StatusButton_clicked()
 {
     openSecondWindow();
+}
+
+void topwindow::on_CurrentDataButton_clicked()
+{
+    //openSecondWindow();
+}
+
+void topwindow::on_GPSButton_clicked()
+{
+    openGPSWindow();
 }
