@@ -31,6 +31,12 @@ void topwindow::openGPSWindow()
     showNewGPSWindow -> show();
 }
 
+void topwindow::openCurrentDataWindow()
+{
+    showNewCurrentStatusWindow = new currentstatus();
+
+    showNewCurrentStatusWindow -> show();
+}
 
 void topwindow::on_StatusButton_clicked()
 {
@@ -39,7 +45,7 @@ void topwindow::on_StatusButton_clicked()
 
 void topwindow::on_CurrentDataButton_clicked()
 {
-    //openSecondWindow();
+    openCurrentDataWindow();
 }
 
 void topwindow::on_GPSButton_clicked()

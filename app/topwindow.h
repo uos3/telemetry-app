@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include "secondwindow.h"
 #include "gpswindow.h"
+#include "currentstatus.h"
 
 namespace Ui {
 class topwindow;
@@ -20,6 +21,7 @@ public:
 public slots:
     void openSecondWindow();
     void openGPSWindow();
+    void openCurrentDataWindow();
 private slots:
     void on_StatusButton_clicked();
     void on_CurrentDataButton_clicked();
@@ -27,6 +29,7 @@ private slots:
 private:
     secondwindow *showNewSecondWindow;
     gpswindow *showNewGPSWindow;
+    currentstatus *showNewCurrentStatusWindow;
 private:
     Ui::topwindow *ui;
 };
