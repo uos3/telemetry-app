@@ -25,6 +25,7 @@ gpswindow::gpswindow(QWidget *parent): QWidget(parent), ui(new Ui::gpswindow)
     QTableView *view = ui->gps_tableView;
 
     view->setModel(this->model);
+    view->sortByColumn(0,Qt::DescendingOrder);
     view->show();
 
 }
@@ -52,6 +53,7 @@ void gpswindow::on_refreshButton_clicked()
     QTableView *view = ui->gps_tableView;
 
     view->setModel(this->model);
+    view->sortByColumn(0,Qt::DescendingOrder);
     view->show();
 }
 

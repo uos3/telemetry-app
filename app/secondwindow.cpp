@@ -32,6 +32,7 @@ secondwindow::secondwindow(QWidget *parent): QWidget(parent), ui(new Ui::secondw
     QTableView *view = ui->status_tableView;
 
     view->setModel(this->model);
+    view->sortByColumn(0,Qt::DescendingOrder);
     view->show();
 
 }
@@ -59,6 +60,7 @@ void secondwindow::on_refreshButton_clicked()
     QTableView *view = ui->status_tableView;
 
     view->setModel(this->model);
+    view->sortByColumn(0,Qt::DescendingOrder);
     view->show();
 }
 
