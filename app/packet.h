@@ -1,5 +1,4 @@
-#ifndef PACKET_H
-#define PACKET_H
+#pragma once
 
 #include <QString>
 #include "buffer.h"
@@ -11,22 +10,22 @@
 // Types of downlink packets, and functions to make them from loaded buffers.
 
 struct Status {
-	char spacecraft_id[2];
+	char spacecraft_id[3];
 	uint32_t time;
 	bool time_source;
-	char sequence_id[2];
-	uint8_t obc_temperature;
-	uint8_t battery_temperature;
-	uint8_t battery_voltage;
+	char sequence_id[3];
+	int8_t obc_temperature;
+	int8_t battery_temperature;
+	int8_t battery_voltage;
 	uint8_t battery_current;
 	uint8_t charge_current;
 	bool antenna_deployment;
 	uint16_t data_pending;
 	uint8_t reboot_count;
 	bool rails_status[6];
-	uint8_t rx_temperature;
-	uint8_t tx_temperature;
-	uint8_t pa_temperature;
+	int8_t rx_temperature;
+	int8_t tx_temperature;
+	int8_t pa_temperature;
 	uint8_t rx_noisefloor;
 
 	template <class Archive>
@@ -44,7 +43,7 @@ struct Status {
 };
 
 struct GPS {
-	char sequence_id[2];
+	char sequence_id[3];
 	uint32_t timestamp;
 	float lat;
 	float lon;
@@ -63,17 +62,17 @@ struct GPS {
 };
 
 struct IMU {
-	char sequence_id[2];
+	char sequence_id[3];
 	uint32_t timestamp;
-	uint16_t mag_x[5];
-	uint16_t mag_y[5];
-	uint16_t mag_z[5];
-	uint16_t gyro_x[5];
-	uint16_t gyro_y[5];
-	uint16_t gyro_z[5];
-	uint16_t accel_x[5];
-	uint16_t accel_y[5];
-	uint16_t accel_z[5];
+	int16_t mag_x[5];
+	int16_t mag_y[5];
+	int16_t mag_z[5];
+	int16_t gyro_x[5];
+	int16_t gyro_y[5];
+	int16_t gyro_z[5];
+	int16_t accel_x[5];
+	int16_t accel_y[5];
+	int16_t accel_z[5];
 
 	template <class Archive>
 	void serialize (Archive& ar) {
@@ -85,23 +84,23 @@ struct IMU {
 };
 
 struct Health {
-	char sequence_id[2];
+	char sequence_id[3];
 	uint32_t timestamp;
-	uint8_t obc_temperature;
-	uint8_t rx_temperature;
-	uint8_t tx_temperature;
-	uint8_t pa_temperature;
+	int8_t obc_temperature;
+	int8_t rx_temperature;
+	int8_t tx_temperature;
+	int8_t pa_temperature;
 	uint8_t reboot_count;
 	uint16_t data_packets_pending;
 	bool antenna_switch;
 	uint8_t rx_noisefloor;
 	uint8_t detected_flash_errors;
 	uint8_t detected_ram_errors;
-	uint16_t battery_voltage;
+	int16_t battery_voltage;
 	uint16_t battery_current;
-	uint16_t battery_temperature;
+	int16_t battery_temperature;
 	uint16_t charge_current;
-	uint16_t mppt_voltage;
+	int16_t mppt_voltage;
 	uint16_t solar_n1_current;
 	uint16_t solar_n2_current;
 	uint16_t solar_e1_current;
@@ -116,31 +115,31 @@ struct Health {
 	bool rails_overcurrent_status[6];
 	uint16_t rail_1_boot_count;
 	uint16_t rail_1_overcurrent_count;
-	uint16_t rail_1_voltage;
+	int16_t rail_1_voltage;
 	uint16_t rail_1_current;
 	uint16_t rail_2_boot_count;
 	uint16_t rail_2_overcurrent_count;
-	uint16_t rail_2_voltage;
+	int16_t rail_2_voltage;
 	uint16_t rail_2_current;
 	uint16_t rail_3_boot_count;
 	uint16_t rail_3_overcurrent_count;
-	uint16_t rail_3_voltage;
+	int16_t rail_3_voltage;
 	uint16_t rail_3_current;
 	uint16_t rail_4_boot_count;
 	uint16_t rail_4_overcurrent_count;
-	uint16_t rail_4_voltage;
+	int16_t rail_4_voltage;
 	uint16_t rail_4_current;
 	uint16_t rail_5_boot_count;
 	uint16_t rail_5_overcurrent_count;
-	uint16_t rail_5_voltage;
+	int16_t rail_5_voltage;
 	uint16_t rail_5_current;
 	uint16_t rail_6_boot_count;
 	uint16_t rail_6_overcurrent_count;
-	uint16_t rail_6_voltage;
+	int16_t rail_6_voltage;
 	uint16_t rail_6_current;
-	uint16_t _3v3_voltage;
+	int16_t _3v3_voltage;
 	uint16_t _3v3_current;
-	uint16_t _5v_voltage;
+	int16_t _5v_voltage;
 	uint16_t _5v_current;
 
 	template <class Archive>
@@ -178,7 +177,7 @@ struct Health {
 };
 
 struct Img {
-	char sequence_id[2];
+	char sequence_id[3];
 	uint32_t timestamp;
 	uint8_t image_id;
 	uint16_t fragment_id;
@@ -194,7 +193,7 @@ struct Img {
 };
 
 struct Config {
-	char sequence_id[2];
+	char sequence_id[3];
 	uint32_t timestamp;
 
 	// TODO #finish
@@ -216,8 +215,8 @@ union Payload {
 enum class PayloadType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Config=6 };
 
 struct Packet {
-	char crc[2];
-	char hash[16];
+	char crc[3];
+	char hash[17];
 	PayloadType type;
 	Status status;
 	Payload payload;
@@ -270,5 +269,3 @@ void from_buffer (Img& i, Buffer& b);
 void from_buffer (Health& h, Buffer& b);
 void from_buffer (Status& s, Buffer& b);
 void from_buffer (Packet& p, Buffer& b);
-
-#endif // PACKET_H

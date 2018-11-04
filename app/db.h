@@ -1,5 +1,4 @@
-#ifndef DB_H
-#define DB_H
+#pragma once
 
 #include "packet.h"
 
@@ -79,5 +78,3 @@ private:
 	/// \returns The formatted string.
 	QString time_string (uint32_t tstamp);
 };
-
-#endif // DB_H

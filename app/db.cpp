@@ -156,8 +156,8 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	               "values (:frame_bin, :frame_chksum, :frame_hash, "
 	               ":seq_status, :seq_payload, :payload_type, "
 	               ":downlink_time);";
-	if (!query.prepare(qstr)) { qDebug() << "oops -- frame"; }
-	query.bindValue(":frame_bin", binary);
+	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; }
+	query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary);
 	query.bindValue(":frame_chksum", p.crc);
 	query.bindValue(":frame_hash", p.hash);
 	query.bindValue(":seq_status", p.status.sequence_id);
@@ -189,8 +189,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	query.bindValue(":downlink_time", time_string(p.downlink_time));
 
 	bool success = query.exec();
-	qDebug() << query.lastQuery();
-	if (!success) { qDebug() << "error inserting frame!: " << query.lastError().text(); }
+	if (!success) { qCritical() << "error inserting frame!: " << query.lastError().text(); }
 
 	int frame_id = query.lastInsertId().toInt();
 
@@ -207,7 +206,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	       ":data_pending, :reboot_count, :rails_1, :rails_2, :rails_3, "
 	       ":rails_4, :rails_5, :rails_6, :rx_temperature, :tx_temperature, "
 	       ":pa_temperature, :rx_noisefloor);";
-	if (!query.prepare(qstr)) { qDebug() << "oops -- status"; }
+	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table."; }
 	query.bindValue(":frame_id", frame_id);
 	query.bindValue(":spacecraft_id", p.status.spacecraft_id);
 	query.bindValue(":spacecraft_time", time_string(p.status.time));
@@ -233,8 +232,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	query.bindValue(":rx_noisefloor", p.status.rx_noisefloor);
 
 	success &= query.exec();
-	qDebug() << query.lastQuery();
-	if (!success) { qDebug() << "error inserting status!: " << query.lastError().text(); }
+	if (!success) { qCritical() << "error inserting status!: " << query.lastError().text(); }
 
 	// payload
 	switch (p.type) {
@@ -244,7 +242,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			       "tdop) values (:frame_id, :seq_payload, "
 			       ":payload_timestamp, :lat, :lon, :alt, :hdop, :vdop, :pdop, "
 			       ":tdop)";
-			if (!query.prepare(qstr)) { qDebug() << "oops -- gps"; }
+			if (!query.prepare(qstr)) { qCritical() << "Error preparing query for gps table."; }
 			query.prepare(qstr);
 			query.bindValue(":frame_id", frame_id);
 			query.bindValue(":seq_payload", p.payload.gps.sequence_id);
@@ -258,8 +256,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			query.bindValue(":tdop", p.payload.gps.tdop);
 
 			success &= query.exec();
-			qDebug() << query.lastQuery();
-			if (!success) { qDebug() << "error inserting status!: " << query.lastError().text(); }
+			if (!success) { qCritical() << "error inserting status!: " << query.lastError().text(); }
 
 			break;
 
@@ -410,7 +407,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 
 	// TODO #refactor: remove prints (except maybe executedQuery & lastError)
 	if (success) {
-		qDebug() << "database query sent successfully.";
+		qDebug() << "database query sent successfully to store packet in local database.";
 		return true;
 	} else {
 		qCritical() << "failed to send query to store packet in local database.";
@@ -683,12 +680,11 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 //}
 
 QString DB::time_string (uint32_t tstamp) {
-	return QString("2018-10-28 20:32:45");
-	/* time_t t = static_cast<time_t>(tstamp); */
-	/* tm* st = localtime(&t); */
-	/* char s[22]; */
-	/* strftime(s, 22, "'%F %T'", st); */
-	/* return QString(s); */
+	time_t t = static_cast<time_t>(tstamp);
+	tm* st = gmtime(&t);
+	char s[22];
+	strftime(s, 22, "%F %T", st);
+	return QString(s);
 }
 
 std::string DB::get_name () { return this->dbname; }

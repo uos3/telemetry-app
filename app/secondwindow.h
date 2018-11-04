@@ -1,5 +1,4 @@
-#ifndef SECONDWINDOW_H
-#define SECONDWINDOW_H
+#pragma once
 
 #include <QWidget>
 #include <QTableWidget>
@@ -25,5 +24,3 @@ private:
 
     QTableWidget * new_table;
 };
-
-#endif // SECONDWINDOW_H

@@ -1,5 +1,4 @@
-#ifndef BUFFER_H
-#define BUFFER_H
+#pragma once
 
 #include <QDebug>
 
@@ -41,5 +40,3 @@ protected:
 	uint64_t len;
 	uint64_t pos = 0;
 };
-
-#endif // BUFFER_H
