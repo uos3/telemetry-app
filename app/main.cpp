@@ -39,6 +39,9 @@ int main (int argc, char* argv[]) {
 			qWarning() << "DB failed to connect.";
 		}
 
+		Uploader uploader;
+		f.add_output(uploader);
+
 		// Display the GUI.
 		MainWindow w;
 		w.show();

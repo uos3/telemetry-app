@@ -1,12 +1,12 @@
 #pragma once
 
+#include <QHttpMultiPart>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+
+#include <memory>
 #include <vector>
 #include <tuple>
-
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QUrlQuery>
 
 
 class Uploader : public QObject {
@@ -23,6 +23,9 @@ public:
 	/// \brief Upload data in byte array form to the/a server, via POST.
 	void upload(QByteArray body);
 
+	/// \brief Upload data in byte array form to the/a server, via POST.
+	void upload(std::string api_key, QByteArray data);
+
 	/// \brief Upload sample data in (string) key-value form to the (a) server,
 	///        via POST.
 	void upload();
@@ -36,6 +39,7 @@ public slots:
 
 private:
 	// Members
-	QNetworkAccessManager* manager;
+	std::unique_ptr<QNetworkAccessManager> manager;
+	std::unique_ptr<QHttpMultiPart> multiPart;
 	QString target;
 };
