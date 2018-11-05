@@ -127,7 +127,8 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			qCritical() << "payload type not supported!";
 			return false;
 	}
-	query.bindValue(":downlink_time", time_string(p.downlink_time));
+
+    query.bindValue(":downlink_time", time_string(p.downlink_time));
 
     bool success = query.exec();
     if (!success) { qCritical() << "error inserting frame!: " << query.lastError().text(); }
@@ -463,10 +464,11 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 }
 
 QString DB::time_string (uint32_t tstamp) {
-	time_t t = static_cast<time_t>(tstamp);
+    qDebug() << tstamp;
+    time_t t = static_cast<time_t>(tstamp);
 	tm* st = gmtime(&t);
 	char s[22];
-	strftime(s, 22, "%F %T", st);
+    strftime(s, 22, "%Y%m%d%H%M%S", st);
 	return QString(s);
 }
 
