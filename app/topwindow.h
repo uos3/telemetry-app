@@ -1,5 +1,4 @@
-#ifndef TOPWINDOW_H
-#define TOPWINDOW_H
+#pragma once
 
 #include <QWidget>
 #include <QMainWindow>
@@ -33,5 +32,3 @@ private:
 private:
     Ui::topwindow *ui;
 };
-
-#endif // TOPWINDOW_H

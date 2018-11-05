@@ -1,5 +1,4 @@
-#ifndef UPLOADER_H
-#define UPLOADER_H
+#pragma once
 
 #include <vector>
 #include <tuple>
@@ -40,5 +39,3 @@ private:
 	QNetworkAccessManager* manager;
 	QString target;
 };
-
-#endif // UPLOADER_H

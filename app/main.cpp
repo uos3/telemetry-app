@@ -22,39 +22,29 @@ static const std::string file_path = "input.bin";
 static const uint32_t packet_size = 3136;
 
 int main (int argc, char* argv[]) {
-    QApplication a(argc, argv);
+	QApplication a(argc, argv);
 
+	if (!cli(argc, argv)) {
+		// Watch our binary file for new packets to be parsed/stored.
+		FileHandler f(file_path, packet_size);
 
-    Buffer b;
-    b.from_file(file_path, packet_size);
+		cereal::JSONOutputArchive archive(std::cout);
+		f.add_output(archive);
 
+		DB db("localhost", "cubesat");
+		if (db.connect(secrets::username, secrets::password)) {
+			qDebug() << "DB connected successfully.";
+			f.add_output(db);
+		} else {
+			qWarning() << "DB failed to connect.";
+		}
 
-    std::cout << "buffer (" << b.get_len() << "):\n";
-    for (unsigned int i = 0; i<b.get_len(); i++)
-    {
-        std::cout << *(b.get_buf()+i);
-    } std::cout << "\n";
+		// Display the GUI.
+        topwindow w;
+		w.show();
 
+		return a.exec();
+	} else { return 0; }
 
-    Packet p;
-    from_buffer(p,b);
-
-
-    cereal::JSONOutputArchive archive(std::cout);
-    archive(CEREAL_NVP(p));
-
-    DB db("localhost", "cubesat");
-    if (db.connect(secrets::username, secrets::password))
-    {
-        qDebug("DB Connected");
-        db.store_packet(p);
-    }
-
-
-    // Display the GUI.
-    topwindow w;
-    w.show();
-
-
-    return a.exec();
+	return a.exec();
 }

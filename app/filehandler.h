@@ -1,5 +1,4 @@
-#ifndef FILEHANDLER_H
-#define FILEHANDLER_H
+#pragma once
 
 #include <QFileSystemWatcher>
 #include <QObject>
@@ -48,5 +47,3 @@ private:
 	std::vector<DB*> out_dbs;
 	std::vector<cereal::JSONOutputArchive*> out_json;
 };
-
-#endif // FILEHANDLER_H

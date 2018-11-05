@@ -15,7 +15,7 @@ Purpose: Parse received packets from CubeSat, and upload onto server.
 ## less-near future
 
 1. Integrate with data server. (Partially done)
-2. Receive new upstream data from decoder-end. (TBC)
+2. Receive new upstream data from decoder-end. (Partially done)
 3. Be able to add timestamps to fresh data and push to db. (Done)
 
 # Dependencies

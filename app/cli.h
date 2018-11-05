@@ -1,5 +1,4 @@
-#ifndef CLI_H
-#define CLI_H
+#pragma once
 
 #include <string.h>
 #include <cereal/archives/json.hpp>
@@ -13,5 +12,3 @@ int cli (int argc, char *argv[]);
 
 /// \brief Print parsed json of a packet to stdout.
 void parse (char* fname);
-
-#endif // CLI_H

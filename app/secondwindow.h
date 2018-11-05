@@ -1,5 +1,4 @@
-#ifndef SECONDWINDOW_H
-#define SECONDWINDOW_H
+#pragma once
 
 #include <QWidget>
 #include <QTableWidget>
@@ -28,5 +27,3 @@ private:
     QTableView *status_tableView;
     QSqlTableModel *model;
 };
-
-#endif // SECONDWINDOW_H
