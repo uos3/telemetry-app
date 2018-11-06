@@ -1,57 +1,53 @@
 #include "uploader.h"
 
-Uploader::Uploader (QString target) :
+#include <QHttpPart>
+#include <QNetworkRequest>
+#include <QUrlQuery>
+
+
+Uploader::Uploader (std::string target, std::string app_key) :
 	manager(new QNetworkAccessManager(this)),
-	target(target) { }
+	target(target),
+	app_key(app_key) { }
 
-void Uploader::upload (std::vector<std::tuple<QString, QString>> body) {
-	QUrl url(target);
+void Uploader::upload (QByteArray data) {
+	multiPart.reset(new QHttpMultiPart(QHttpMultiPart::FormDataType, this));
+
+	QUrl url(QString::fromStdString(target));
 	QNetworkRequest request(url);
 
-	request.setHeader(QNetworkRequest::ContentTypeHeader,
-					  "application/x-www-form-urlencoded");
+	QHttpPart textPart;
+	textPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+	                   QVariant("form-data; name=\"app_key\""));
+	textPart.setBody(app_key.c_str());
 
-	QUrlQuery params;
-	for (auto item : body) {
-		params.addQueryItem (std::get<0>(item), std::get<1>(item));
-	}
+	QHttpPart binaryPart;
+	binaryPart.setHeader(QNetworkRequest::ContentTypeHeader,
+	                     QVariant("application/octet-stream"));
+	binaryPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+	                     QVariant("form-data; name=\"data\"; filename=\"data.bin\""));
+	binaryPart.setBody(data);
 
-	QObject::connect(manager, &QNetworkAccessManager::finished,
-	                 this, &Uploader::reply_finished);
+	multiPart->append(textPart);
+	multiPart->append(binaryPart);
 
-	manager->post(request, params.query().toUtf8());
+	connect(manager.get(), &QNetworkAccessManager::finished,
+	        this, &Uploader::reply_finished);
+
+	manager->post(request, multiPart.get());
 }
 
-void Uploader::upload (QByteArray body) {
-	// TODO: can't really test this properly until I have a sample packet in
-	//       byte-array form to send.
-	QUrl url(target);
-	QNetworkRequest request(url);
-
-	request.setHeader(QNetworkRequest::ContentTypeHeader,
-					  "application/x-www-form-urlencoded");
-
-	QObject::connect(manager, &QNetworkAccessManager::finished,
-	                 this, &Uploader::reply_finished);
-
-	manager->post(request, body);
-}
-
-void Uploader::upload () {
-	std::vector<std::tuple<QString, QString>> body;
-	body.push_back(std::make_tuple("name", "seymour"));
-	upload(body);
-}
-
-// Slots
 void Uploader::reply_finished (QNetworkReply* reply) {
 	QByteArray data = reply->readAll();
 	reply->deleteLater();
 
+	/* TODO #finish: something more intelligent than this.
+	 *                * do I really need a slot here? could just leave it to
+	 *                  clients to deal with replies as they will. */
 	QString dataString = QString::fromUtf8(data);
 	qDebug() << dataString;
 }
 
-// Getters / Setters
-QString Uploader::get_target () { return this->target; }
-void Uploader::set_target (QString target) { this->target = target; }
+std::string Uploader::get_target () { return this->target; }
+void Uploader::set_target (std::string target) { this->target = target; }
+void Uploader::set_app_key (std::string app_key) { this->app_key = app_key; }

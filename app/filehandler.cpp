@@ -26,6 +26,10 @@ void FileHandler::add_output (cereal::JSONOutputArchive& json) {
 	out_json.push_back(&json);
 }
 
+void FileHandler::add_output (Uploader& uploader) {
+	out_uploaders.push_back(&uploader);
+}
+
 void FileHandler::file_changed () {
 	qDebug("FileHandler: file %s changed.", fname.c_str());
 	buffer.from_file(this->fname, this->packet_size);
@@ -50,6 +54,10 @@ void FileHandler::file_changed () {
 			       od->get_name().c_str(),
 			       od->get_hostname().c_str());
 		}
+	}
+
+	for (auto ou : this->out_uploaders) {
+		ou->upload(binary);
 	}
 
 	emit new_packet(packet);

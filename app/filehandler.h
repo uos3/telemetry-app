@@ -9,6 +9,7 @@
 #include "buffer.h"
 #include "db.h"
 #include "packet.h"
+#include "uploader.h"
 
 class FileHandler : public QObject
 {
@@ -25,6 +26,10 @@ public:
 	/// \brief Adds a json output archive to the list of things to output newly
 	///        parsed packets into.
 	void add_output (cereal::JSONOutputArchive& json);
+
+	/// \brief Adds an upload target to the list of things to output newly
+	///        parsed packets into.
+	void add_output (Uploader& uploader);
 
 signals:
 	/// \brief A new packet has been parsed.
@@ -46,4 +51,5 @@ private:
 
 	std::vector<DB*> out_dbs;
 	std::vector<cereal::JSONOutputArchive*> out_json;
+	std::vector<Uploader*> out_uploaders;
 };
