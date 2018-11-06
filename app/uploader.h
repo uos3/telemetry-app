@@ -13,26 +13,16 @@ class Uploader : public QObject {
 	Q_OBJECT
 public:
 	// Construction / Destruction
-	Uploader(QString target = "http://localhost:8080");
+	Uploader(std::string target = "http://localhost:8080", std::string app_key="");
 
 	// Methods
-	/// \brief Upload data in (string) key-value form to the/a server, via POST.
-	/// \param body The list of (key, value) pairs to upload.
-	void upload(std::vector<std::tuple<QString, QString>> body);
-
 	/// \brief Upload data in byte array form to the/a server, via POST.
 	void upload(QByteArray body);
 
-	/// \brief Upload data in byte array form to the/a server, via POST.
-	void upload(std::string api_key, QByteArray data);
-
-	/// \brief Upload sample data in (string) key-value form to the (a) server,
-	///        via POST.
-	void upload();
-
 	// Getters / Setters
-	QString get_target();
-	void set_target (QString target);
+	std::string get_target();
+	void set_target (std::string target);
+	void set_app_key (std::string app_key);
 
 public slots:
 	void reply_finished (QNetworkReply* reply);
@@ -41,5 +31,6 @@ private:
 	// Members
 	std::unique_ptr<QNetworkAccessManager> manager;
 	std::unique_ptr<QHttpMultiPart> multiPart;
-	QString target;
+	std::string target;
+	std::string app_key;
 };

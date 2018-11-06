@@ -5,57 +5,31 @@
 #include <QUrlQuery>
 
 
-Uploader::Uploader (QString target) :
+Uploader::Uploader (std::string target, std::string app_key) :
 	manager(new QNetworkAccessManager(this)),
-	multiPart(new QHttpMultiPart(QHttpMultiPart::FormDataType, this)),
-	target(target) { }
+	target(target),
+	app_key(app_key) { }
 
-void Uploader::upload (std::vector<std::tuple<QString, QString>> body) {
-	QUrl url(target);
+void Uploader::upload (QByteArray data) {
+	multiPart.reset(new QHttpMultiPart(QHttpMultiPart::FormDataType, this));
+
+	QUrl url(QString::fromStdString(target));
 	QNetworkRequest request(url);
 
-	request.setHeader(QNetworkRequest::ContentTypeHeader,
-	                  "application/x-www-form-urlencoded");
-
-	QUrlQuery params;
-	for (auto item : body) {
-		params.addQueryItem (std::get<0>(item), std::get<1>(item));
-	}
-
-	connect(manager.get(), &QNetworkAccessManager::finished,
-	        this, &Uploader::reply_finished);
-
-	manager->post(request, params.query().toUtf8());
-}
-
-void Uploader::upload (QByteArray body) {
-	QUrl url(target);
-	QNetworkRequest request(url);
-
-	request.setHeader(QNetworkRequest::ContentTypeHeader,
-	                  "application/x-www-form-urlencoded");
-
-	connect(manager.get(), &QNetworkAccessManager::finished,
-	        this, &Uploader::reply_finished);
-
-	manager->post(request, body);
-}
-
-void Uploader::upload (std::string api_key, QByteArray data) {
 	QHttpPart textPart;
-	textPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"api_key\""));
-	textPart.setBody(api_key.c_str());
+	textPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+	                   QVariant("form-data; name=\"app_key\""));
+	textPart.setBody(app_key.c_str());
 
 	QHttpPart binaryPart;
-	binaryPart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/octet-stream"));
-	binaryPart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
+	binaryPart.setHeader(QNetworkRequest::ContentTypeHeader,
+	                     QVariant("application/octet-stream"));
+	binaryPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+	                     QVariant("form-data; name=\"data\"; filename=\"data.bin\""));
 	binaryPart.setBody(data);
 
 	multiPart->append(textPart);
 	multiPart->append(binaryPart);
-
-	QUrl url(target);
-	QNetworkRequest request(url);
 
 	connect(manager.get(), &QNetworkAccessManager::finished,
 	        this, &Uploader::reply_finished);
@@ -63,13 +37,6 @@ void Uploader::upload (std::string api_key, QByteArray data) {
 	manager->post(request, multiPart.get());
 }
 
-void Uploader::upload () {
-	std::vector<std::tuple<QString, QString>> body;
-	body.push_back(std::make_tuple("name", "seymour"));
-	upload(body);
-}
-
-// Slots
 void Uploader::reply_finished (QNetworkReply* reply) {
 	QByteArray data = reply->readAll();
 	reply->deleteLater();
@@ -81,6 +48,6 @@ void Uploader::reply_finished (QNetworkReply* reply) {
 	qDebug() << dataString;
 }
 
-// Getters / Setters
-QString Uploader::get_target () { return this->target; }
-void Uploader::set_target (QString target) { this->target = target; }
+std::string Uploader::get_target () { return this->target; }
+void Uploader::set_target (std::string target) { this->target = target; }
+void Uploader::set_app_key (std::string app_key) { this->app_key = app_key; }

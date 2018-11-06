@@ -52,14 +52,7 @@ void FileHandler::file_changed () {
 	}
 
 	for (auto ou : this->out_uploaders) {
-		/* ou->upload(binary); */
-
-		/* std::vector<std::tuple<QString, QString>> body; */
-		/* body.push_back(std::make_tuple("api_key", ";)")); */
-		/* body.push_back(std::make_tuple("data", QString(binary))); */
-		/* ou->upload(body); */
-
-		ou->upload(";)", binary);
+		ou->upload(binary);
 	}
 
 	emit new_packet(packet);
