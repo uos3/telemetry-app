@@ -48,6 +48,8 @@ secondwindow::~secondwindow()
 
 void secondwindow::on_refreshButton_clicked()
 {
+    // TODO: #CleanUp: Duplicate code on setup and refresh could be put into one function
+
     // Detected refresh button clicked
     // We should try to reload and display the data
 
