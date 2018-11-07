@@ -28,9 +28,11 @@ int main (int argc, char* argv[]) {
 		// Watch our binary file for new packets to be parsed/stored.
 		FileHandler f(file_path, packet_size);
 
+        // Output the parsed data as JSON in the output window
 		cereal::JSONOutputArchive archive(std::cout);
 		f.add_output(archive);
 
+        // Setup the database connection
 		DB db("localhost", "cubesat");
 		if (db.connect(secrets::username, secrets::password)) {
 			qDebug() << "DB connected successfully.";
@@ -39,6 +41,7 @@ int main (int argc, char* argv[]) {
 			qWarning() << "DB failed to connect.";
 		}
 
+        // Setup the uploader
 		Uploader uploader("http://localhost:8080", secrets::app_key);
 		f.add_output(uploader);
 
