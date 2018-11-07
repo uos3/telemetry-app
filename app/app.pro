@@ -48,7 +48,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
     secondwindow.cpp \
     topwindow.cpp \
     uploader.cpp \
@@ -61,7 +60,6 @@ SOURCES += \
     currentstatus.cpp
 
 HEADERS += \
-    mainwindow.h \
     secondwindow.h \
     topwindow.h\
     uploader.h \
@@ -74,7 +72,6 @@ HEADERS += \
     currentstatus.h
 
 FORMS += \
-    mainwindow.ui \
     secondwindow.ui \
     topwindow.ui \
     gpswindow.ui \
