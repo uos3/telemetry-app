@@ -1,6 +1,5 @@
 #include "uploader.h"
 
-#include <QHttpPart>
 #include <QNetworkRequest>
 #include <QUrlQuery>
 
@@ -11,30 +10,23 @@ Uploader::Uploader (std::string target, std::string app_key) :
 	app_key(app_key) { }
 
 void Uploader::upload (QByteArray data) {
-	multiPart.reset(new QHttpMultiPart(QHttpMultiPart::FormDataType, this));
+	QString data_str(data.toBase64());
+	qDebug() << data_str;
 
 	QUrl url(QString::fromStdString(target));
 	QNetworkRequest request(url);
 
-	QHttpPart textPart;
-	textPart.setHeader(QNetworkRequest::ContentDispositionHeader,
-	                   QVariant("form-data; name=\"app_key\""));
-	textPart.setBody(app_key.c_str());
+	request.setHeader(QNetworkRequest::ContentTypeHeader,
+	                  "application/x-www-form-urlencoded");
 
-	QHttpPart binaryPart;
-	binaryPart.setHeader(QNetworkRequest::ContentTypeHeader,
-	                     QVariant("application/octet-stream"));
-	binaryPart.setHeader(QNetworkRequest::ContentDispositionHeader,
-	                     QVariant("form-data; name=\"data\"; filename=\"data.bin\""));
-	binaryPart.setBody(data);
-
-	multiPart->append(textPart);
-	multiPart->append(binaryPart);
+	QUrlQuery params;
+	params.addQueryItem("app_key", QString::fromStdString(app_key));
+	params.addQueryItem("data", data_str);
 
 	connect(manager.get(), &QNetworkAccessManager::finished,
 	        this, &Uploader::reply_finished);
 
-	manager->post(request, multiPart.get());
+	manager->post(request, params.query().toUtf8());
 }
 
 void Uploader::reply_finished (QNetworkReply* reply) {
