@@ -39,7 +39,7 @@ int main (int argc, char* argv[]) {
 			qWarning() << "DB failed to connect.";
 		}
 
-		Uploader uploader("http://localhost:8080", secrets::app_key);
+		Uploader uploader("http://localhost:8080", secrets::app_key, "cooldude49");
 		f.add_output(uploader);
 
 		// Display the GUI.

@@ -1,5 +1,7 @@
 #include "filehandler.h"
 
+#include "utility.h"
+
 #include <QByteArray>
 
 FileHandler::FileHandler (const std::string fname,
@@ -27,8 +29,11 @@ void FileHandler::add_output (Uploader& uploader) {
 
 void FileHandler::file_changed () {
 	qDebug("FileHandler: file %s changed.", fname.c_str());
+
+	uint32_t now = util::now();
+
 	buffer.from_file(this->fname, this->packet_size);
-	from_buffer(packet, buffer);
+	from_buffer(packet, buffer, now);
 
 	// TODO #fix: currently this is a little broken -- running in qt creator
 	//            will result in things not outputting until the program exits,
@@ -52,7 +57,7 @@ void FileHandler::file_changed () {
 	}
 
 	for (auto ou : this->out_uploaders) {
-		ou->upload(binary);
+		ou->upload(binary, now);
 	}
 
 	emit new_packet(packet);

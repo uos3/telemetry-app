@@ -269,3 +269,4 @@ void from_buffer (Img& i, Buffer& b);
 void from_buffer (Health& h, Buffer& b);
 void from_buffer (Status& s, Buffer& b);
 void from_buffer (Packet& p, Buffer& b);
+void from_buffer (Packet& p, Buffer& b, uint32_t downlink_time);

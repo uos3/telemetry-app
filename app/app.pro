@@ -47,27 +47,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    buffer.cpp \
+    cli.cpp \
+    db.cpp \
+    filehandler.cpp \
     main.cpp \
     mainwindow.cpp \
+    packet.cpp \
     secondwindow.cpp \
     topwindow.cpp \
     uploader.cpp \
-    db.cpp \
-    buffer.cpp \
-    packet.cpp \
-    cli.cpp \
-    filehandler.cpp
+    utility.cpp
 
 HEADERS += \
+    buffer.h \
+    cli.h \
+    db.h \
+    filehandler.h \
     mainwindow.h \
+    packet.h \
     secondwindow.h \
     topwindow.h\
     uploader.h \
-    db.h \
-    packet.h \
-    buffer.h \
-    cli.h \
-    filehandler.h
+    utility.h
 
 FORMS += \
     mainwindow.ui \

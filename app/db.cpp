@@ -1,5 +1,7 @@
 #include "db.h"
 
+#include "utility.h"
+
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlQueryModel>
@@ -126,7 +128,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			qCritical() << "payload type not supported!";
 			return false;
 	}
-	query.bindValue(":downlink_time", time_string(p.downlink_time));
+	query.bindValue(":downlink_time", QString::fromStdString(util::time_string(p.downlink_time)));
 
 	bool success = query.exec();
 	if (!success) { qCritical() << "error inserting frame!: " << query.lastError().text(); }
@@ -149,7 +151,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table."; }
 	query.bindValue(":frame_id", frame_id);
 	query.bindValue(":spacecraft_id", p.status.spacecraft_id);
-	query.bindValue(":spacecraft_time", time_string(p.status.time));
+	query.bindValue(":spacecraft_time", QString::fromStdString(util::time_string(p.status.time)));
 	query.bindValue(":time_source", p.status.time_source);
 	query.bindValue(":seq_status", p.status.sequence_id);
 	query.bindValue(":obc_temperature", p.status.obc_temperature);
@@ -187,7 +189,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			}
 			query.bindValue(":frame_id", frame_id);
 			query.bindValue(":seq_payload", p.payload.gps.sequence_id);
-			query.bindValue(":payload_timestamp", time_string(p.payload.gps.timestamp));
+			query.bindValue(":payload_timestamp", QString::fromStdString(util::time_string(p.payload.gps.timestamp)));
 			query.bindValue(":lat", p.payload.gps.lat);
 			query.bindValue(":lon", p.payload.gps.lon);
 			query.bindValue(":alt", p.payload.gps.alt);
@@ -227,7 +229,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			}
 			query.bindValue(":frame_id", frame_id);
 			query.bindValue(":seq_payload", p.payload.imu.sequence_id);
-			query.bindValue(":payload_timestamp", time_string(p.payload.imu.timestamp));
+			query.bindValue(":payload_timestamp", QString::fromStdString(util::time_string(p.payload.imu.timestamp)));
 			query.bindValue(":mag_x_1", p.payload.imu.mag_x[0]);
 			query.bindValue(":mag_x_2", p.payload.imu.mag_x[1]);
 			query.bindValue(":mag_x_3", p.payload.imu.mag_x[2]);
@@ -343,7 +345,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			}
 			query.bindValue(":frame_id", frame_id);
 			query.bindValue(":seq_payload", p.payload.health.sequence_id);
-			query.bindValue(":payload_timestamp", time_string(p.payload.health.timestamp));
+			query.bindValue(":payload_timestamp", QString::fromStdString(util::time_string(p.payload.health.timestamp)));
 			query.bindValue(":obc_temperature", p.payload.health.obc_temperature);
 			query.bindValue(":rx_temperature", p.payload.health.rx_temperature);
 			query.bindValue(":tx_temperature", p.payload.health.tx_temperature);
@@ -426,7 +428,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			}
 			query.bindValue(":frame_id", frame_id);
 			query.bindValue(":seq_payload", p.payload.img.sequence_id);
-			query.bindValue(":payload_timestamp", time_string(p.payload.img.timestamp));
+			query.bindValue(":payload_timestamp", QString::fromStdString(util::time_string(p.payload.img.timestamp)));
 			query.bindValue(":image_id", p.payload.img.image_id);
 			query.bindValue(":fragment_id", p.payload.img.fragment_id);
 			query.bindValue(":num_fragments", p.payload.img.num_fragments);
@@ -457,14 +459,6 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 		qCritical() << "failed to send query to store packet in local database.";
 		return false;
 	}
-}
-
-QString DB::time_string (uint32_t tstamp) {
-	time_t t = static_cast<time_t>(tstamp);
-	tm* st = gmtime(&t);
-	char s[22];
-	strftime(s, 22, "%F %T", st);
-	return QString(s);
 }
 
 std::string DB::get_name () { return this->dbname; }
