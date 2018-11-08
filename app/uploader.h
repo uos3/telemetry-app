@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QHttpMultiPart>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
@@ -29,6 +30,7 @@ public slots:
 private:
 	// Members
 	std::unique_ptr<QNetworkAccessManager> manager;
+	std::unique_ptr<QHttpMultiPart> multiPart;
 	std::string target;
 	std::string app_key;
 };
