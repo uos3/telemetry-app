@@ -22,10 +22,10 @@ Purpose: Parse received packets from CubeSat, and upload onto server.
 
 Currently:
 
-+ [Qt](https://www.qt.io)
+* [Qt](https://www.qt.io)
 * [MySQL](https://www.mysql.com/)
-+ [cereal (1.2.2)](https://uscilab.github.io/cereal)
-	+ **to use**: [download](https://github.com/USCiLab/cereal/releases/tag/v1.2.2), extract, copy the `include/cereal` folder into `app/`.
+* [cereal (1.2.2)](https://uscilab.github.io/cereal)
+	* The source code of cereal is already included in the repo, in `app/cereal`. Modifications have been made to it, which are described in `app/cerealmods.md`.
 
 # Building
 
