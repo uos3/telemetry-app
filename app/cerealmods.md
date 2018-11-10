@@ -14,19 +14,15 @@ in `types/common.hpp`:
     void serializeArray( Archive & ar, T & array, std::false_type /* binary_supported */ )
     {
       size_type s = arrayLength(array);
+      // adding a size tag makes cereal treat this as a dynamic array -> outputs a json array.
       ar(make_size_tag(s));
 
-      bool chars = false;
+      // if we're dealing with a char[], don't output the null-termination.
+      size_type end = s;
       if (s > 0 && typeid(array[0]) == typeid(char))
-        chars = true;
+        end = s-1;
 
-      if (chars) {
-        for (int i=0;i<s-1;i++)
-          ar( array[i] );
-      } else {
-        // original function body:
-        for( auto & i : array )
-          ar( i );
-      }
+      for (int i=0;i<end;i++)
+        ar( array[i] );
     }
 ```
