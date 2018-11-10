@@ -22,9 +22,9 @@ static const std::string file_path = "input.bin";
 static const uint32_t packet_size = 3136;
 
 int main (int argc, char* argv[]) {
-	QApplication a(argc, argv);
 
 	if (!cli(argc, argv)) {
+        QApplication a(argc, argv);
 		// Watch our binary file for new packets to be parsed/stored.
 		FileHandler f(file_path, packet_size);
 
@@ -49,5 +49,5 @@ int main (int argc, char* argv[]) {
 		return a.exec();
 	} else { return 0; }
 
-	return a.exec();
+    //return a.exec();
 }
