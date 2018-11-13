@@ -54,7 +54,6 @@ SOURCES += \
     filehandler.cpp \
     gpswindow.cpp \
     main.cpp \
-    mainwindow.cpp \
     packet.cpp \
     secondwindow.cpp \
     topwindow.cpp \
@@ -68,7 +67,6 @@ HEADERS += \
     db.h \
     filehandler.h \
     gpswindow.h \
-    mainwindow.h \
     packet.h \
     secondwindow.h \
     topwindow.h\
@@ -76,7 +74,6 @@ HEADERS += \
     utility.h
 
 FORMS += \
-    mainwindow.ui \
     secondwindow.ui \
     topwindow.ui \
     gpswindow.ui \
