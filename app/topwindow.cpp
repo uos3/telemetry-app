@@ -34,23 +34,14 @@ void topwindow::openCurrentDataWindow()
 
 void topwindow::on_CurrentDataButton_clicked()
 {
-    // Detected current data button clicked
-    // We should try to open the current data window
     openCurrentDataWindow();
 }
 
-void topwindow::on_StatusButton_clicked()
-{
-    // Detected status button clicked
-    // We should try to open the second window
-    openDataWindow("status");
-}
+void topwindow::on_StatusButton_clicked(){openDataWindow("status");}
+void topwindow::on_GPSButton_clicked(){openDataWindow("gps");}
+void topwindow::on_FramesButton_clicked(){openDataWindow("frames");}
+void topwindow::on_ConfigButton_clicked(){openDataWindow("config");}
+void topwindow::on_IMUButton_clicked(){openDataWindow("imu");}
+void topwindow::on_ImgButton_clicked(){openDataWindow("img");}
+void topwindow::on_HealthButton_clicked(){openDataWindow("health");}
 
-
-
-void topwindow::on_GPSButton_clicked()
-{
-    // Detected GPS button clicked
-    // We should try and open the current data window
-    openDataWindow("gps");
-}

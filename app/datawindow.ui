@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1213</width>
-    <height>384</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>51</y>
+     <y>71</y>
      <width>1041</width>
-     <height>321</height>
+     <height>361</height>
     </rect>
    </property>
    <property name="editTriggers">
@@ -67,13 +67,13 @@
     <string>Refresh</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="table_title">
    <property name="geometry">
     <rect>
      <x>440</x>
      <y>10</y>
      <width>201</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">

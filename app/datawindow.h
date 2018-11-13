@@ -6,6 +6,7 @@
 #include <QTableView>
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include <QLabel>
 
 namespace Ui {
 class datawindow;
@@ -28,6 +29,7 @@ private slots:
 private:
     Ui::datawindow *ui;
     QTableView *data_tableView;
+    QLabel *table_label;
     QSqlTableModel *model;
 
 };

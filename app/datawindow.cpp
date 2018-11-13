@@ -32,6 +32,7 @@ void datawindow::load_Data()
 
     qDebug() << this->table_name.c_str();
 
+    ui->table_title->setText(this->table_name.c_str());
     // Setup the database model
     this->model = new QSqlTableModel(this->parent(), read_db.get_database());
     this->model->setTable(this->table_name.c_str());
