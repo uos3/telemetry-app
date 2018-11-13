@@ -2,8 +2,7 @@
 #include "ui_topwindow.h"
 #include "db.h"
 #include "QDateTime"
-#include "secondwindow.h"
-#include "gpswindow.h"
+#include "datawindow.h"
 
 
 topwindow::topwindow(QWidget *parent):QWidget(parent),ui(new Ui::topwindow)
@@ -18,20 +17,11 @@ topwindow::~topwindow()
     // Top window destructor
     delete ui;
 }
-void topwindow::openSecondWindow()
+void topwindow::openDataWindow(std::string table_name)
 {
     // Open status data window
-    showNewSecondWindow = new secondwindow();
-
-    showNewSecondWindow -> show();
-}
-
-void topwindow::openGPSWindow()
-{
-    // Open GPS data window
-    showNewGPSWindow = new gpswindow();
-
-    showNewGPSWindow -> show();
+    newDataWindow = new datawindow(table_name);
+    newDataWindow -> show();
 }
 
 void topwindow::openCurrentDataWindow()
@@ -42,13 +32,6 @@ void topwindow::openCurrentDataWindow()
     showNewCurrentStatusWindow -> show();
 }
 
-void topwindow::on_StatusButton_clicked()
-{
-    // Detected status button clicked
-    // We should try to open the second window
-    openSecondWindow();
-}
-
 void topwindow::on_CurrentDataButton_clicked()
 {
     // Detected current data button clicked
@@ -56,9 +39,18 @@ void topwindow::on_CurrentDataButton_clicked()
     openCurrentDataWindow();
 }
 
+void topwindow::on_StatusButton_clicked()
+{
+    // Detected status button clicked
+    // We should try to open the second window
+    openDataWindow("status");
+}
+
+
+
 void topwindow::on_GPSButton_clicked()
 {
     // Detected GPS button clicked
     // We should try and open the current data window
-    openGPSWindow();
+    openDataWindow("gps");
 }

@@ -2,8 +2,7 @@
 
 #include <QWidget>
 #include <QMainWindow>
-#include "secondwindow.h"
-#include "gpswindow.h"
+#include "datawindow.h"
 #include "currentstatus.h"
 
 namespace Ui {
@@ -18,16 +17,14 @@ public:
     explicit topwindow(QWidget *parent = 0);
     ~topwindow();
 public slots:
-    void openSecondWindow();
-    void openGPSWindow();
+    void openDataWindow(std::string table_name);
     void openCurrentDataWindow();
 private slots:
     void on_StatusButton_clicked();
     void on_CurrentDataButton_clicked();
     void on_GPSButton_clicked();
 private:
-    secondwindow *showNewSecondWindow;
-    gpswindow *showNewGPSWindow;
+    datawindow *newDataWindow;
     currentstatus *showNewCurrentStatusWindow;
 private:
     Ui::topwindow *ui;

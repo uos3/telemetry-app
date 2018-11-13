@@ -52,13 +52,12 @@ SOURCES += \
     currentstatus.cpp \
     db.cpp \
     filehandler.cpp \
-    gpswindow.cpp \
     main.cpp \
     packet.cpp \
-    secondwindow.cpp \
     topwindow.cpp \
     uploader.cpp \
-    utility.cpp
+    utility.cpp \
+    datawindow.cpp
 
 HEADERS += \
     buffer.h \
@@ -66,15 +65,13 @@ HEADERS += \
     currentstatus.h \
     db.h \
     filehandler.h \
-    gpswindow.h \
     packet.h \
-    secondwindow.h \
     topwindow.h\
     uploader.h \
-    utility.h
+    utility.h \
+    datawindow.h
 
 FORMS += \
-    secondwindow.ui \
     topwindow.ui \
-    gpswindow.ui \
-    currentstatus.ui
+    currentstatus.ui \
+    datawindow.ui
