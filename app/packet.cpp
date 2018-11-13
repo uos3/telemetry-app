@@ -1,4 +1,5 @@
 #include "packet.h"
+#include "utility.h"
 
 #include <ctime>
 
@@ -184,6 +185,10 @@ void from_buffer (Status& s, Buffer& b) {
 }
 
 void from_buffer (Packet& p, Buffer& b) {
+	from_buffer(p, b, util::now());
+}
+
+void from_buffer (Packet& p, Buffer& b, uint32_t downlink_time) {
 	b.set_pos(64);
 	p.type = static_cast<PayloadType>(b.get(16));
 	from_buffer(p.status, b);
@@ -211,8 +216,7 @@ void from_buffer (Packet& p, Buffer& b) {
 			break;
 	}
 	// current UTC time as a unix timestamp.
-	time_t now = time(nullptr);
-	p.downlink_time = static_cast<uint32_t>(mktime(gmtime(&now)));
+	p.downlink_time = downlink_time;
 	// TODO #verify: assumes crc & hash occupy last 144 bits of packet (as
 	//			   opposed to the 144 bits that come after the payload).
 	strncpy(p.hash, b.get_buf()+b.get_len()-18*8, 16);

@@ -72,11 +72,4 @@ private:
 	QSqlDatabase db;
 	std::string dbname;
 	std::string hostname;
-
-	// Methods
-	/// \brief Converts an int32 unix timestamp into a string, formatted for
-	///        entry in a MySQL database as a timestamp.
-	/// \param tstamp The timestamp to convert.
-	/// \returns The formatted string.
-	QString time_string (uint32_t tstamp);
 };

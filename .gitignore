@@ -1,33 +1,7 @@
 app/app.pro.user
-app/cereal
-<<<<<<< HEAD
-object_script.app.Release
-object_script.app.Debug
-debug/uploader.o
-debug/moc_uploader.o
-debug/moc_uploader.cpp
-debug/moc_mainwindow.o
-debug/moc_mainwindow.cpp
-debug/moc_filehandler.cpp
-debug/mainwindow.o
-debug/main.o
-debug/filehandler.o
-debug/db.o
-debug/cli.o
-debug/buffer.o
-debug/app.exe
-Makefile.Release
-Makefile.Debug
-Makefile
-debug/packet.o
-debug/moc_filehandler.o
-ui_mainwindow.h
-debug/
-=======
 app/secrets
 build*
 bin*
 *Makefile
 *.qmake.*
 *.user.*
->>>>>>> master

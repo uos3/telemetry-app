@@ -47,31 +47,36 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    buffer.cpp \
+    cli.cpp \
+    currentstatus.cpp \
+    db.cpp \
+    filehandler.cpp \
+    gpswindow.cpp \
     main.cpp \
+    mainwindow.cpp \
+    packet.cpp \
     secondwindow.cpp \
     topwindow.cpp \
     uploader.cpp \
-    db.cpp \
-    buffer.cpp \
-    packet.cpp \
-    cli.cpp \
-    filehandler.cpp \
-    gpswindow.cpp \
-    currentstatus.cpp
+    utility.cpp
 
 HEADERS += \
+    buffer.h \
+    cli.h \
+    currentstatus.h \
+    db.h \
+    filehandler.h \
+    gpswindow.h \
+    mainwindow.h \
+    packet.h \
     secondwindow.h \
     topwindow.h\
     uploader.h \
-    db.h \
-    packet.h \
-    buffer.h \
-    cli.h \
-    filehandler.h \
-    gpswindow.h \
-    currentstatus.h
+    utility.h
 
 FORMS += \
+    mainwindow.ui \
     secondwindow.ui \
     topwindow.ui \
     gpswindow.ui \
