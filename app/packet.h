@@ -6,8 +6,23 @@
 #include <algorithm>
 
 #include <cereal/cereal.hpp>
+#include <cereal/types/vector.hpp>
 
 // Types of downlink packets, and functions to make them from loaded buffers.
+
+// special functions (and macros) that let us serialize c arrays to json arrays,
+// and c char arrays to json strings.
+template <int S>
+std::string nvp_string (char(&a)[S]) {
+	return std::string(a, S - 1);
+}
+template <class T, int S>
+std::vector<T> nvp_array (T(&a)[S]) {
+	return std::vector<T>(a, a+S);
+}
+#define STRING_NVP(_s_STRING_NVP) cereal::make_nvp(#_s_STRING_NVP, nvp_string(_s_STRING_NVP))
+#define ARRAY_NVP(_a_ARRAY_NVP) cereal::make_nvp(#_a_ARRAY_NVP, nvp_array(_a_ARRAY_NVP))
+
 
 struct Status {
 	char spacecraft_id[3];
@@ -30,13 +45,13 @@ struct Status {
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(spacecraft_id), CEREAL_NVP(time),
-		   CEREAL_NVP(time_source), CEREAL_NVP(sequence_id),
+		ar(STRING_NVP(spacecraft_id), CEREAL_NVP(time),
+		   CEREAL_NVP(time_source), STRING_NVP(sequence_id),
 		   CEREAL_NVP(obc_temperature), CEREAL_NVP(battery_temperature),
 		   CEREAL_NVP(battery_voltage),  CEREAL_NVP(battery_current),
 		   CEREAL_NVP(charge_current), CEREAL_NVP(antenna_deployment),
 		   CEREAL_NVP(data_pending),  CEREAL_NVP(reboot_count),
-		   CEREAL_NVP(rails_status), CEREAL_NVP(rx_temperature),
+		   ARRAY_NVP(rails_status), CEREAL_NVP(rx_temperature),
 		   CEREAL_NVP(tx_temperature),  CEREAL_NVP(pa_temperature),
 		   CEREAL_NVP(rx_noisefloor));
 	}
@@ -55,7 +70,7 @@ struct GPS {
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(lat),
+		ar(STRING_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(lat),
 		   CEREAL_NVP(lon), CEREAL_NVP(alt), CEREAL_NVP(hdop), CEREAL_NVP(vdop),
 		   CEREAL_NVP(pdop), CEREAL_NVP(tdop));
 	}
@@ -76,10 +91,10 @@ struct IMU {
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp), CEREAL_NVP(mag_x),
-		   CEREAL_NVP(mag_y), CEREAL_NVP(mag_z), CEREAL_NVP(gyro_x),
-		   CEREAL_NVP(gyro_y), CEREAL_NVP(gyro_z), CEREAL_NVP(accel_x),
-		   CEREAL_NVP(accel_y), CEREAL_NVP(accel_z));
+		ar(STRING_NVP(sequence_id), CEREAL_NVP(timestamp), ARRAY_NVP(mag_x),
+		   ARRAY_NVP(mag_y), ARRAY_NVP(mag_z), ARRAY_NVP(gyro_x),
+		   ARRAY_NVP(gyro_y), ARRAY_NVP(gyro_z), ARRAY_NVP(accel_x),
+		   ARRAY_NVP(accel_y), ARRAY_NVP(accel_z));
 	}
 };
 
@@ -144,7 +159,7 @@ struct Health {
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp),
+		ar(STRING_NVP(sequence_id), CEREAL_NVP(timestamp),
 		   CEREAL_NVP(obc_temperature), CEREAL_NVP(rx_temperature),
 		   CEREAL_NVP(tx_temperature),  CEREAL_NVP(pa_temperature),
 		   CEREAL_NVP(reboot_count), CEREAL_NVP(data_packets_pending),
@@ -157,8 +172,8 @@ struct Health {
 		   CEREAL_NVP(solar_e2_current), CEREAL_NVP(solar_s1_current),
 		   CEREAL_NVP(solar_s2_current),  CEREAL_NVP(solar_w1_current),
 		   CEREAL_NVP(solar_w2_current), CEREAL_NVP(solar_t1_current),
-		   CEREAL_NVP(solar_t2_current),  CEREAL_NVP(rails_switch_status),
-		   CEREAL_NVP(rails_overcurrent_status),  CEREAL_NVP(rail_1_boot_count),
+		   CEREAL_NVP(solar_t2_current),  ARRAY_NVP(rails_switch_status),
+		   ARRAY_NVP(rails_overcurrent_status),  CEREAL_NVP(rail_1_boot_count),
 		   CEREAL_NVP(rail_1_overcurrent_count), CEREAL_NVP(rail_1_voltage),
 		   CEREAL_NVP(rail_1_current),  CEREAL_NVP(rail_2_boot_count),
 		   CEREAL_NVP(rail_2_overcurrent_count),  CEREAL_NVP(rail_2_voltage),
@@ -186,9 +201,9 @@ struct Img {
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp),
+		ar(STRING_NVP(sequence_id), CEREAL_NVP(timestamp),
 		   CEREAL_NVP(image_id), CEREAL_NVP(fragment_id),
-		   CEREAL_NVP(num_fragments), CEREAL_NVP(image_data));
+		   CEREAL_NVP(num_fragments), STRING_NVP(image_data));
 	}
 };
 
@@ -200,7 +215,7 @@ struct Config {
 
 	template <class Archive>
 	void serialize (Archive& ar) {
-		ar(CEREAL_NVP(sequence_id), CEREAL_NVP(timestamp));
+		ar(STRING_NVP(sequence_id), CEREAL_NVP(timestamp));
 	}
 };
 
@@ -226,27 +241,27 @@ struct Packet {
 	void serialize (Archive& ar) {
 		switch (type) {
 			case PayloadType::GPS:
-				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				ar(STRING_NVP(crc), STRING_NVP(hash), CEREAL_NVP(type),
 				   CEREAL_NVP(status), CEREAL_NVP(payload.gps),
 				   CEREAL_NVP(downlink_time));
 				break;
 			case PayloadType::IMU:
-				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				ar(STRING_NVP(crc), STRING_NVP(hash), CEREAL_NVP(type),
 				   CEREAL_NVP(status), CEREAL_NVP(payload.imu),
 				   CEREAL_NVP(downlink_time));
 				break;
 			case PayloadType::Health:
-				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				ar(STRING_NVP(crc), STRING_NVP(hash), CEREAL_NVP(type),
 				   CEREAL_NVP(status), CEREAL_NVP(payload.health),
 				   CEREAL_NVP(downlink_time));
 				break;
 			case PayloadType::Img:
-				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				ar(STRING_NVP(crc), STRING_NVP(hash), CEREAL_NVP(type),
 				   CEREAL_NVP(status), CEREAL_NVP(payload.img),
 				   CEREAL_NVP(downlink_time));
 				break;
 			case PayloadType::Config:
-				ar(CEREAL_NVP(crc), CEREAL_NVP(hash), CEREAL_NVP(type),
+				ar(STRING_NVP(crc), STRING_NVP(hash), CEREAL_NVP(type),
 				   CEREAL_NVP(status), CEREAL_NVP(payload.config),
 				   CEREAL_NVP(downlink_time));
 				break;

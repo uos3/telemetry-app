@@ -247,8 +247,6 @@ namespace cereal
       void saveValue(char const * s)        { itsWriter.String(s);                                                       }
       //! Saves a nullptr to the current node
       void saveValue(std::nullptr_t)        { itsWriter.Null();                                                          }
-      /* TODO #temp */
-      void saveValue(char c) { itsWriter.String(&c, 1); }
 
     private:
       // Some compilers/OS have difficulty disambiguating the above for various flavors of longs, so we provide
