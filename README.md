@@ -4,15 +4,15 @@ Main UoS³ telemetry application
 
 Purpose: Parse received packets from CubeSat, and upload onto server.
 
-# TODO
+# To Do
 
-## near future
+## Near future
 
 1. Interface to read data from table in mySQL db and display row-by-row on screen. (Partially done)
 2. Add buttons to navigate the rows. (Done)
 3. Add basic graphing functionality. (TBC)
 
-## less-near future
+## Less-near future
 
 1. Integrate with data server. (Partially done)
 2. Receive new upstream data from decoder-end. (Partially done)
@@ -24,8 +24,11 @@ Currently:
 
 * [Qt](https://www.qt.io)
 * [MySQL](https://www.mysql.com/)
+
+# Other Libraries Used
+
 * [cereal (1.2.2)](https://uscilab.github.io/cereal)
-	* The source code of cereal is already included in the repo, in `app/cereal`. Modifications have been made to it, which are described in `app/cerealmods.md`.
+	* For simplicity, the source code of cereal is included in the repo, in `app/cereal`.
 
 # Building
 
