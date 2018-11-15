@@ -32,9 +32,6 @@
 
 #include "cereal/cereal.hpp"
 
-/* TODO #temp */
-#include <typeinfo>
-
 namespace cereal
 {
   namespace common_detail
@@ -47,25 +44,13 @@ namespace cereal
       ar( binary_data( array, sizeof(array) ) );
     }
 
-    template <class T, int S>
-    int arrayLength (T(&)[S]) { return S; }
-
     //! Serialization for arrays if BinaryData is not supported or we are not arithmetic
     /*! @internal */
     template <class Archive, class T> inline
     void serializeArray( Archive & ar, T & array, std::false_type /* binary_supported */ )
     {
-      size_type s = arrayLength(array);
-      // adding a size tag makes cereal treat this as a dynamic array -> outputs a json array.
-      ar(make_size_tag(s));
-
-      // if we're dealing with a char[], don't output the null-termination.
-      size_type end = s;
-      if (s > 0 && typeid(array[0]) == typeid(char))
-        end = s-1;
-
-      for (int i=0;i<end;i++)
-        ar( array[i] );
+      for( auto & i : array )
+        ar( i );
     }
 
     namespace
