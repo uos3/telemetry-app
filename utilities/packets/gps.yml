@@ -1,0 +1,12 @@
+version: '1.2'
+gps:
+  dataset_id: { type: { name: char }, length: 2,              desc: '' }
+  timestamp:  { type: { name: int, bits: 32, signed: false }, desc: '' }
+  gps_time:   { type: { name: int, bits: 32, signed: false }, desc: '' }
+  lat:        { type: { name: float },                        desc: '' }
+  lon:        { type: { name: float },                        desc: '' }
+  alt:        { type: { name: float },                        desc: '' }
+  hdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
+  vdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
+  pdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
+  tdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
