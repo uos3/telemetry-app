@@ -45,7 +45,7 @@ def c_type (yml):
 
 def struct (yml, name):
     struct_name = name[0].upper() + name[1:]
-    final = 'struct ' + struct_name + ' {\n'
+    out = 'struct ' + struct_name + ' {\n'
 
     fields = yml[name]
     for f in fields.keys():
@@ -62,10 +62,10 @@ def struct (yml, name):
             f_name += '[' + str(val['length']) + ']'
 
         # put it all together
-        final += '\t' + c_type(val['type']) + ' ' + f_name + ';\n'
+        out += '\t' + c_type(val['type']) + ' ' + f_name + ';\n'
 
-    final += '};'
-    return final
+    out += '};'
+    return out
 
 def cereal (yml, name, idt=False):
     # if we're outputting the function as part of a struct, need to indent
@@ -73,9 +73,9 @@ def cereal (yml, name, idt=False):
     t = '\t' * int(idt)
 
     # start the function.
-    final  = t + 'template <class Archive>\n'
-    final += t + 'void serialize (Archive& ar) {\n'
-    final += t + '\tar(\n'
+    out  = t + 'template <class Archive>\n'
+    out += t + 'void serialize (Archive& ar) {\n'
+    out += t + '\tar(\n'
 
     # turn the fields into cereal macro invocations.
     fields = yml[name]
@@ -89,25 +89,25 @@ def cereal (yml, name, idt=False):
                 macro = 'STRING_NVP('
             else:
                 macro = 'ARRAY_NVP('
-        final += t + '\t' + macro + f + ')\n'
+        out += t + '\t' + macro + f + '),\n'
 
     # end -- get rid of the last comma.
-    final = final[:-1] + ');\n' + t + '}'
+    out = out[:-2] + ');\n' + t + '}'
 
-    return final
+    return out
 
 def cereal_struct (yml, name):
     # make a struct.
-    final = struct(yml, name)
+    out = struct(yml, name)
 
     # get rid of the closing of the struct.
-    final = '\n'.join(final.split('\n')[:-1])
-    final += '\n\n'
+    out = '\n'.join(out.split('\n')[:-1])
+    out += '\n\n'
 
     # add the cereal function, indented.
-    final += cereal(yml, name, True)
+    out += cereal(yml, name, True)
 
-    return final
+    return out
 
 outputs = [ 'struct', 'cereal', 'cereal_struct' ]
 
@@ -115,7 +115,8 @@ def main ():
     # cli.
     if len(sys.argv) < 3:
         print('please supply an output type and yaml file(s) to parse.')
-        print('note: your top-level key names should match their file names.')
+        print('note: the key name for a packet should match its file name, one',
+              'packet per file.')
         print()
         print('accepted output types are: ', outputs)
         print()
