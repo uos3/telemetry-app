@@ -8,6 +8,8 @@ import yaml # pip package PyYAML
 #    X support non-c-based type sizes in parsing
 #  * outputs:
 #    X struct
+#      * maybe have comments after each line, containing the desc for the field
+#        if set?
 #    X cereal (serialize function, & serialize function in struct)
 #    * sql
 #  * ability of specification files to be read by c++ (might involve using json

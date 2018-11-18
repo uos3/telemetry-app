@@ -18,3 +18,8 @@ $ gcc -o txt2bin txt2bin.c
 ```bash
 $ ./txt2bin my_binary_text_file.txt my_actual_binary_file.bin
 ```
+
+## packets
+
+Utilities that allow you to only have to deal with the packet specification in
+one place, in yaml files.
