@@ -52,6 +52,17 @@ keys:
 
 Specifies the keys, for the `sql` output type.
 
+#### special
+
+```yaml
+special:
+  sql:
+    frame_bin:   { type: { name: binary, bits: 3136 }, desc: 'The binary of the packet.' }
+```
+
+A list of fields that should only be output for a particular output type. They
+are organised by output type.
+
 #### fields
 
 ```yaml
@@ -105,7 +116,7 @@ instance:
 ```yaml
 fields:
   # ...
-  type:
+  payload_type:
     struct:      { type: { name: PayloadType } }
     sql:         { type: { name: "enum('gps', 'imu', 'health', 'img', 'config')" } }
     desc: ''
