@@ -5,3 +5,4 @@ bin*
 *Makefile
 *.qmake.*
 *.user.*
+utilities/txt2bin
