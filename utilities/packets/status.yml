@@ -1,7 +1,16 @@
 version: '1.2'
-status:
+
+name:
+  struct: Status
+  sql:    status
+
+keys:
+  foreign:
+    - { name: frame_id, table: frames }
+
+fields:
   spacecraft_id:       { type: { name: char }, length: 2,              desc: '' }
-  time:                { type: { name: int, bits: 32, signed: false }, desc: '' }
+  time:                { type: { name: time },                         desc: '' }
   time_source:         { type: { name: bool },                         desc: '' }
   beacon_id:           { type: { name: char }, length: 2,              desc: '' }
   obc_temperature:     { type: { name: int, bits:  8, signed:  true }, desc: '' }

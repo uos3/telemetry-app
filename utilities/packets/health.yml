@@ -1,7 +1,16 @@
 version: '1.2'
-health:
+
+name:
+  struct: Health
+  sql:    health
+
+keys:
+  foreign:
+    - { name: frame_id, table: frames }
+
+fields:
   dataset_id:            { type: { name: char }, length: 2,              desc: '' }
-  timestamp:             { type: { name: int, bits: 32, signed: false }, desc: '' }
+  timestamp:             { type: { name: time },                         desc: '' }
   obc_temperature:       { type: { name: int, bits:  8, signed:  true }, desc: '' }
   rx_temperature:        { type: { name: int, bits:  8, signed:  true }, desc: '' }
   tx_temperature:        { type: { name: int, bits:  8, signed:  true }, desc: '' }

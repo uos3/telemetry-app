@@ -1,5 +1,14 @@
 version: '1.2'
-config:
+
+name:
+  struct: Config
+  sql:    config
+
+keys:
+  foreign:
+    - { name: frame_id, table: frames }
+
+fields:
   dataset_id:                  { type: { name: char }, length: 2,              desc: '' }
   tx_enable:                   { type: { name: int, bits:  8, signed: false }, desc: '' }
   tx_interval:                 { type: { name: int, bits:  8, signed: false }, desc: '' }
@@ -21,9 +30,9 @@ config:
   gps_acquisition_interval:    { type: { name: int, bits: 16, signed: false }, desc: '' }
   gps_sample_count:            { type: { name: int, bits:  8, signed: false }, desc: '' }
   gps_sample_interval:         { type: { name: int, bits:  8, signed: false }, desc: '' }
-  image_acquisition_time:      { type: { name: int, bits: 32, signed: false }, desc: '' }
+  image_acquisition_time:      { type: { name: time },                         desc: '' }
   image_acquisition_profile:   { type: { name: int, bits:  8, signed: false }, desc: '' }
-  time:                        { type: { name: int, bits: 32, signed: false }, desc: '' }
+  time:                        { type: { name: time },                         desc: '' }
   operational_mode:            { type: { name: int, bits:  8, signed: false }, desc: '' }
   self_test:                   { type: { name: bool },                         desc: '' }
   power_rail_1:                { type: { name: bool },                         desc: '' }

@@ -19,6 +19,7 @@ import yaml # pip package PyYAML
 #      supported by qt (whereas json is).
 #    * sort of solved this issue -- yml2json.py converts yaml to json, so the
 #      difference is meaningless from this file's perspective
+#  * be able to take in a header and/or footer with the -h & -f options
 
 def c_type (yml):
     if type(yml) == str:
@@ -42,29 +43,44 @@ def c_type (yml):
 
         # add the extra bits.
         name = name + str(size) + '_t'
+    elif yml['name'] == 'time':
+        name = 'uint32_t'
+    elif yml['name'] == 'binary':
+        name = 'char'
 
     return name
 
 def struct (yml, name):
-    struct_name = name[0].upper() + name[1:]
-    out = 'struct ' + struct_name + ' {\n'
+    def field (name, val):
+        if 'struct' in val:
+            val = val['struct']
 
-    fields = yml[name]
-    for f in fields.keys():
-        val = fields[f]
+        if name[0] in [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]:
+            name = '_' + name
 
-        # basic name -- c++ doesn't allow names starting with numerals
-        f_name = f
-        if f_name[0] in [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]:
-            f_name = '_' + f_name
+        # if this is an array, add the [N] bit after.
+        if 'length' in val or val['type']['name'] == 'binary':
+            # get the length of the array
+            if 'length' in val:
+                count = val['length']
+            else:
+                count = int(val['type']['bits']/8)
+            # compensate for null-termination
+            if val['type']['name'] in [ 'char', 'binary' ]:
+                count += 1
 
-        # if this is an array, add the [N] bit after
-        is_array = 'length' in val
-        if is_array:
-            f_name += '[' + str(val['length']) + ']'
+            name += '[' + str(count) + ']'
 
-        # put it all together
-        out += '\t' + c_type(val['type']) + ' ' + f_name + ';\n'
+        # put it all together.
+        return '\t' + c_type(val['type']) + ' ' + name + ';\n'
+
+    out = 'struct ' + name + ' {\n'
+
+    for f in yml['fields'].keys():
+        out += field(f, yml['fields'][f])
+    if 'special' in yml and 'struct' in yml['special']:
+        for f in yml['special']['struct']:
+            out += field(f, yml['special']['struct'][f])
 
     out += '};'
     return out
@@ -80,7 +96,7 @@ def cereal (yml, name, idt=False):
     out += t + '\tar(\n'
 
     # turn the fields into cereal macro invocations.
-    fields = yml[name]
+    fields = yml['fields']
     for f in fields.keys():
         val = fields[f]
 
@@ -109,9 +125,89 @@ def cereal_struct (yml, name):
     # add the cereal function, indented.
     out += cereal(yml, name, True)
 
+    # add the struct close back in.
+    out += '\n};'
     return out
 
-outputs = [ 'struct', 'cereal', 'cereal_struct' ]
+def sql_type (yml):
+    tinfo = yml['type']
+    tname = tinfo['name']
+
+    name = tname
+
+    if tname == 'int':
+        bits = tinfo['bits']
+        if bits <= 8:
+            name = 'tinyint'
+        elif bits <= 16:
+            name = 'smallint'
+        elif bits <= 32:
+            name = 'int'
+        elif bits <= 64:
+            name = 'bigint'
+        if tinfo['signed'] == False:
+            name += ' unsigned'
+    elif tname == 'bool':
+        name = 'boolean'
+    elif tname == 'char':
+        if 'length' in yml:
+            name += '('+str(yml['length'])+')'
+    elif tname == 'float':
+        name = 'decimal'
+    elif tname == 'time':
+        name = 'timestamp'
+    elif tname == 'binary':
+        name = 'varbinary('+str(int(tinfo['bits']/8))+')'
+
+    return name
+
+def sql (yml, name):
+    out = 'create table if not exists ' + name + ' (\n'
+
+    def field (name, val):
+        out = ''
+        if 'sql' in val:
+            val = val['sql']
+        if 'length' in val and val['type']['name'] != 'char':
+            # if we're dealing with an array, make N rows appended with _n
+            for i in range(val['length']):
+                name_n = name + '_' + str(i+1)
+                out += '\t' + name_n + ' ' + sql_type(val) + ',\n'
+        else:
+            # otherwise, output the field as normal
+            out +=  '\t' + name + ' ' + sql_type(val) + ',\n'
+
+        # return the string for a single field
+        return out
+
+    if 'keys' in yml:
+        key_types = yml['keys']
+        if 'primary' in key_types:
+            for k in key_types['primary']:
+                out += '\t' + k['name'] + ' serial primary key,\n'
+        if 'foreign' in key_types:
+            for k in key_types['foreign']:
+                # TODO #verify: always bigint unsigned?
+                out += '\t' + k['name'] + ' bigint unsigned,\n'
+        out += '\n'
+
+    for f in yml['fields'].keys():
+        out += field(f, yml['fields'][f])
+    if 'special' in yml and 'sql' in yml['special']:
+        for f in yml['special']['sql']:
+            out += field(f, yml['special']['sql'][f])
+
+    if 'keys' in yml:
+        if 'foreign' in yml['keys']:
+            out += '\n'
+            for k in key_types['foreign']:
+                out += '\tforeign key ' + k['name'] + ' references ' + k['table'] + '(' + k['name'] + '),\n'
+
+    # chop off the last comma & add the closing paren.
+    out = out[:-2] + '\n);'
+    return out
+
+outputs = [ 'struct', 'cereal', 'cereal_struct', 'sql' ]
 
 def main ():
     # cli.
@@ -126,10 +222,11 @@ def main ():
         return
 
     # try and find the function corresponding to the output type we were given.
-    fn = sys.argv[1]
-    if fn in outputs:
+    fn_name = sys.argv[1]
+    fn = None
+    if fn_name in outputs:
         try:
-            fn = globals()[fn]
+            fn = globals()[fn_name]
         except KeyError:
             print(fn, 'has no matching function -- outputs list needs fixing')
             return
@@ -140,15 +237,25 @@ def main ():
 
     # parse the file & print the output.
     for file in sys.argv[2:]:
-        # get the name of the top-level key, which should match that of the file
-        name = file[:-len('.yml')] # TODO: also support .yaml
-
+        # read the yaml, and turn it into a dict
         with open(file, 'r') as stream:
             try:
                 packet = yaml.load(stream)
             except yaml.YAMLError as exc:
                 print(exc)
                 return
+
+        # get the name of the output structure, based on output type
+        # default to the name of the file
+        name = file[:-len('.yml')] # TODO: also support .yaml
+        # otherwise get output appropriate name, if applicable
+        if fn_name in packet['name']:
+            name = packet['name'][fn_name]
+        # lol
+        elif fn_name == 'cereal_struct' and 'struct' in packet['name']:
+            name = packet['name']['struct']
+
+        # parse the file, and print out the result to stdout
         print(fn(packet, name) + '\n')
 
 if __name__ == '__main__':

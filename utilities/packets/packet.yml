@@ -1,8 +1,34 @@
 version: '1.2'
-packet:
-  crc:           { type: { name: char }, length: 2,              desc: '' }
-  hash:          { type: { name: char }, length: 16,             desc: '' }
-  downlink_time: { type: { name: int, bits: 32, signed: false }, desc: '' }
-  type:          { type: { name: PayloadType },                  desc: '' }
-  status:        { type: { name: Status },                       desc: '' }
-  payload:       { type: { name: Payload },                      desc: '' }
+
+# structure name
+name:
+  struct: Packet
+  sql:    frames
+
+# sql keys
+keys:
+  primary:
+    - { name: frame_id }
+
+# members only used in a particular output type
+special:
+  sql:
+    frame_bin:   { type: { name: binary, bits: 3136 }, desc: '' }
+
+# standard members
+fields:
+  crc:           { type: { name: char }, length: 2,  desc: '' }
+  hash:          { type: { name: char }, length: 16, desc: '' }
+  downlink_time: { type: { name: time },             desc: '' }
+  type:
+    struct:      { type: { name: PayloadType } }
+    sql:         { type: { name: "enum('gps', 'imu', 'health', 'img', 'config')" } }
+    desc: ''
+  status:
+    struct:      { type: { name: Status } }
+    sql:         { type: { name: char }, length: 2 }
+    desc: ''
+  payload:
+    struct:      { type: { name: Payload } }
+    sql:         { type: { name: char }, length: 2 }
+    desc: ''

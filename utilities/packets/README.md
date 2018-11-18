@@ -15,15 +15,53 @@ should be structured.
 
 ```yaml
 version: 1.2
-my_payload:
+name: my_payload
+fields:
   field1: { type: { name: int, bits: 32, signed: true }, length: 3, desc: '3 numbers' }
   # ...
   fieldN: { type: { name: bool }, desc: 'true or false' }
 ```
 
-A yaml file contains a version tag, and an object for the packet itself. The
-name of the packet type matches that of the file. The packet object contains a
-list of fields.
+#### version
+
+A basic version number, purely for the benefit of human readers.
+
+#### name
+
+A basic string for the name of the packet. Supports specialisations for output
+types, eg:
+
+```yaml
+name:
+  struct: MyPayload
+  sql:    my_payload
+```
+
+If the name is specialised but there's no specialisation for the current output
+type, the filename will be used.
+
+#### keys
+
+```yaml
+keys:
+  primary:
+    - { name: my_id }
+  foreign:
+    - { name: other_id, table: other }
+```
+
+Specifies the keys, for the `sql` output type.
+
+#### fields
+
+```yaml
+fields:
+  field1: { type: { name: int, bits: 32, signed: true }, length: 3, desc: '3 numbers' }
+  # ...
+  fieldN: { type: { name: bool }, desc: 'true or false' }
+```
+
+The main list of fields for the packet.
 
 Each field can (currently) contain up to three sub-fields:
 
@@ -36,8 +74,16 @@ with `length` elements.
 `name` need be set. for `int`, the others are needed to further specify the
 kind of integer. the fields are as follows:
 
-* `name`: A basic name of the type -- `int`, `float`, `char`, `bool`,
-`MyObject` etc.
+* `name`: A basic name of the type. The currently supported types are:
+  * `int`: Integer. Requires also specifying `bits` and `signed`.
+  * `float`: Floating point decimal number.
+  * `char`: Character.
+  * `bool`: Boolean.
+  * `time`: Timestamp. Equivalent to `uint32_t` in C++, and `timestamp` in
+  MySQL.
+  * `binary`: Binary data. Requires also specifying `bits`.
+  * `MyObject`: -- Any other type, not matched by one above, will be output
+  literally.
 * `bits`: The number of bits needed to store a value of this type.
 * `signed`: A boolean, representing whether or not this type is signed.
 
@@ -52,6 +98,22 @@ A 16 character string would be:
 ```yaml
 hash: { type: { name: char }, length: 16, desc: '...' }
 ```
+
+Fields can be specialised for different output types, by using subobjects. For
+instance:
+
+```yaml
+fields:
+  # ...
+  type:
+    struct:      { type: { name: PayloadType } }
+    sql:         { type: { name: "enum('gps', 'imu', 'health', 'img', 'config')" } }
+    desc: ''
+  # ...
+```
+
+(note above the use of `enum` in the SQL typename. Since this isn't a known
+type, the parser will just paste it through to the output).
 
 ## parser.py
 
