@@ -1,7 +1,10 @@
 # WIP: packet utilities
 
 Utilities that allow you to only have to deal with the packet specification in
-one place, with yaml files.
+one place, with yaml or json files.
+
+The system has primarily been designed around yaml (and this file uses it in its
+examples), however json is also supported.
 
 ## yaml files
 
