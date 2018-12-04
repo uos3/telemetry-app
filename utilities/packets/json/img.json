@@ -1,0 +1,61 @@
+{
+    "version": "1.2",
+    "name": {
+        "struct": "Img",
+        "sql": "img"
+    },
+    "keys": {
+        "foreign": [
+            {
+                "name": "frame_id",
+                "table": "frames"
+            }
+        ]
+    },
+    "fields": {
+        "dataset_id": {
+            "type": {
+                "name": "char"
+            },
+            "length": 2,
+            "desc": ""
+        },
+        "timestamp": {
+            "type": {
+                "name": "time"
+            },
+            "desc": ""
+        },
+        "image_id": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "fragment_id": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "num_fragments": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "image_data": {
+            "type": {
+                "name": "char"
+            },
+            "length": 2,
+            "desc": ""
+        }
+    }
+}

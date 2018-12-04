@@ -1,0 +1,550 @@
+{
+    "version": "1.2",
+    "name": {
+        "struct": "Health",
+        "sql": "health"
+    },
+    "keys": {
+        "foreign": [
+            {
+                "name": "frame_id",
+                "table": "frames"
+            }
+        ]
+    },
+    "fields": {
+        "dataset_id": {
+            "type": {
+                "name": "char"
+            },
+            "length": 2,
+            "desc": ""
+        },
+        "timestamp": {
+            "type": {
+                "name": "time"
+            },
+            "desc": ""
+        },
+        "obc_temperature": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rx_temperature": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "tx_temperature": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "pa_temperature": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "reboot_count": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "data_packets_pending": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "antenna_switch": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "rx_noisefloor": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "detected_flash_errors": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "detected_ram_errors": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "battery_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "battery_current": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "battery_temperature": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "charge_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "mppt_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "solar_n1_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_n2_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_e1_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_e2_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_s1_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_s2_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_w1_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_w2_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_t1_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "solar_t2_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rails_switch_status": {
+            "type": {
+                "name": "bool"
+            },
+            "length": 6,
+            "desc": ""
+        },
+        "rails_overcurrent_status": {
+            "type": {
+                "name": "bool"
+            },
+            "length": 6,
+            "desc": ""
+        },
+        "rail_1_boot_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_1_overcurrent_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_1_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rail_1_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_2_boot_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_2_overcurrent_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_2_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rail_2_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_3_boot_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_3_overcurrent_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_3_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rail_3_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_4_boot_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_4_overcurrent_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_4_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rail_4_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_5_boot_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_5_overcurrent_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_5_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rail_5_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_6_boot_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_6_overcurrent_count": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "rail_6_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "rail_6_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "3v3_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "3v3_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "5v_voltage": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": true
+            },
+            "desc": ""
+        },
+        "5v_current": {
+            "type": {
+                "name": "int",
+                "bits": 16,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "eeprom_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "fram_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "camera_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "gps_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "imu_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "transmitter_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "receiver_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "eps_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "battery_subsystem_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "obc_tempsensor_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "pa_tempsensor_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "rx_tempsensor_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "tx_tempsensor_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        },
+        "batt_tempsensor_ok": {
+            "type": {
+                "name": "bool"
+            },
+            "desc": ""
+        }
+    }
+}

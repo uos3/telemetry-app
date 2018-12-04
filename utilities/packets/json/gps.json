@@ -1,0 +1,86 @@
+{
+    "version": "1.2",
+    "name": {
+        "struct": "GPS",
+        "sql": "gps"
+    },
+    "keys": {
+        "foreign": [
+            {
+                "name": "frame_id",
+                "table": "frames"
+            }
+        ]
+    },
+    "fields": {
+        "dataset_id": {
+            "type": {
+                "name": "char"
+            },
+            "length": 2,
+            "desc": ""
+        },
+        "timestamp": {
+            "type": {
+                "name": "time"
+            },
+            "desc": ""
+        },
+        "gps_time": {
+            "type": {
+                "name": "time"
+            },
+            "desc": ""
+        },
+        "lat": {
+            "type": {
+                "name": "float"
+            },
+            "desc": ""
+        },
+        "lon": {
+            "type": {
+                "name": "float"
+            },
+            "desc": ""
+        },
+        "alt": {
+            "type": {
+                "name": "float"
+            },
+            "desc": ""
+        },
+        "hdop": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "vdop": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "pdop": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        },
+        "tdop": {
+            "type": {
+                "name": "int",
+                "bits": 8,
+                "signed": false
+            },
+            "desc": ""
+        }
+    }
+}

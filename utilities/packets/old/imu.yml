@@ -1,0 +1,13 @@
+version: '1.2'
+imu:
+  dataset_id: { type: { name: char },                         length: 2, desc: '' }
+  timestamp:  { type: { name: int, bits: 32, signed: false },            desc: '' }
+  mag_x:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  mag_y:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  mag_z:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  gyro_x:     { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  gyro_y:     { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  gyro_z:     { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  accel_x:    { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  accel_y:    { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
+  accel_z:    { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }

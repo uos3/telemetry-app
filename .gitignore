@@ -6,3 +6,4 @@ bin*
 *.qmake.*
 *.user.*
 utilities/txt2bin
+*__pycache__*
