@@ -62,6 +62,9 @@ public:
 	///          executed.
 	bool store_packet (Packet& p, QByteArray binary);
 
+	/* TODO #temp */
+	bool store_packet_ (Packet& p, QByteArray binary);
+
 	// Getters / Setters
 	std::string get_name ();
 	std::string get_hostname ();

@@ -104,7 +104,7 @@ kind of integer. the fields are as follows:
 So, for instance, a `uint32_t` in C++ would correspond to:
 
 ```yaml
-my_int: { type: { name: int, bits: 32, signed: true }, desc: 'is a uint32_t' }
+my_int: { type: { name: int, bits: 32, signed: false }, desc: 'is a uint32_t' }
 ```
 
 A 16 character string would be:
@@ -137,14 +137,4 @@ Generates various bits of code from the central yaml files.
 
 ```bash
 $ ./parser.py cereal_struct packet.yml status.yml
-```
-
-## yml2json
-
-Converts a yaml file to json, and prints the result to stdout.
-
-### example usage
-
-```bash
-$ ./yml2json.py packet.yml > packet.json
 ```

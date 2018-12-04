@@ -7,6 +7,11 @@
 #include <QSqlQueryModel>
 #include <QTextStream>
 
+/* TODO #temp */
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QFile>
+
 #include <ctime>
 
 DB::DB (std::string hostname, std::string dbname) :
@@ -87,8 +92,158 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 	return list;
 }
 
+QJsonObject from_file (const std::string& filename) {
+	QString val;
+	QFile file;
+
+	file.setFileName(QString::fromStdString(filename));
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+	val = file.readAll();
+
+	file.close();
+
+	QJsonDocument d = QJsonDocument::fromJson(val.toUtf8());
+	return d.object();
+}
+
+QString spec_name (const QJsonObject& spec, const std::string& type, const std::string& default_name) {
+	if (spec["name"].isString()) {
+		return spec["name"].toString();
+	/* TODO #speed */
+	} else if (spec["name"].toObject()[QString::fromStdString(type)].isString()) {
+		return spec["name"].toObject()[QString::fromStdString(type)].toString();
+	} else {
+		return QString::fromStdString(default_name);
+	}
+}
+
+/* TODO #refactor: will prob want the QJsonObject of the file afterwards. */
+QString initial (std::string filename, std::string default_name) {
+	auto frame_spec = from_file(filename);
+	QJsonObject fields = frame_spec["fields"].toObject();
+	QString qstr = "insert into ";
+	qstr += spec_name(frame_spec, "sql", default_name);
+
+	QString into = " (";
+	QString values = " values (";
+	/* for (auto field : fields.keys()) { */
+	for (int i=0;i<fields.size();i++) {
+		auto field = fields.keys()[i];
+		into += field;
+		values += ":" + field;
+		if (i < fields.size() - 1) {
+			into += ", ";
+			values += ", ";
+		}
+	}
+	into += ")";
+	values += ");";
+	qstr += into + values;
+
+	return qstr;
+}
+
+/* TODO #refactor: needed? */
+/* TODO #finish: types, etc. */
+/* QJsonValue field_value (const QJsonObject& spec, const std::string& field, const std::string& type) { */
+/* 	fields = spec.["fields"].toObject(); */
+/* 	if (fields[field].isString()) { */
+/* 		return fields[field].toString(); */
+/* 	/1* TODO #speed *1/ */
+/* 	} else if (fields[field].toObject()[QString::fromStdString(type)].isString()) { */
+/* 		return fields[field].toObject()[QString::fromStdString(type)].toString(); */
+/* 	} else { */
+/* 		return QString(""); */
+/* 	} */
+/* } */
+
+#define BIND_VALUE(__BIND_VALUE_qu, __BIND_VALUE_qu_field, __BIND_VALUE_values, __BIND_VALUE_field) \
+	__BIND_VALUE_qu.bindValue(__BIND_VALUE_qu_field, __BIND_VALUE_values.__BIND_VALUE_field)
+
+#define STR(__STR_v) #__STR_v
+
+#define PRINT(__STR_v) qDebug() << #__STR_v
+
+template <class T>
+void bind (QSqlQuery query, const std::string& spec_name, const std::string& field, const T& values) {
+	auto spec = from_file(spec_name);
+	auto fields = spec["fields"].toObject();
+
+	std::string c_name = field;
+	std::string qu_name = ":" + field;
+	if (std::string("0123456789").find(c_name[0]) != std::string::npos) {
+		c_name = "_" + field;
+	}
+	/* TODO #finish: arrays */
+
+	qDebug() << "query.bindValue(\"" << QString::fromStdString(qu_name) << "\", " << STR(values) << "." << QString::fromStdString(c_name);
+
+	BIND_VALUE(query, qu_name, values, c_name);
+	/* qDebug() << STR(query.bindValue(":cool", T.beans);); */
+}
+
+// IDEA FOR HOW TO DO IT, STORING PACKETS AS QVARIANTS
+// Use a templated function (can different template specialisations
+// return different types?).
+
 bool DB::store_packet (Packet& p, QByteArray binary) {
-    QSqlQuery query;
+	QSqlQuery query;
+
+	db.transaction();
+
+	QString frames_qstr = initial("packet.json", "???");
+
+	// frame
+	/* QString qstr = "insert into frames (frame_bin, frame_chksum, frame_hash, " */
+	/*                "seq_status, seq_payload, payload_type, downlink_time) " */
+	/*                "values (:frame_bin, :frame_chksum, :frame_hash, " */
+	/*                ":seq_status, :seq_payload, :payload_type, " */
+	/*                ":downlink_time);"; */
+	qDebug() << frames_qstr;
+	if (!query.prepare(frames_qstr)) { qCritical() << "Error preparing query for frame table."; }
+	bind(query, "packet.json", "crc", p);
+	return true;
+	/* if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; } */
+	/* query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary); */
+	/* query.bindValue(":frame_chksum", p.crc); */
+	/* query.bindValue(":frame_hash", p.hash); */
+	/* query.bindValue(":seq_status", p.status.sequence_id); */
+	/* switch (p.type) { */
+	/* 	case PayloadType::GPS: */
+	/* 		query.bindValue(":seq_payload", p.payload.gps.sequence_id); */
+	/* 		query.bindValue(":payload_type", "gps"); */
+	/* 		break; */
+	/* 	case PayloadType::IMU: */
+	/* 		query.bindValue(":seq_payload", p.payload.imu.sequence_id); */
+	/* 		query.bindValue(":payload_type", "imu"); */
+	/* 		break; */
+	/* 	case PayloadType::Health: */
+	/* 		query.bindValue(":seq_payload", p.payload.health.sequence_id); */
+	/* 		query.bindValue(":payload_type", "health"); */
+	/* 		break; */
+	/* 	case PayloadType::Img: */
+	/* 		query.bindValue(":seq_payload", p.payload.img.sequence_id); */
+	/* 		query.bindValue(":payload_type", "img"); */
+	/* 		break; */
+	/* 	case PayloadType::Config: */
+	/* 		query.bindValue(":seq_payload", p.payload.config.sequence_id); */
+	/* 		query.bindValue(":payload_type", "config"); */
+	/* 		break; */
+	/* 	default: */
+	/* 		qCritical() << "payload type not supported!"; */
+	/* 		return false; */
+	/* } */
+	/* query.bindValue(":downlink_time", QString::fromStdString(util::time_string(p.downlink_time))); */
+
+	/* bool success = query.exec(); */
+	/* if (!success) { qCritical() << "error inserting frame!: " << query.lastError().text(); } */
+
+	/* int frame_id = query.lastInsertId().toInt(); */
+}
+
+bool DB::store_packet_ (Packet& p, QByteArray binary) {
+	QSqlQuery query;
 
 	db.transaction();
 
@@ -98,7 +253,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	               "values (:frame_bin, :frame_chksum, :frame_hash, "
 	               ":seq_status, :seq_payload, :payload_type, "
 	               ":downlink_time);";
-    qDebug() << qstr;
+	qDebug() << qstr;
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; }
 	query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary);
 	query.bindValue(":frame_chksum", p.crc);
@@ -174,7 +329,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	query.bindValue(":pa_temperature", p.status.pa_temperature);
 	query.bindValue(":rx_noisefloor", p.status.rx_noisefloor);
 
-    success &= query.exec();
+	success &= query.exec();
 	if (!success) { qCritical() << "error inserting status!: " << query.lastError().text(); }
 
 	// payload
@@ -447,7 +602,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 
 		default:
 			qCritical() << "payload type not supported!";
-		    return false;
+			return false;
 	}
 
 	success &= db.commit();
@@ -458,8 +613,8 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 		return true;
 	} else {
 		qCritical() << "failed to send query to store packet in local database.";
-        qDebug() << this->hostname.c_str();
-        qDebug() << this->dbname.c_str();
+		qDebug() << this->hostname.c_str();
+		qDebug() << this->dbname.c_str();
 		return false;
 	}
 }
