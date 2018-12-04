@@ -1,14 +1,24 @@
 from out_struct import c_type
 
+# c types with equivalent Qt types
+q_types = [
+    'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t',
+    'int8_t',  'int16_t',  'int32_t',  'int64_t',
+    'float', 'bool', 'char'
+]
+
 def map_type (data):
     name = c_type(data)
-    name = 'Q' + name.title()
 
-    if name[-2:] == '_T':
-        name = name[:-2]
+    if name in q_types:
+        name = 'Q' + name.title()
+
+        if name[-2:] == '_T':
+            name = name[:-2]
 
     return name
 
+# bit sizes of the basic types allowed in the spec
 type_sizes = {
     'float': 32,
     'char': 8,
@@ -28,6 +38,7 @@ def map_size (data):
 
     return size
 
+# TODO #finish: deal with arrays, check that it works etc.
 def out_map (data, name):
     def field (name, val):
         if 'map' in val:
@@ -35,11 +46,11 @@ def out_map (data, name):
         elif 'struct' in val:
             val = val['struct']
 
-        start = '\t{'
+        start = '\t{ '
         name = '"'+name+'", '
         ftype = 'QVariant(static_cast<' + map_type(val['type']) + '>('
         val = 'buf.get(' + str(map_size(val)) + ')'
-        end = '))},\n'
+        end = ')) },\n'
 
         return start + name + ftype + val + end
 
