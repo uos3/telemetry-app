@@ -8,13 +8,18 @@ q_types = [
 ]
 
 def map_type (data):
-    name = c_type(data)
+    tinfo = data['type']
+    name = c_type(tinfo)
 
     if name in q_types:
+        # make certain primitive types into their Qt counterparts
         name = 'Q' + name.title()
 
         if name[-2:] == '_T':
             name = name[:-2]
+
+    if 'length' in data:
+        name = 'std::array<{}, {}>'.format(name, data['length'])
 
     return name
 
@@ -38,7 +43,11 @@ def map_size (data):
 
     return size
 
-# TODO #finish: deal with arrays, check that it works etc.
+# TODO #finish: deal with the weird bits:
+#                * assigning to arrays
+#                * custom types (ie. payload types)
+#                * enums
+#                * run & check
 def out_map (data, name):
     def field (name, val):
         if 'map' in val:
@@ -47,9 +56,23 @@ def out_map (data, name):
             val = val['struct']
 
         start = '\t{ '
+
+        # name
         name = '"'+name+'", '
-        ftype = 'QVariant(static_cast<' + map_type(val['type']) + '>('
-        val = 'buf.get(' + str(map_size(val)) + ')'
+
+        # type
+        ftype = 'QVariant(static_cast<{}>('.format(map_type(val))
+
+        # assign value
+        bits = val['length'] if 'length' in val else 1
+        bits *= map_size(val)
+        if bits == -1:
+            val = '/* TODO unknown */'
+        elif bits > 32:
+            val = '/* TODO too big ({}) */'.format(bits)
+        else:
+            val = 'buf.get({})'.format(bits)
+
         end = ')) },\n'
 
         return start + name + ftype + val + end

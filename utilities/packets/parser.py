@@ -6,7 +6,7 @@ import yaml # pip package PyYAML
 
 import outputs
 
-# TODO:
+# TODO #finish:
 #  * use actual (not c-based) sizes in yaml
 #    X support non-c-based type sizes in parsing
 #  * outputs:
@@ -15,6 +15,8 @@ import outputs
 #        if set?
 #    X cereal (serialize function, & serialize function in struct)
 #    X sql
+#    X json & yaml
+#    * std::map (including assigning the values from a buffer?)
 #  * ability of specification files to be read by c++ (might involve using json
 #    instead of yaml).
 #    * from a brief look, it seems that parsing yaml from c++ needs an external
