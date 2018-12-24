@@ -50,28 +50,30 @@ SOURCES += \
     buffer.cpp \
     cli.cpp \
     currentstatus.cpp \
+    datawindow.cpp \
     db.cpp \
     filehandler.cpp \
     main.cpp \
     packet.cpp \
+    spec.cpp \
     topwindow.cpp \
     uploader.cpp \
-    utility.cpp \
-    datawindow.cpp
+    utility.cpp
 
 HEADERS += \
     buffer.h \
     cli.h \
     currentstatus.h \
+    datawindow.h \
     db.h \
     filehandler.h \
     packet.h \
+    spec.h \
     topwindow.h\
     uploader.h \
-    utility.h \
-    datawindow.h
+    utility.h
 
 FORMS += \
-    topwindow.ui \
     currentstatus.ui \
-    datawindow.ui
+    datawindow.ui \
+    topwindow.ui

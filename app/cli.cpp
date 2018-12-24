@@ -1,4 +1,5 @@
 #include "cli.h"
+#include "spec.h"
 
 int cli (int argc, char *argv[]) {
 	if (argc >= 2) {
@@ -15,8 +16,12 @@ void parse (char* fname) {
 	Packet p;
 	from_buffer(p, b);
 
-	// TODO #behaviour: arrays are output as json objects -- would prob be
-	//                  better as json arrays
 	cereal::JSONOutputArchive archive(std::cout);
-	archive(CEREAL_NVP(p));
+/* TODO #temp */
+	/* archive(CEREAL_NVP(p)); */
+
+	auto mymap = map_from_buffer(b, 0, "status.json");
+	for (auto elem : mymap) {
+		qDebug () << QString::fromStdString(elem.first) << ": " << elem.second;
+	}
 }

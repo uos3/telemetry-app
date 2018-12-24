@@ -159,8 +159,6 @@ void from_buffer (Status& s, Buffer& b) {
 	s.time = b.get(32);
 	s.time_source = static_cast<bool>(b.get(1));
 	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
-/* TODO #temp */
-	qDebug () << (seq_id >> 8) << " & " << (seq_id & 0xFF);
 	char sequence_id[3] = { static_cast<char>((seq_id >> 8)),
 							static_cast<char>((seq_id & 0xFF)), '\0' };
 	std::copy(sequence_id, sequence_id+3, s.sequence_id);
