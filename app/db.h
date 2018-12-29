@@ -3,6 +3,7 @@
 #include "packet.h"
 
 #include <QByteArray>
+#include <QMap>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTableView>
@@ -60,10 +61,9 @@ public:
 	/// \param p The packet to be stored.
 	/// \returns Whether or not the query to store the packet was successfully
 	///          executed.
-	bool store_packet (Packet& p, QByteArray binary);
+	bool store_packet (QMap<QString, QVariant>& p, QByteArray binary);
 
-	/* TODO #temp */
-	bool store_packet_ (Packet& p, QByteArray binary);
+	bool store_packet (Packet& p, QByteArray binary);
 
 	// Getters / Setters
 	std::string get_name ();

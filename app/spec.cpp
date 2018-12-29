@@ -27,12 +27,14 @@ QString spec_name (const QJsonObject& spec, const std::string& type, const std::
 
 	if (spec["name"].isString()) {
 		return spec["name"].toString();
-	/* TODO #speed */
-	} else if (spec["name"].toObject()[QString::fromStdString(type)].isString()) {
-		return spec["name"].toObject()[QString::fromStdString(type)].toString();
-	} else {
-		return QString::fromStdString(default_name);
 	}
+
+	QJsonValue name_value = spec["name"].toObject()[QString::fromStdString(type)];
+	if (name_value.isString()) {
+		return name_value.toString();
+	}
+
+	return QString::fromStdString(default_name);
 }
 
 template<class T>
@@ -47,14 +49,38 @@ QVariant get_variant (Buffer& b, int bits, int length) {
 	// multiple values -- array.
 	//   - fixed size, but not known at compile-time -- vector.
 	//   - want easy integration with QVariant without messing about with custom metatypes -- QList.
-	QList<T> a;
+	//   - easy serialisability to a json list -- QVariantList.
+	/* TODO #remove */
+	/* QList<T> a; */
+	/* a.reserve(length); */
+	/* for (int i = 0; i < length; i++) { */
+	/* 	a.push_back(static_cast<T>(b.get(bits))); */
+	/* } */
+
+	QList<QVariant> a;
 	a.reserve(length);
 
 	for (int i = 0; i < length; i++) {
-		a.push_back(static_cast<T>(b.get(bits)));
+		a.push_back(QVariant(static_cast<T>(b.get(bits))));
 	}
 
 	return QVariant::fromValue(a);
+}
+
+template<>
+QVariant get_variant<char> (Buffer& b, int bits, int length) {
+	if (length == 1) {
+		return QVariant(static_cast<char>(b.get(bits)));
+	}
+
+	// Special case: list of chars -> string (mostly for json serialisation).
+	QString s;
+
+	for (int i = 0; i < length; i++) {
+		s.append(static_cast<unsigned char>(b.get(bits)));
+	}
+
+	return QVariant::fromValue(s);
 }
 
 QVariant field_value (const QJsonObject& field_spec, Buffer& b) {
@@ -118,8 +144,8 @@ QVariant field_value (const QJsonObject& field_spec, Buffer& b) {
 	}
 }
 
-std::map<std::string, QVariant> map_from_buffer (Buffer& b, int starting_pos,
-                                                 const std::string& spec_filename) {
+QMap<QString, QVariant> map_from_buffer (Buffer& b, int starting_pos,
+                                         const std::string& spec_filename) {
 	// parse a buffer into a packet (as a map of std::string : QVariant), as specified by the json in the given
 	// filename.
 
@@ -127,16 +153,24 @@ std::map<std::string, QVariant> map_from_buffer (Buffer& b, int starting_pos,
 
 	QJsonObject spec = spec_from_file(spec_filename);
 
-	std::map<std::string, QVariant> result;
+	QMap<QString, QVariant> result;
 
 	QJsonObject fields = spec["fields"].toObject();
 	for (const QString& field_name : fields.keys()) {
-		std::string fname = field_name.toStdString();
-		result.insert(std::pair<std::string, QVariant>(
-			fname,
-			field_value(fields[field_name].toObject(), b))
-		);
+		result[field_name] = field_value(fields[field_name].toObject(), b);
 	}
 
 	return result;
 }
+
+/* QJsonDocument map_to_json (std::map<std::string, QVariant> mymap) { */
+/* 	QVariantMap varmap; */
+
+/* 	for (auto elem : mymap) { */
+/* 		varmap[QString::fromStdString(elem.first)] = elem.second; */
+/* 	} */
+
+/* 	QJsonDocument doc = QJsonDocument::fromVariant(varmap); */
+
+/* 	return doc; */
+/* } */

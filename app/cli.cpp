@@ -21,7 +21,6 @@ void parse (char* fname) {
 	/* archive(CEREAL_NVP(p)); */
 
 	auto mymap = map_from_buffer(b, 0, "status.json");
-	for (auto elem : mymap) {
-		qDebug () << QString::fromStdString(elem.first) << ": " << elem.second;
-	}
+	QJsonDocument json_doc = QJsonDocument::fromVariant(mymap);
+	std::cout << json_doc.toJson().data();
 }

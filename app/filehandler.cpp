@@ -2,6 +2,7 @@
 #include <QDebug>
 
 #include "utility.h"
+#include "spec.h"
 
 #include <QByteArray>
 
@@ -10,8 +11,7 @@ FileHandler::FileHandler (const std::string fname,
                           QObject *parent) :
 QObject(parent), fname(fname), packet_size(packet_size), watcher(this),
 buffer(), packet() {
-    qDebug("FileHandler: Watching file %s .", fname.c_str());
-
+	qDebug("FileHandler: Watching file %s .", fname.c_str());
 
 	watcher.addPath(QString::fromStdString(this->fname));
 
@@ -47,17 +47,25 @@ void FileHandler::file_changed () {
 	//            exits. not critical functionality, though.
 	for (auto oj : this->out_json) {
 		if (oj == nullptr) {
-			qDebug("json output archive is null."); continue;
+			qCritical("json output archive is null."); continue;
 		}
 		(*oj)(CEREAL_NVP(packet));
 	}
 
+	/* TODO #temp */
+	auto mymap = map_from_buffer(buffer, 0, "gps.json");
+
 	QByteArray binary(buffer.get_buf(), buffer.get_len());
 	for (auto od : this->out_dbs) {
+		if (!od->store_packet(mymap, binary)) {
+			qCritical("map: failed to store packet in db %s @ %s.",
+			          od->get_name().c_str(),
+			          od->get_hostname().c_str());
+		}
 		if (!od->store_packet(packet, binary)) {
-			qDebug("failed to store packet in db %s @ %s.",
-			       od->get_name().c_str(),
-			       od->get_hostname().c_str());
+			qCritical("failed to store packet in db %s @ %s.",
+			          od->get_name().c_str(),
+			          od->get_hostname().c_str());
 		}
 	}
 

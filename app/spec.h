@@ -1,5 +1,6 @@
 #include "buffer.h"
 
+#include <QJsonDocument>
 #include <QJsonObject>
 
 QJsonObject spec_from_file (const std::string& filename);
@@ -10,4 +11,7 @@ QVariant get_variant (Buffer& b);
 
 QVariant field_value (const QJsonObject& field_spec, Buffer& b);
 
-std::map<std::string, QVariant> map_from_buffer (Buffer& b, int starting_pos, const std::string& spec_filename);
+QMap<QString, QVariant> map_from_buffer (Buffer& b, int starting_pos, const std::string& spec_filename);
+
+/* TODO #remove */
+/* QJsonDocument map_to_json (std::map<std::string, QVariant> mymap); */
