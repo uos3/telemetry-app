@@ -44,7 +44,7 @@ def main ():
     if len(sys.argv) < 3:
         print('please supply an output type and yaml/json file(s) to parse.')
         print()
-        print('accepted output types are: ', outputs)
+        print('accepted output types are: ', ''.join(k + '  ' for k in outputs.keys()))
         print()
         print('example usage:\n\t$ ./parser.py cereal_struct packet.yml status.json')
         return

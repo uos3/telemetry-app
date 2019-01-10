@@ -13,5 +13,7 @@ QVariant field_value (const QJsonObject& field_spec, Buffer& b);
 
 QMap<QString, QVariant> map_from_buffer (Buffer& b, int starting_pos, const std::string& spec_filename);
 
+QMap<QString, QVariant> parse_packet (Buffer& b);
+
 /* TODO #remove */
 /* QJsonDocument map_to_json (std::map<std::string, QVariant> mymap); */

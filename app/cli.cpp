@@ -20,7 +20,7 @@ void parse (char* fname) {
 /* TODO #temp */
 	/* archive(CEREAL_NVP(p)); */
 
-	auto mymap = map_from_buffer(b, 0, "status.json");
+	auto mymap = parse_packet(b);
 	QJsonDocument json_doc = QJsonDocument::fromVariant(mymap);
 	std::cout << json_doc.toJson().data();
 }

@@ -46,7 +46,8 @@
         "type": {
             "struct": {
                 "type": {
-                    "name": "PayloadType"
+                    "name": "PayloadType",
+                    "bits": 4
                 }
             },
             "sql": {
@@ -59,7 +60,8 @@
         "status": {
             "struct": {
                 "type": {
-                    "name": "Status"
+                    "name": "Status",
+                    "bits": 0
                 }
             },
             "sql": {
@@ -73,7 +75,8 @@
         "payload": {
             "struct": {
                 "type": {
-                    "name": "Payload"
+                    "name": "Payload",
+                    "bits": 0
                 }
             },
             "sql": {
@@ -86,3 +89,4 @@
         }
     }
 }
+
