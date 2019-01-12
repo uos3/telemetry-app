@@ -13,10 +13,10 @@ void parse (char* fname) {
 	Buffer b;
 	b.from_file(fname);
 
-	Packet p;
-	from_buffer(p, b);
+	/* Packet p; */
+	/* from_buffer(p, b); */
 
-	cereal::JSONOutputArchive archive(std::cout);
+	/* cereal::JSONOutputArchive archive(std::cout); */
 /* TODO #temp */
 	/* archive(CEREAL_NVP(p)); */
 

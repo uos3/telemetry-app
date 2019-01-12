@@ -17,19 +17,19 @@ special:
 
 # standard members
 fields:
-  crc:           { type: { name: char }, length: 2,  desc: '' }
-  hash:          { type: { name: char }, length: 16, desc: '' }
-  downlink_time: { type: { name: time },             desc: '' }
+  # downlink_time: { type: { name: time },             desc: '' }
   # type:          { type: { name: enum, values: ['gps', 'imu', 'health', 'img', 'config'], enum_name: 'PayloadType' }, desc: '' }
   type:
-    struct:      { type: { name: PayloadType, bits: 4 } }
+    struct:      { type: { name: int, bits: 4, signed: false } }
     sql:         { type: { name: "enum('gps', 'imu', 'health', 'img', 'config')" } }
     desc: ''
   status:
-    struct:      { type: { name: Status, bits: 0 } }
+    struct:      { type: { name: Status, bits: 186 } }
     sql:         { type: { name: char }, length: 2 }
     desc: ''
   payload:
-    struct:      { type: { name: Payload, bits: 0 } }
+    struct:      { type: { name: Payload, bits: 690 } }#2738 } }
     sql:         { type: { name: char }, length: 2 }
     desc: ''
+  hash:          { type: { name: char }, length: 16, desc: '' }
+  crc:           { type: { name: char }, length: 2,  desc: '' }

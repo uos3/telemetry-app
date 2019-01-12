@@ -1,4 +1,5 @@
 #include "spec.h"
+#include "utility.h"
 
 #include <QJsonDocument>
 #include <QFile>
@@ -41,6 +42,8 @@ template<class T>
 QVariant get_variant (Buffer& b, int bits, int length) {
 	// get a certain value from the buffer, and return as a QVariant.
 
+	qDebug() << "\tgetting" << bits << "bits," << length << "time(s).\n";
+
 	// single value.
 	if (length == 1) {
 		return QVariant(static_cast<T>(b.get(bits)));
@@ -63,6 +66,9 @@ QVariant get_variant (Buffer& b, int bits, int length) {
 
 template<>
 QVariant get_variant<char> (Buffer& b, int bits, int length) {
+
+	qDebug() << "\tgetting" << bits << "bits," << length << "time(s).\n";
+
 	if (length == 1) {
 		return QVariant(static_cast<char>(b.get(bits)));
 	}
@@ -94,6 +100,8 @@ QVariant field_value (const QJsonObject& field_spec, Buffer& b) {
 		                  + " has no type specified.";
 		throw std::invalid_argument(msg);
 	}
+
+	qDebug() << "\t" << QJsonDocument(field_spec).toJson(QJsonDocument::Compact).data();
 
 	std::string name = "unnamed";
 	if (field_type.contains("name")) {
@@ -152,11 +160,14 @@ QVariant field_value (const QJsonObject& field_spec, Buffer& b) {
 	// unknown type, but known size -- just interpret as int (or an empty
 	// variant if size == 0)
 	} else if (bits != -1) {
-		if (bits == 0) {
-			return QVariant();
-		} else {
-			return get_variant<uint32_t>(b, bits, length);
-		}
+		b.set_pos(b.get_pos() + bits);
+		return QVariant();
+		/* TODO #remove */
+		/* if (bits == 0) { */
+		/* 	return QVariant(); */
+		/* } else { */
+		/* 	return get_variant<uint32_t>(b, bits, length); */
+		/* } */
 	// not enough info with which to parse -- throw error
 	} else {
 		std::string full_field = QJsonDocument(field_spec)
@@ -172,6 +183,7 @@ QMap<QString, QVariant> map_from_buffer (Buffer& b, int starting_pos,
 	// parse a buffer into a packet (as a map of std::string : QVariant), as
 	// specified by the json in the given filename.
 
+	qDebug() << "\n\nparsing" << QString::fromStdString(spec_filename) << "starting at position" << starting_pos;
 	b.set_pos(starting_pos);
 
 	QJsonObject spec = spec_from_file(spec_filename);
@@ -180,6 +192,7 @@ QMap<QString, QVariant> map_from_buffer (Buffer& b, int starting_pos,
 
 	QJsonObject fields = spec["fields"].toObject();
 	for (const QString& field_name : fields.keys()) {
+		qDebug() << field_name << ":";
 		result[field_name] = field_value(fields[field_name].toObject(), b);
 	}
 
@@ -230,6 +243,8 @@ QMap<QString, QVariant> parse_packet (Buffer& b) {
 	QMap<QString, QVariant> result = result_packet;
 	result["status"] = result_status;
 	result["payload"] = result_payload;
+
+	result["downlink_time"] = util::now();
 
 	return result;
 }
