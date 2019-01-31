@@ -72,8 +72,13 @@ void from_buffer (Img& i, Buffer& b) {
 	i.image_id = static_cast<uint8_t>(b.get(8));
 	i.fragment_id = static_cast<uint16_t>(b.get(16));
 	i.num_fragments = static_cast<uint16_t>(b.get(16));
-	char image_data[6] = { 'i', 'm', 'a', 'g', 'e', '\0' };
-	std::copy(image_data, image_data+6, i.image_data);
+	char image_data[76];
+	uint64_t fragment_len = b.len()-(b.pos()+144);
+	uint32_t num_bytes = fragment_len/8;
+	uint8_t num_bits = fragment_len%8;
+	for(int i=0; i<num_bytes; i++) { image_data[i] = static_cast<char>b.get(8); }
+    	image_data[num_bytes] = static_cast<char>b.get(num_bits);
+	std::copy(image_data, image_data+num_bytes, i.image_data);
 }
 
 void from_buffer (Health& h, Buffer& b) {
