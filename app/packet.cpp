@@ -8,15 +8,16 @@ corresponding structs */
 
 void from_buffer (GPS& g, Buffer& b) {
 	b.set_pos(248);
-	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
+	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
 /* TODO #temp: '\0's on these */
-	char sequence_id[3] = { static_cast<char>((seq_id >> 8)),
-							static_cast<char>((seq_id & 0xFF)), '\0' };
+	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
+	                       static_cast<char>((ds_id & 0xFF)), '\0' };
 /* TODO #temp: 3 (was 2) & elsewhere */
-	std::copy(sequence_id, sequence_id+3, g.sequence_id);
+	std::copy(dataset_id, dataset_id+3, g.dataset_id);
 	g.timestamp = b.get(32);
 /* TODO #temp: clamping these values -- hopefully shouldn't need to for real
  *             data (should have been dealt with earlier in the pipeline) */
+	g.gps_time = b.get(32);
 	g.lat = qMax( -90.f, qMin(static_cast<float>(b.get(32)),  90.f));
 	g.lon = qMax(-180.f, qMin(static_cast<float>(b.get(32)), 180.f));
 	g.alt = static_cast<float>(b.get(32));
@@ -28,10 +29,10 @@ void from_buffer (GPS& g, Buffer& b) {
 
 void from_buffer (IMU& i, Buffer& b) {
 	b.set_pos(248);
-	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
-	char sequence_id[3] = { static_cast<char>((seq_id >> 8)),
-							static_cast<char>((seq_id & 0xFF)), '\0' };
-	std::copy(sequence_id, sequence_id+3, i.sequence_id);
+	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
+	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
+	                       static_cast<char>((ds_id & 0xFF)), '\0' };
+	std::copy(dataset_id, dataset_id+3, i.dataset_id);
 	i.timestamp = b.get(32);
 	uint16_t mag_x[5];
 	for (int i=0; i<5; i++) { mag_x[i] = static_cast<uint16_t>(b.get(16)); }
@@ -64,24 +65,25 @@ void from_buffer (IMU& i, Buffer& b) {
 
 void from_buffer (Img& i, Buffer& b) {
 	b.set_pos(248);
-	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
-	char sequence_id[3] = { static_cast<char>((seq_id >> 8)),
-							static_cast<char>((seq_id & 0xFF)), '\0' };
-	std::copy(sequence_id, sequence_id+3, i.sequence_id);
+	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
+	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
+	                       static_cast<char>((ds_id & 0xFF)), '\0' };
+	std::copy(dataset_id, dataset_id+3, i.dataset_id);
 	i.timestamp = b.get(32);
 	i.image_id = static_cast<uint8_t>(b.get(8));
 	i.fragment_id = static_cast<uint16_t>(b.get(16));
 	i.num_fragments = static_cast<uint16_t>(b.get(16));
-	char image_data[6] = { 'i', 'm', 'a', 'g', 'e', '\0' };
-	std::copy(image_data, image_data+6, i.image_data);
+	/* char image_data[6] = { 'i', 'm', 'a', 'g', 'e', '\0' }; */
+	char image_data[3] = { 'h', 'i', '\0' };
+	std::copy(image_data, image_data+3, i.image_data);
 }
 
 void from_buffer (Health& h, Buffer& b) {
 	b.set_pos(248);
-	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
-	char sequence_id[3] = { static_cast<char>((seq_id >> 8)),
-							static_cast<char>((seq_id & 0xFF)), '\0' };
-	std::copy(sequence_id, sequence_id+3, h.sequence_id);
+	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
+	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
+	                       static_cast<char>((ds_id & 0xFF)), '\0' };
+	std::copy(dataset_id, dataset_id+3, h.dataset_id);
 	h.timestamp = b.get(32);
 	h.obc_temperature = static_cast<uint8_t>(b.get(8));
 	h.rx_temperature = static_cast<uint8_t>(b.get(8));
@@ -148,28 +150,86 @@ void from_buffer (Health& h, Buffer& b) {
 	h._3v3_current = static_cast<uint16_t>(b.get(10));
 	h._5v_voltage = static_cast<uint16_t>(b.get(10));
 	h._5v_current = static_cast<uint16_t>(b.get(10));
+	h.eeprom_subsystem_ok = static_cast<bool>(b.get(1));
+	h.fram_subsystem_ok = static_cast<bool>(b.get(1));
+	h.camera_subsystem_ok = static_cast<bool>(b.get(1));
+	h.gps_subsystem_ok = static_cast<bool>(b.get(1));
+	h.imu_subsystem_ok = static_cast<bool>(b.get(1));
+	h.transmitter_subsystem_ok = static_cast<bool>(b.get(1));
+	h.receiver_subsystem_ok = static_cast<bool>(b.get(1));
+	h.eps_subsystem_ok = static_cast<bool>(b.get(1));
+	h.battery_subsystem_ok = static_cast<bool>(b.get(1));
+	h.obc_tempsensor_ok = static_cast<bool>(b.get(1));
+	h.pa_tempsensor_ok = static_cast<bool>(b.get(1));
+	h.rx_tempsensor_ok = static_cast<bool>(b.get(1));
+	h.tx_tempsensor_ok = static_cast<bool>(b.get(1));
+	h.batt_tempsensor_ok = static_cast<bool>(b.get(1));
+}
+
+void from_buffer (Config& c, Buffer& b) {
+	b.set_pos(248);
+	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
+	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
+	                       static_cast<char>((ds_id & 0xFF)), '\0' };
+	std::copy(dataset_id, dataset_id+3, c.dataset_id);
+	c.tx_enable = static_cast<bool>(b.get(1));
+	c.tx_interval = static_cast<uint8_t>(b.get(8));
+	c.tx_interval_downlink = static_cast<uint8_t>(b.get(8));
+	c.tx_datarate = static_cast<uint8_t>(b.get(4));
+	c.tx_power = static_cast<uint8_t>(b.get(4));
+	c.tx_overtemp = static_cast<int8_t>(b.get(8));
+	c.rx_overtemp = static_cast<int8_t>(b.get(8));
+	c.batt_overtemp = static_cast<int8_t>(b.get(8));
+	c.obc_overtemp = static_cast<int8_t>(b.get(8));
+	c.pa_overtemp = static_cast<int8_t>(b.get(8));
+	c.low_voltage_threshold = static_cast<int8_t>(b.get(8));
+	c.low_voltage_recovery = static_cast<int8_t>(b.get(8));
+	c.health_acquisition_interval = static_cast<uint16_t>(b.get(16));
+	c.configuration_acquisition_interval = static_cast<uint16_t>(b.get(16));
+	c.imu_acquisition_interval = static_cast<uint16_t>(b.get(16));
+	c.imu_sample_count = static_cast<uint8_t>(b.get(4));
+	c.imu_sample_interval = static_cast<uint8_t>(b.get(8));
+	c.gps_acquisition_interval = static_cast<uint16_t>(b.get(16));
+	c.gps_sample_count = static_cast<uint8_t>(b.get(4));
+	c.gps_sample_interval = static_cast<uint8_t>(b.get(8));
+	c.image_acquisition_time = static_cast<uint32_t>(b.get(32));
+	c.image_acquisition_profile = static_cast<uint8_t>(b.get(8));
+	c.time = static_cast<uint32_t>(b.get(32));
+	c.operational_mode = static_cast<uint8_t>(b.get(2));
+	c.self_test = static_cast<bool>(b.get(1));
+	c.power_rail_1 = static_cast<bool>(b.get(1));
+	c.power_rail_2 = static_cast<bool>(b.get(1));
+	c.power_rail_3 = static_cast<bool>(b.get(1));
+	c.power_rail_4 = static_cast<bool>(b.get(1));
+	c.power_rail_5 = static_cast<bool>(b.get(1));
+	c.power_rail_6 = static_cast<bool>(b.get(1));
+	c.reset_power_rail_1 = static_cast<bool>(b.get(1));
+	c.reset_power_rail_2 = static_cast<bool>(b.get(1));
+	c.reset_power_rail_3 = static_cast<bool>(b.get(1));
+	c.reset_power_rail_4 = static_cast<bool>(b.get(1));
+	c.reset_power_rail_5 = static_cast<bool>(b.get(1));
+	c.reset_power_rail_6 = static_cast<bool>(b.get(1));
 }
 
 void from_buffer (Status& s, Buffer& b) {
 	b.set_pos(80);
 	uint16_t spc_id = static_cast<uint16_t>(b.get(16));
 	char spacecraft_id[3] = { static_cast<char>((spc_id >> 8)),
-							static_cast<char>((spc_id & 0xFF)), '\0' };
+	                          static_cast<char>((spc_id & 0xFF)), '\0' };
 	std::copy(spacecraft_id, spacecraft_id+3, s.spacecraft_id);
 	s.time = b.get(32);
 	s.time_source = static_cast<bool>(b.get(1));
-	uint16_t seq_id = static_cast<uint16_t>(b.get(16));
-/* TODO #temp */
-	qDebug () << (seq_id >> 8) << " & " << (seq_id & 0xFF);
-	char sequence_id[3] = { static_cast<char>((seq_id >> 8)),
-							static_cast<char>((seq_id & 0xFF)), '\0' };
-	std::copy(sequence_id, sequence_id+3, s.sequence_id);
+	uint16_t bc_id = static_cast<uint16_t>(b.get(16));
+	char beacon_id[3] = { static_cast<char>((bc_id >> 8)),
+	                      static_cast<char>((bc_id & 0xFF)), '\0' };
+	std::copy(beacon_id, beacon_id+3, s.beacon_id);
 	s.obc_temperature = static_cast<uint8_t>(b.get(8));
 	s.battery_temperature = static_cast<uint8_t>(b.get(8));
 	s.battery_voltage = static_cast<uint8_t>(b.get(8));
 	s.battery_current = static_cast<uint8_t>(b.get(8));
 	s.charge_current = static_cast<uint8_t>(b.get(8));
 	s.antenna_deployment = static_cast<bool>(b.get(1));
+	s.operational_mode = static_cast<int8_t>(b.get(8));
 	s.data_pending = static_cast<uint16_t>(b.get(16));
 	s.reboot_count = static_cast<uint8_t>(b.get(8));
 	bool rails_status[6] = {
@@ -206,7 +266,7 @@ void from_buffer (Packet& p, Buffer& b, uint32_t downlink_time) {
 			from_buffer(p.payload.img, b);
 			break;
 		case PayloadType::Config:
-			// TODO #bug: Needs finishing
+			from_buffer(p.payload.config, b);
 			break;
 		default:
 			std::string msg = "invalid payload type \"";
@@ -221,7 +281,6 @@ void from_buffer (Packet& p, Buffer& b, uint32_t downlink_time) {
 	//			   opposed to the 144 bits that come after the payload).
 	strncpy(p.hash, b.get_buf()+b.get_len()-18*8, 16);
 	strncpy(p.crc, b.get_buf()+b.get_len()-2*8, 2);
-/* TODO #temp */
 	p.crc[2] = '\0';
 	p.hash[16] = '\0';
 }
