@@ -31,7 +31,7 @@ int main (int argc, char* argv[]) {
 		cereal::JSONOutputArchive archive(std::cout);
 		f.add_output(archive);
 
-		DB db("localhost", "cubesat");
+		DB db("localhost", "dubesat");
 		if (db.connect(secrets::username, secrets::password)) {
 			qDebug() << "DB connected successfully.";
 			f.add_output(db);

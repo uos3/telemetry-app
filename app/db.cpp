@@ -93,39 +93,53 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	db.transaction();
 
 	// frame
-	QString qstr = "insert into frames (frame_bin, frame_chksum, frame_hash, "
-	               "seq_status, dataset_id, payload_type, downlink_time) "
-	               "values (:frame_bin, :frame_chksum, :frame_hash, "
-	               ":seq_status, :dataset_id, :payload_type, "
-	               ":downlink_time);";
+	/* TODO #remove */
+	/* QString qstr = "insert into frames (frame_bin, frame_chksum, frame_hash, " */
+	/*                "seq_status, dataset_id, payload_type, downlink_time) " */
+	/*                "values (:frame_bin, :frame_chksum, :frame_hash, " */
+	/*                ":seq_status, :dataset_id, :payload_type, " */
+	/*                ":downlink_time);"; */
+    /* qDebug() << qstr; */
+	/* if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; } */
+	/* query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary); */
+	/* query.bindValue(":frame_chksum", p.crc); */
+	/* query.bindValue(":frame_hash", p.hash); */
+	QString qstr = "insert into frames (type, status, payload, hash, crc, "
+	               "frame_bin, downlink_time) values (:type, :status, :payload, "
+	               ":hash, :crc, :frame_bin, :downlink_time);";
     qDebug() << qstr;
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; }
 	query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary);
-	query.bindValue(":frame_chksum", p.crc);
-	query.bindValue(":frame_hash", p.hash);
+	/* TODO #remove */
+	/* query.bindValue(":frame_chksum", p.crc); */
+	/* query.bindValue(":frame_hash", p.hash); */
+	/* TODO #remove */
 	/* TODO #verify: dataset/beacon -- two different thing? is the field
 	 * necessary? */
-	query.bindValue(":dataset_id", p.status.beacon_id);
+	/* query.bindValue(":dataset_id", p.status.beacon_id); */
+	query.bindValue(":status", p.status.beacon_id);
+	query.bindValue(":crc", p.crc);
+	query.bindValue(":hash", p.hash);
 	switch (p.type) {
 		case PayloadType::GPS:
-			query.bindValue(":dataset_id", p.payload.gps.dataset_id);
-			query.bindValue(":payload_type", "gps");
+			query.bindValue(":payload", p.payload.gps.dataset_id);
+			query.bindValue(":type", "gps");
 			break;
 		case PayloadType::IMU:
-			query.bindValue(":dataset_id", p.payload.imu.dataset_id);
-			query.bindValue(":payload_type", "imu");
+			query.bindValue(":payload", p.payload.imu.dataset_id);
+			query.bindValue(":type", "imu");
 			break;
 		case PayloadType::Health:
-			query.bindValue(":dataset_id", p.payload.health.dataset_id);
-			query.bindValue(":payload_type", "health");
+			query.bindValue(":payload", p.payload.health.dataset_id);
+			query.bindValue(":type", "health");
 			break;
 		case PayloadType::Img:
-			query.bindValue(":dataset_id", p.payload.img.dataset_id);
-			query.bindValue(":payload_type", "img");
+			query.bindValue(":payload", p.payload.img.dataset_id);
+			query.bindValue(":type", "img");
 			break;
 		case PayloadType::Config:
-			query.bindValue(":dataset_id", p.payload.config.dataset_id);
-			query.bindValue(":payload_type", "config");
+			query.bindValue(":payload", p.payload.config.dataset_id);
+			query.bindValue(":type", "config");
 			break;
 		default:
 			qCritical() << "payload type not supported!";
@@ -142,16 +156,16 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	qstr = "insert into status (frame_id, spacecraft_id, time, "
 	       "time_source, beacon_id, obc_temperature, battery_temperature, "
 	       "battery_voltage, battery_current, charge_current, "
-	       "antenna_deployment, data_pending, reboot_count, rails_1, "
-	       "rails_2, rails_3, rails_4, rails_5, rails_6, rx_temperature, "
+	       "antenna_deployment, operational_mode, data_pending, reboot_count, rails_status_1, "
+	       "rails_status_2, rails_status_3, rails_status_4, rails_status_5, rails_status_6, rx_temperature, "
 	       "tx_temperature, pa_temperature, rx_noisefloor) values (:frame_id, "
 	       ":spacecraft_id, :spacecraft_time, :time_source, :beacon_id, "
 	       ":obc_temperature, :battery_temperature, :battery_voltage, "
-	       ":battery_current, :charge_current, :antenna_deployment, "
-	       ":data_pending, :reboot_count, :rails_1, :rails_2, :rails_3, "
-	       ":rails_4, :rails_5, :rails_6, :rx_temperature, :tx_temperature, "
+	       ":battery_current, :charge_current, :antenna_deployment, :operational_mode, "
+	       ":data_pending, :reboot_count, :rails_status_1, :rails_status_2, :rails_status_3, "
+	       ":rails_status_4, :rails_status_5, :rails_status_6, :rx_temperature, :tx_temperature, "
 	       ":pa_temperature, :rx_noisefloor);";
-	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table."; }
+	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table:\n\t" << query.lastError().text(); }
 	query.bindValue(":frame_id", frame_id);
 	query.bindValue(":spacecraft_id", p.status.spacecraft_id);
 	query.bindValue(":time", QString::fromStdString(util::time_string(p.status.time)));
@@ -163,14 +177,15 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	query.bindValue(":battery_current", p.status.battery_current);
 	query.bindValue(":charge_current", p.status.charge_current);
 	query.bindValue(":antenna_deployment", p.status.antenna_deployment);
+	query.bindValue(":operational_mode", p.status.operational_mode);
 	query.bindValue(":data_pending", p.status.data_pending);
 	query.bindValue(":reboot_count", p.status.reboot_count);
-	query.bindValue(":rails_1", p.status.rails_status[0]);
-	query.bindValue(":rails_2", p.status.rails_status[1]);
-	query.bindValue(":rails_3", p.status.rails_status[2]);
-	query.bindValue(":rails_4", p.status.rails_status[3]);
-	query.bindValue(":rails_5", p.status.rails_status[4]);
-	query.bindValue(":rails_6", p.status.rails_status[5]);
+	query.bindValue(":rails_status_1", p.status.rails_status[0]);
+	query.bindValue(":rails_status_2", p.status.rails_status[1]);
+	query.bindValue(":rails_status_3", p.status.rails_status[2]);
+	query.bindValue(":rails_status_4", p.status.rails_status[3]);
+	query.bindValue(":rails_status_5", p.status.rails_status[4]);
+	query.bindValue(":rails_status_6", p.status.rails_status[5]);
 	query.bindValue(":rx_temperature", p.status.rx_temperature);
 	query.bindValue(":tx_temperature", p.status.tx_temperature);
 	query.bindValue(":pa_temperature", p.status.pa_temperature);
@@ -318,7 +333,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			        "transmitter_subsystem_ok, receiver_subsystem_ok, "
 			        "eps_subsystem_ok, battery_subsystem_ok, "
 			        "obc_tempsensor_ok, pa_tempsensor_ok, rx_tempsensor_ok, "
-			        "tx_tempsensor_ok, batt_tempsensor_ok, ) values ("
+			        "tx_tempsensor_ok, batt_tempsensor_ok) values ("
 			        ":frame_id, :dataset_id, :timestamp, :obc_temperature, "
 			        ":rx_temperature, :tx_temperature, :pa_temperature, "
 			        ":reboot_count, :data_packets_pending, :antenna_switch, "
@@ -347,7 +362,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			        ":rail_5_current, :rail_6_boot_count, "
 			        ":rail_6_overcurrent_count, :rail_6_voltage, "
 			        ":rail_6_current, :3v3_voltage, :3v3_current, :5v_voltage, "
-			        ":5v_current :eeprom_subsystem_ok, :fram_subsystem_ok, "
+			        ":5v_current, :eeprom_subsystem_ok, :fram_subsystem_ok, "
 			        ":camera_subsystem_ok, :gps_subsystem_ok, "
 			        ":imu_subsystem_ok, :transmitter_subsystem_ok, "
 			        ":receiver_subsystem_ok, :eps_subsystem_ok, "
@@ -546,7 +561,7 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			query.bindValue(":reset_power_rail_6", p.payload.config.reset_power_rail_6);
 
 			success &= query.exec();
-			if (!success) { qCritical() << "error inserting img!: " << query.lastError().text(); }
+			if (!success) { qCritical() << "error inserting config!: " << query.lastError().text(); }
 
 			break;
 
