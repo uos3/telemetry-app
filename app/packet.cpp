@@ -73,7 +73,6 @@ void from_buffer (Img& i, Buffer& b) {
 	i.image_id = static_cast<uint8_t>(b.get(8));
 	i.fragment_id = static_cast<uint16_t>(b.get(16));
 	i.num_fragments = static_cast<uint16_t>(b.get(16));
-	/* char image_data[6] = { 'i', 'm', 'a', 'g', 'e', '\0' }; */
 	char image_data[3] = { 'h', 'i', '\0' };
 	std::copy(image_data, image_data+3, i.image_data);
 }

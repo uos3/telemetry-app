@@ -93,30 +93,12 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	db.transaction();
 
 	// frame
-	/* TODO #remove */
-	/* QString qstr = "insert into frames (frame_bin, frame_chksum, frame_hash, " */
-	/*                "seq_status, dataset_id, payload_type, downlink_time) " */
-	/*                "values (:frame_bin, :frame_chksum, :frame_hash, " */
-	/*                ":seq_status, :dataset_id, :payload_type, " */
-	/*                ":downlink_time);"; */
-    /* qDebug() << qstr; */
-	/* if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; } */
-	/* query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary); */
-	/* query.bindValue(":frame_chksum", p.crc); */
-	/* query.bindValue(":frame_hash", p.hash); */
 	QString qstr = "insert into frames (type, status, payload, hash, crc, "
 	               "frame_bin, downlink_time) values (:type, :status, :payload, "
 	               ":hash, :crc, :frame_bin, :downlink_time);";
     qDebug() << qstr;
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; }
 	query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary);
-	/* TODO #remove */
-	/* query.bindValue(":frame_chksum", p.crc); */
-	/* query.bindValue(":frame_hash", p.hash); */
-	/* TODO #remove */
-	/* TODO #verify: dataset/beacon -- two different thing? is the field
-	 * necessary? */
-	/* query.bindValue(":dataset_id", p.status.beacon_id); */
 	query.bindValue(":status", p.status.beacon_id);
 	query.bindValue(":crc", p.crc);
 	query.bindValue(":hash", p.hash);
@@ -156,15 +138,16 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	qstr = "insert into status (frame_id, spacecraft_id, time, "
 	       "time_source, beacon_id, obc_temperature, battery_temperature, "
 	       "battery_voltage, battery_current, charge_current, "
-	       "antenna_deployment, operational_mode, data_pending, reboot_count, rails_status_1, "
-	       "rails_status_2, rails_status_3, rails_status_4, rails_status_5, rails_status_6, rx_temperature, "
-	       "tx_temperature, pa_temperature, rx_noisefloor) values (:frame_id, "
-	       ":spacecraft_id, :spacecraft_time, :time_source, :beacon_id, "
-	       ":obc_temperature, :battery_temperature, :battery_voltage, "
-	       ":battery_current, :charge_current, :antenna_deployment, :operational_mode, "
-	       ":data_pending, :reboot_count, :rails_status_1, :rails_status_2, :rails_status_3, "
-	       ":rails_status_4, :rails_status_5, :rails_status_6, :rx_temperature, :tx_temperature, "
-	       ":pa_temperature, :rx_noisefloor);";
+	       "antenna_deployment, operational_mode, data_pending, reboot_count, "
+	       "rails_status_1, rails_status_2, rails_status_3, rails_status_4, "
+	       "rails_status_5, rails_status_6, rx_temperature, tx_temperature, "
+	       "pa_temperature, rx_noisefloor) values (:frame_id, :spacecraft_id, "
+	       ":spacecraft_time, :time_source, :beacon_id, :obc_temperature, "
+	       ":battery_temperature, :battery_voltage, :battery_current, "
+	       ":charge_current, :antenna_deployment, :operational_mode, "
+	       ":data_pending, :reboot_count, :rails_status_1, :rails_status_2, "
+	       ":rails_status_3, :rails_status_4, :rails_status_5, :rails_status_6, "
+	       ":rx_temperature, :tx_temperature, :pa_temperature, :rx_noisefloor);";
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table:\n\t" << query.lastError().text(); }
 	query.bindValue(":frame_id", frame_id);
 	query.bindValue(":spacecraft_id", p.status.spacecraft_id);
@@ -475,7 +458,6 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			query.bindValue(":image_id", p.payload.img.image_id);
 			query.bindValue(":fragment_id", p.payload.img.fragment_id);
 			query.bindValue(":num_fragments", p.payload.img.num_fragments);
-			/* TODO #finish: upload image data (once I know the size). */
 			query.bindValue(":image_data", p.payload.img.image_data);
 
 			success &= query.exec();

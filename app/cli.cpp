@@ -15,8 +15,6 @@ void parse (char* fname) {
 	Packet p;
 	from_buffer(p, b);
 
-	// TODO #behaviour: arrays are output as json objects -- would prob be
-	//                  better as json arrays
 	cereal::JSONOutputArchive archive(std::cout);
 	archive(CEREAL_NVP(p));
 }
