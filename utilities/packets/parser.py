@@ -34,9 +34,19 @@ outputs = {
     'cereal': outputs.cereal,
     'cereal_struct': outputs.cereal_struct,
     'map':    outputs.stdmap,
+    'parse_buffer': outputs.parse_buffer,
     'sql':    outputs.sql,
     'json':   outputs.json,
     'yaml':   outputs.yaml
+}
+
+# which yaml name field should we use for this output type (if not the exact
+# name of the output type)?
+names = {
+    'cereal': 'cpp',
+    'map': 'cpp',
+    'parse_buffer': 'cpp',
+    'struct': 'cpp'
 }
 
 def main ():
@@ -90,9 +100,8 @@ def main ():
         # otherwise get output appropriate name, if applicable
         if fn_name in packet['name']:
             name = packet['name'][fn_name]
-        # lol
-        elif fn_name == 'cereal_struct' and 'struct' in packet['name']:
-            name = packet['name']['struct']
+        elif fn_name in names and names[fn_name] in packet['name']:
+            name = packet['name'][names[fn_name]]
 
         # parse the file, and print out the result to stdout
         print(fn(packet, name) + '\n')

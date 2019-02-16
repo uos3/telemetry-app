@@ -2,8 +2,8 @@ version: '1.2'
 
 # structure name
 name:
-  struct: Packet
-  sql:    frames
+  cpp: Packet
+  sql: frames
 
 # sql keys
 keys:

@@ -1,4 +1,5 @@
 from out_struct import c_type
+from util import field_size
 
 # c types with equivalent Qt types
 q_types = [
@@ -23,26 +24,6 @@ def map_type (data):
 
     return name
 
-# bit sizes of the basic types allowed in the spec
-type_sizes = {
-    'float': 32,
-    'char': 8,
-    'bool': 8,
-    'time': 32
-}
-
-def map_size (data):
-    size = -1
-    if 'bits' in data['type']:
-        size = data['type']['bits']
-    elif data['type']['name'] in type_sizes:
-        size = type_sizes[data['type']['name']]
-
-    if 'length' in data['type'] and size != -1:
-        size *= data['type']['length']
-
-    return size
-
 # TODO #finish: deal with the weird bits:
 #                * assigning to arrays
 #                * custom types (ie. payload types)
@@ -65,7 +46,7 @@ def out_map (data, name):
 
         # assign value
         bits = val['length'] if 'length' in val else 1
-        bits *= map_size(val)
+        bits *= field_size(val)
         if bits == -1:
             val = '/* TODO unknown */'
         elif bits > 32:

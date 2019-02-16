@@ -1,3 +1,9 @@
+def c_name (name):
+    out = name
+    if out[0] in [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]:
+        out = '_' + out
+    return out
+
 def c_type (data):
     if type(data) == str:
         return data
@@ -32,8 +38,7 @@ def struct (data, name):
         if 'struct' in val:
             val = val['struct']
 
-        if name[0] in [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]:
-            name = '_' + name
+        name = c_name(name)
 
         # if this is an array, add the [N] bit after.
         if 'length' in val or val['type']['name'] == 'binary':

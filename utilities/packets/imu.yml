@@ -1,8 +1,8 @@
 version: '1.2'
 
 name:
-  struct: IMU
-  sql:    imu
+  cpp: IMU
+  sql: imu
 
 keys:
   foreign:
