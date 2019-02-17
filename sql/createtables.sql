@@ -1,5 +1,5 @@
-create database if not exists cubesat charset utf8mb4;
-use cubesat;
+create database if not exists dubesat_remote charset utf8mb4;
+use dubesat_remote;
 
 create table if not exists frames (
 	frame_id serial primary key,

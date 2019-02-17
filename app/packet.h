@@ -388,7 +388,7 @@ union Payload {
 	Config config;
 };
 
-enum class PayloadType { Morse=1, GPS=2, IMU=3, Health=4, Img=5, Config=6 };
+enum class PayloadType { GPS=1, IMU=2, Health=3, Img=4, Config=5 };
 
 struct Packet {
 	char crc[3];
