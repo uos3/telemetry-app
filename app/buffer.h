@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QDebug>
-
 #include <fstream>
 #include <memory>
 #include <string.h>

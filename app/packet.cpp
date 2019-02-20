@@ -1,6 +1,7 @@
 #include "packet.h"
 #include "utility.h"
 
+#include <algorithm>
 #include <ctime>
 
 /* Overloaded from_buffer functions that extract data from the buffer into the
@@ -18,8 +19,8 @@ void from_buffer (GPS& g, Buffer& b) {
 /* TODO #temp: clamping these values -- hopefully shouldn't need to for real
  *             data (should have been dealt with earlier in the pipeline) */
 	g.gps_time = b.get(32);
-	g.lat = qMax( -90.f, qMin(static_cast<float>(b.get(32)),  90.f));
-	g.lon = qMax(-180.f, qMin(static_cast<float>(b.get(32)), 180.f));
+	g.lat = std::max( -90.f, std::min(static_cast<float>(b.get(32)),  90.f));
+	g.lon = std::max(-180.f, std::min(static_cast<float>(b.get(32)), 180.f));
 	g.alt = static_cast<float>(b.get(32));
 	g.hdop = static_cast<uint8_t>(b.get(8));
 	g.vdop = static_cast<uint8_t>(b.get(8));
