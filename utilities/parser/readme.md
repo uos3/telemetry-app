@@ -5,14 +5,14 @@ out as json.
 
 ## Dependencies
 
-* [cereal (1.2.2)](https://uscilab.github.io/cereal) (included in `src/cereal`)
+* [cereal (1.2.2)](https://uscilab.github.io/cereal) (included in `app/cereal`)
 * gcc
 
 ## Installation
 
 ```bash
-$ git clone https://github.com/uos3/packet-parser.git
-$ cd packet-parser
+$ git clone https://github.com/uos3/telemetry-app.git
+$ cd telemetry-app/utilities/parser
 $ make
 ```
 
@@ -25,6 +25,6 @@ Takes a filename (the binary). Returns the json of the packet to stdout.
 Example:
 
 ```bash
-$ ./parser parse dummy/gps.bin
+$ ./parser parse gps.bin
 # json follows
 ```
