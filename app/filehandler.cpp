@@ -55,9 +55,8 @@ void FileHandler::file_changed () {
 	QByteArray binary(buffer.get_buf(), buffer.get_len());
 	for (auto od : this->out_dbs) {
 		if (!od->store_packet(packet, binary)) {
-			qDebug("failed to store packet in db %s @ %s.",
-			       od->get_name().c_str(),
-			       od->get_hostname().c_str());
+			qDebug("failed to store packet in db %s.",
+			       od->get_name().c_str());
 		}
 	}
 

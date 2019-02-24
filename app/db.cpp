@@ -9,32 +9,27 @@
 
 #include <ctime>
 
-DB::DB (std::string hostname, std::string dbname) :
-dbname(dbname), hostname(hostname) {
+DB::DB (std::string dbname) : dbname(dbname) {
 // set up db
-	// 'QMYSQL driver not loaded' -> https://stackoverflow.com/a/47334605
 	// TODO #enhancement: would prob be better to use sqlite than mysql
-	db = QSqlDatabase::addDatabase("QMYSQL");
-	db.setHostName(QString::fromStdString(hostname));
+	db = QSqlDatabase::addDatabase("QSQLITE");
 	db.setDatabaseName(QString::fromStdString(dbname));
 }
 
-DB::DB(const DB& other) : dbname(other.dbname), hostname(other.hostname) {
-	db = QSqlDatabase::addDatabase("QMYSQL");
-	db.setHostName(QString::fromStdString(hostname));
-	db.setDatabaseName(QString::fromStdString(dbname));
-}
+/* TODO #remove */
+/* DB::DB(const DB& other) : dbname(other.dbname) { */
+/* 	db = QSqlDatabase::addDatabase("QMYSQL"); */
+/* 	db.setDatabaseName(QString::fromStdString(dbname)); */
+/* } */
 
-DB& DB::operator=(const DB& other) {
-	if (db.isOpen()) { db.close(); }
+/* DB& DB::operator=(const DB& other) { */
+/* 	if (db.isOpen()) { db.close(); } */
 
-	dbname = other.dbname;
-	hostname = other.hostname;
-	db.setHostName(QString::fromStdString(hostname));
-	db.setDatabaseName(QString::fromStdString(dbname));
+/* 	dbname = other.dbname; */
+/* 	db.setDatabaseName(QString::fromStdString(dbname)); */
 
-	return *this;
-}
+/* 	return *this; */
+/* } */
 
 DB::~DB () {
 	if (db.isOpen()) { db.close(); }
@@ -560,12 +555,10 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 		return true;
 	} else {
 		qCritical() << "failed to send query to store packet in local database.";
-		qDebug() << this->hostname.c_str();
 		qDebug() << this->dbname.c_str();
 		return false;
 	}
 }
 
 std::string DB::get_name () { return this->dbname; }
-std::string DB::get_hostname () { return this->hostname; }
 QSqlDatabase DB::get_database () { return this->db; }

@@ -30,10 +30,11 @@
 class DB {
 public:
 	// Construction / Destruction
-	DB(std::string hostname, std::string dbname);
-	DB(const DB& other);
+	DB(std::string dbname);
+	/* TODO #remove */
+	/* DB(const DB& other); */
 
-	DB& operator=(const DB& other);
+	/* DB& operator=(const DB& other); */
 
 	~DB();
 
@@ -64,12 +65,10 @@ public:
 
 	// Getters / Setters
 	std::string get_name ();
-	std::string get_hostname ();
 
     QSqlDatabase get_database ();
 private:
 	// Members
 	QSqlDatabase db;
 	std::string dbname;
-	std::string hostname;
 };
