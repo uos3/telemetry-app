@@ -130,19 +130,20 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	int frame_id = query.lastInsertId().toInt();
 
 	// status
-	qstr = "insert into status (frame_id, spacecraft_id, time, "
-	       "time_source, beacon_id, obc_temperature, battery_temperature, "
-	       "battery_voltage, battery_current, charge_current, "
-	       "antenna_deployment, operational_mode, data_pending, reboot_count, "
-	       "rails_status_1, rails_status_2, rails_status_3, rails_status_4, "
-	       "rails_status_5, rails_status_6, rx_temperature, tx_temperature, "
-	       "pa_temperature, rx_noisefloor) values (:frame_id, :spacecraft_id, "
-	       ":spacecraft_time, :time_source, :beacon_id, :obc_temperature, "
-	       ":battery_temperature, :battery_voltage, :battery_current, "
-	       ":charge_current, :antenna_deployment, :operational_mode, "
-	       ":data_pending, :reboot_count, :rails_status_1, :rails_status_2, "
-	       ":rails_status_3, :rails_status_4, :rails_status_5, :rails_status_6, "
-	       ":rx_temperature, :tx_temperature, :pa_temperature, :rx_noisefloor);";
+	qstr = "insert into status (frame_id, spacecraft_id, time, time_source, "
+	       "beacon_id, obc_temperature, battery_temperature, battery_voltage, "
+	       "battery_current, charge_current, antenna_deployment, "
+	       "operational_mode, data_pending, reboot_count, rails_status_1, "
+	       "rails_status_2, rails_status_3, rails_status_4, rails_status_5, "
+	       "rails_status_6, rx_temperature, tx_temperature, pa_temperature, "
+	       "rx_noisefloor) values (:frame_id, :spacecraft_id, :time, "
+	       ":time_source, :beacon_id, :obc_temperature, :battery_temperature, "
+	       ":battery_voltage, :battery_current, :charge_current, "
+	       ":antenna_deployment, :operational_mode, :data_pending, "
+	       ":reboot_count, :rails_status_1, :rails_status_2, :rails_status_3, "
+	       ":rails_status_4, :rails_status_5, :rails_status_6, "
+	       ":rx_temperature, :tx_temperature, :pa_temperature, "
+	       ":rx_noisefloor);";
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table:\n\t" << query.lastError().text(); }
 	query.bindValue(":frame_id", frame_id);
 	query.bindValue(":spacecraft_id", p.status.spacecraft_id);
@@ -305,8 +306,8 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			        "rail_5_overcurrent_count, rail_5_voltage, "
 			        "rail_5_current, rail_6_boot_count, "
 			        "rail_6_overcurrent_count, rail_6_voltage, "
-			        "rail_6_current, 3v3_voltage, 3v3_current, 5v_voltage, "
-			        "5v_current, eeprom_subsystem_ok, fram_subsystem_ok, "
+			        "rail_6_current, [3v3_voltage], [3v3_current], [5v_voltage], "
+			        "[5v_current], eeprom_subsystem_ok, fram_subsystem_ok, "
 			        "camera_subsystem_ok, gps_subsystem_ok, imu_subsystem_ok, "
 			        "transmitter_subsystem_ok, receiver_subsystem_ok, "
 			        "eps_subsystem_ok, battery_subsystem_ok, "

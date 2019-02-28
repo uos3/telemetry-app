@@ -16,7 +16,7 @@ create table if not exists status (
 	"frame_id" integer unsigned,
 
 	"spacecraft_id" char(2),
-	"time" timestamp not null default current_timestamp,
+	"time" timestamp not null,
 	"time_source" boolean,
 	"beacon_id" char(2),
 	"obc_temperature" tinyint,
@@ -46,8 +46,8 @@ create table if not exists gps (
 	"frame_id" integer unsigned,
 
 	"dataset_id" char(2),
-	"timestamp" timestamp not null default current_timestamp,
-	"gps_time" timestamp not null default current_timestamp,
+	"timestamp" timestamp not null,
+	"gps_time" timestamp not null,
 	"lat" real,
 	"lon" real,
 	"alt" real,
@@ -63,7 +63,7 @@ create table if not exists imu (
 	"frame_id" integer unsigned,
 
 	"dataset_id" char(2),
-	"timestamp" timestamp not null default current_timestamp,
+	"timestamp" timestamp not null,
 	"mag_x_1" smallint,
 	"mag_x_2" smallint,
 	"mag_x_3" smallint,
@@ -117,7 +117,7 @@ create table if not exists health (
 	"frame_id" integer unsigned,
 
 	"dataset_id" char(2),
-	"timestamp" timestamp not null default current_timestamp,
+	"timestamp" timestamp not null,
 	"obc_temperature" tinyint,
 	"rx_temperature" tinyint,
 	"tx_temperature" tinyint,
@@ -205,7 +205,7 @@ create table if not exists img (
 	"frame_id" integer unsigned,
 
 	"dataset_id" char(2),
-	"timestamp" timestamp not null default current_timestamp,
+	"timestamp" timestamp not null,
 	"image_id" tinyint unsigned,
 	"fragment_id" smallint unsigned,
 	"num_fragments" smallint unsigned,
