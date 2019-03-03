@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QString>
 #include "buffer.h"
 #include <cstring>
 #include <algorithm>

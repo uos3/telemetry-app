@@ -16,10 +16,11 @@ void Buffer::from_file (std::string fname, uint64_t size) {
 		if (!size) {
 			size = length;
 		} else {
-			// TODO #robustness: something better than this.
-			Q_ASSERT_X(size/8 <= length,
-			           "buffer::from_file",
-			           "tried to read beyond end of file.");
+			// TODO #robustness
+			if (size/8 > length) {
+				is.close();
+				throw std::runtime_error("tried to read beyond end of file.");
+			}
 			size /= 8;
 		}
 		is.seekg(length-size, is.beg);

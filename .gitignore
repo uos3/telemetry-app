@@ -1,8 +1,12 @@
-app/app.pro.user
-app/secrets
-build*
-bin*
-*Makefile
 *.qmake.*
 *.user.*
+
+app/Makefile
+app/app.pro.user
+app/secrets
+
+bin*
+build*
+
+utilities/parser/parser
 utilities/txt2bin
