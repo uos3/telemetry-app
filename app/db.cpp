@@ -11,7 +11,6 @@
 
 DB::DB (std::string dbname) : dbname(dbname) {
 // set up db
-	// TODO #enhancement: would prob be better to use sqlite than mysql
 	db = QSqlDatabase::addDatabase("QSQLITE");
 	db.setDatabaseName(QString::fromStdString(dbname));
 }

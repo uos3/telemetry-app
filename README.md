@@ -39,7 +39,7 @@ Currently:
 1. Clone or download the repo.
 2. Download and install [Qt Creator](https://www.qt.io/).
 3. (To use database functionality) Download and install [SQLite](https://sqlite.org/index.html).
-4. (To use database functionality) Create a SQLite database from `sql/createsqlite.sql`, and either move it to the output binary folder or point the application at it.
+4. (To use database functionality) Create a SQLite database from `sql/createtables.sql`, and either move it to the output binary folder or point the application at it.
 5. Create a `secrets` file, as discussed below.
 6. Launch Qt Creator, and import the project by pointing it to `C:\Path\to\the\repo\app\app.pro`.
 7. Build -> Build project "app" (or press `Ctrl+B`).
@@ -56,7 +56,7 @@ You have two options:
 2. Create a `secrets` file, as discussed below.
 3. Install qt: `$ sudo apt install qt5-default`.
 4. (For database functionality) install sqlite, and the database driver `$ sudo apt install sqlite3 libqt5sql5-sqlite`
-5. (To use database functionality) Create a SQLite database from `sql/createsqlite.sql`, and either move it to the output binary folder or point the application at it.
+5. (To use database functionality) Create a SQLite database from `sql/createtables.sql`, and either move it to the output binary folder or point the application at it.
 6. `$ cd /path/to/the/repo/app/`
 7. `$ qmake`
 8. `$ make`
@@ -69,7 +69,7 @@ You have two options:
 2. Create a `secrets` file, as discussed below.
 3. Install qt creator: `$ sudo apt install qtcreator`.
 4. (For database functionality) install sqlite, and the database driver `$ sudo apt install sqlite3 libqt5sql5-sqlite`
-5. (To use database functionality) Create a SQLite database from `sql/createsqlite.sql`, and either move it to the output binary folder or point the application at it.
+5. (To use database functionality) Create a SQLite database from `sql/createtables.sql`, and either move it to the output binary folder or point the application at it.
 6. Launch Qt Creator, and import the project by pointing it to `/path/to/the/repo/app/app.pro`.
 7. Build -> Build project "app" (or press `Ctrl+B`).
 
