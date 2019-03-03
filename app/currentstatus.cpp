@@ -15,7 +15,7 @@ currentstatus::currentstatus(QWidget *parent): QWidget(parent), ui(new Ui::curre
     ui->setupUi(this);
 
     // Connect to the cubesat database
-    DB read_db("localhost", "cubesat");
+    DB read_db("cubesat.db");
     read_db.connect(secrets::username, secrets::password);
 
 
@@ -81,7 +81,7 @@ void currentstatus::on_refreshButton_clicked()
     // We should try to reload and display the data
 
     // Connect to the cubesat database
-    DB read_db("localhost", "cubesat");
+    DB read_db("cubesat.db");
     read_db.connect(secrets::username, secrets::password);
 
 

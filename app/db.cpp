@@ -9,32 +9,26 @@
 
 #include <ctime>
 
-DB::DB (std::string hostname, std::string dbname) :
-dbname(dbname), hostname(hostname) {
+DB::DB (std::string dbname) : dbname(dbname) {
 // set up db
-	// 'QMYSQL driver not loaded' -> https://stackoverflow.com/a/47334605
-	// TODO #enhancement: would prob be better to use sqlite than mysql
-	db = QSqlDatabase::addDatabase("QMYSQL");
-	db.setHostName(QString::fromStdString(hostname));
+	db = QSqlDatabase::addDatabase("QSQLITE");
 	db.setDatabaseName(QString::fromStdString(dbname));
 }
 
-DB::DB(const DB& other) : dbname(other.dbname), hostname(other.hostname) {
-	db = QSqlDatabase::addDatabase("QMYSQL");
-	db.setHostName(QString::fromStdString(hostname));
-	db.setDatabaseName(QString::fromStdString(dbname));
-}
+/* TODO #remove */
+/* DB::DB(const DB& other) : dbname(other.dbname) { */
+/* 	db = QSqlDatabase::addDatabase("QMYSQL"); */
+/* 	db.setDatabaseName(QString::fromStdString(dbname)); */
+/* } */
 
-DB& DB::operator=(const DB& other) {
-	if (db.isOpen()) { db.close(); }
+/* DB& DB::operator=(const DB& other) { */
+/* 	if (db.isOpen()) { db.close(); } */
 
-	dbname = other.dbname;
-	hostname = other.hostname;
-	db.setHostName(QString::fromStdString(hostname));
-	db.setDatabaseName(QString::fromStdString(dbname));
+/* 	dbname = other.dbname; */
+/* 	db.setDatabaseName(QString::fromStdString(dbname)); */
 
-	return *this;
-}
+/* 	return *this; */
+/* } */
 
 DB::~DB () {
 	if (db.isOpen()) { db.close(); }
@@ -135,19 +129,20 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	int frame_id = query.lastInsertId().toInt();
 
 	// status
-	qstr = "insert into status (frame_id, spacecraft_id, time, "
-	       "time_source, beacon_id, obc_temperature, battery_temperature, "
-	       "battery_voltage, battery_current, charge_current, "
-	       "antenna_deployment, operational_mode, data_pending, reboot_count, "
-	       "rails_status_1, rails_status_2, rails_status_3, rails_status_4, "
-	       "rails_status_5, rails_status_6, rx_temperature, tx_temperature, "
-	       "pa_temperature, rx_noisefloor) values (:frame_id, :spacecraft_id, "
-	       ":spacecraft_time, :time_source, :beacon_id, :obc_temperature, "
-	       ":battery_temperature, :battery_voltage, :battery_current, "
-	       ":charge_current, :antenna_deployment, :operational_mode, "
-	       ":data_pending, :reboot_count, :rails_status_1, :rails_status_2, "
-	       ":rails_status_3, :rails_status_4, :rails_status_5, :rails_status_6, "
-	       ":rx_temperature, :tx_temperature, :pa_temperature, :rx_noisefloor);";
+	qstr = "insert into status (frame_id, spacecraft_id, time, time_source, "
+	       "beacon_id, obc_temperature, battery_temperature, battery_voltage, "
+	       "battery_current, charge_current, antenna_deployment, "
+	       "operational_mode, data_pending, reboot_count, rails_status_1, "
+	       "rails_status_2, rails_status_3, rails_status_4, rails_status_5, "
+	       "rails_status_6, rx_temperature, tx_temperature, pa_temperature, "
+	       "rx_noisefloor) values (:frame_id, :spacecraft_id, :time, "
+	       ":time_source, :beacon_id, :obc_temperature, :battery_temperature, "
+	       ":battery_voltage, :battery_current, :charge_current, "
+	       ":antenna_deployment, :operational_mode, :data_pending, "
+	       ":reboot_count, :rails_status_1, :rails_status_2, :rails_status_3, "
+	       ":rails_status_4, :rails_status_5, :rails_status_6, "
+	       ":rx_temperature, :tx_temperature, :pa_temperature, "
+	       ":rx_noisefloor);";
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for status table:\n\t" << query.lastError().text(); }
 	query.bindValue(":frame_id", frame_id);
 	query.bindValue(":spacecraft_id", p.status.spacecraft_id);
@@ -310,8 +305,8 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 			        "rail_5_overcurrent_count, rail_5_voltage, "
 			        "rail_5_current, rail_6_boot_count, "
 			        "rail_6_overcurrent_count, rail_6_voltage, "
-			        "rail_6_current, 3v3_voltage, 3v3_current, 5v_voltage, "
-			        "5v_current, eeprom_subsystem_ok, fram_subsystem_ok, "
+			        "rail_6_current, [3v3_voltage], [3v3_current], [5v_voltage], "
+			        "[5v_current], eeprom_subsystem_ok, fram_subsystem_ok, "
 			        "camera_subsystem_ok, gps_subsystem_ok, imu_subsystem_ok, "
 			        "transmitter_subsystem_ok, receiver_subsystem_ok, "
 			        "eps_subsystem_ok, battery_subsystem_ok, "
@@ -560,12 +555,10 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 		return true;
 	} else {
 		qCritical() << "failed to send query to store packet in local database.";
-		qDebug() << this->hostname.c_str();
 		qDebug() << this->dbname.c_str();
 		return false;
 	}
 }
 
 std::string DB::get_name () { return this->dbname; }
-std::string DB::get_hostname () { return this->hostname; }
 QSqlDatabase DB::get_database () { return this->db; }

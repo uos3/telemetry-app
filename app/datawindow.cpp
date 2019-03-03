@@ -27,7 +27,7 @@ datawindow::~datawindow()
 void datawindow::load_Data()
 {
     // Connect to the cubesat database
-    DB read_db("localhost", "cubesat");
+    DB read_db("cubesat.db");
     read_db.connect(secrets::username, secrets::password);
 
     qDebug() << this->table_name.c_str();

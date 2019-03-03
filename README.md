@@ -8,7 +8,7 @@ Purpose: Parse received packets from CubeSat, and upload onto server.
 
 ## Near future
 
-1. Interface to read data from table in mySQL db and display row-by-row on screen. (Partially done)
+1. Interface to read data from table in SQL db and display row-by-row on screen. (Done)
 2. Add buttons to navigate the rows. (Done)
 3. Add basic graphing functionality. (TBC)
 
@@ -23,7 +23,7 @@ Purpose: Parse received packets from CubeSat, and upload onto server.
 Currently:
 
 * [Qt](https://www.qt.io)
-* [MySQL](https://www.mysql.com/)
+* [SQLite](https://sqlite.org/index.html)
 
 # Other Libraries Used
 
@@ -38,10 +38,11 @@ Currently:
 
 1. Clone or download the repo.
 2. Download and install [Qt Creator](https://www.qt.io/).
-3. (To use database functionality) Download and install [MySQL](https://www.mysql.com/).
-4. Create a `secrets` file, as discussed below.
-5. Launch Qt Creator, and import the project by pointing it to `C:\Path\to\the\repo\app\app.pro`.
-6. Build -> Build project "app" (or press `Ctrl+B`).
+3. (To use database functionality) Download and install [SQLite](https://sqlite.org/index.html).
+4. (To use database functionality) Create a SQLite database from `sql/createtables.sql`, and either move it to the output binary folder or point the application at it.
+5. Create a `secrets` file, as discussed below.
+6. Launch Qt Creator, and import the project by pointing it to `C:\Path\to\the\repo\app\app.pro`.
+7. Build -> Build project "app" (or press `Ctrl+B`).
 
 ## Ubuntu
 
@@ -54,10 +55,11 @@ You have two options:
 1. Clone the repo.
 2. Create a `secrets` file, as discussed below.
 3. Install qt: `$ sudo apt install qt5-default`.
-4. (For database functionality) install mysql, and the database driver `$ sudo apt install mysql-server libqt5sql5-mysql`
-5. `$ cd /path/to/the/repo/app/`
-6. `$ qmake`
-7. `$ make`
+4. (For database functionality) install sqlite, and the database driver `$ sudo apt install sqlite3 libqt5sql5-sqlite`
+5. (To use database functionality) Create a SQLite database from `sql/createtables.sql`, and either move it to the output binary folder or point the application at it.
+6. `$ cd /path/to/the/repo/app/`
+7. `$ qmake`
+8. `$ make`
 
 ### Build it with Qt Creator:
 
@@ -66,9 +68,10 @@ You have two options:
 1. Clone the repo.
 2. Create a `secrets` file, as discussed below.
 3. Install qt creator: `$ sudo apt install qtcreator`.
-4. (For database functionality) install mysql, and the database driver `$ sudo apt install mysql-server libqt5sql5-mysql`
-5. Launch Qt Creator, and import the project by pointing it to `/path/to/the/repo/app/app.pro`.
-6. Build -> Build project "app" (or press `Ctrl+B`).
+4. (For database functionality) install sqlite, and the database driver `$ sudo apt install sqlite3 libqt5sql5-sqlite`
+5. (To use database functionality) Create a SQLite database from `sql/createtables.sql`, and either move it to the output binary folder or point the application at it.
+6. Launch Qt Creator, and import the project by pointing it to `/path/to/the/repo/app/app.pro`.
+7. Build -> Build project "app" (or press `Ctrl+B`).
 
 # The `secrets` file
 
