@@ -33,6 +33,7 @@ outputs = {
     'struct': outputs.struct,
     'cereal': outputs.cereal,
     'cereal_struct': outputs.cereal_struct,
+    'db_insert': outputs.db_insert,
     'map':    outputs.stdmap,
     'parse_buffer': outputs.parse_buffer,
     'sql':    outputs.sql,
@@ -44,6 +45,7 @@ outputs = {
 # name of the output type)?
 names = {
     'cereal': 'cpp',
+    'db_insert': 'cpp',
     'map': 'cpp',
     'parse_buffer': 'cpp',
     'struct': 'cpp'
