@@ -7,3 +7,4 @@ bin*
 *.user.*
 utilities/txt2bin
 *__pycache__*
+utilities/parser/parser
