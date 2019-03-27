@@ -1,40 +1,12 @@
 #!/usr/bin/env python3
 
-import sys
+import argparse
 import json
+import sys
 import yaml # pip package PyYAML
 
 import outputs
 
-# TODO #finish:
-#  * use actual (not c-based) sizes in yaml
-#    X support non-c-based type sizes in parsing
-#  * outputs:
-#    X struct
-#      * maybe have comments after each line, containing the desc for the field
-#        if set?
-#    X cereal (serialize function, & serialize function in struct)
-#    X sql
-#    X json & yaml
-#    X std::map (including assigning the values from a buffer?)
-#    X buffer parsing function
-#    X db insert from struct function
-#  * ability of specification files to be read by c++ (might involve using json
-#    instead of yaml).
-#    * from a brief look, it seems that parsing yaml from c++ needs an external
-#      library (most likely yaml-cpp, which requires building) and isn't
-#      supported by qt (whereas json is).
-#    * sort of solved this issue -- yml2json.py converts yaml to json, so the
-#      difference is meaningless from this file's perspective
-#    * steps:
-#       X let this program work with json (as well as yaml)
-#       * rewrite db.cpp to iterate over the json
-#    * issue: QJsonDocument has the members of a json object as unsorted (aka
-#      sorted alphabetically), which obviously breaks this as the members of the
-#      packet would get eg. parsed out of order. no way around that, apart from
-#      making the spec use an array instead of an object for all the fields.
-#      makes things kind of awkward though.
-#  * be able to take in a header and/or footer with the -h & -f options
 
 outputs = {
     'struct': outputs.struct,
@@ -58,31 +30,37 @@ names = {
     'struct': 'cpp'
 }
 
-def header ():
-    pass
+def cli ():
+    ''' parse commandline arguments, and return an object containing their contents.
+    '''
+
+    args = argparse.ArgumentParser(conflict_handler='resolve',
+        description='Generate various files from a json/yaml packet spec, and '
+                    'output them to stdout.')
+
+    args.add_argument('input_file', type=str, nargs='+',
+                      help='Input packet spec file(s).')
+    args.add_argument('--output', '-o', choices=outputs, required=True,
+                      help='Type of output to generate.')
+    args.add_argument('--header', '-h',
+                      help='Filename of a header, to prepend to the output.')
+    args.add_argument('--footer', '-f',
+                      help='Filename of a footer, to append to the output.')
+
+    return args.parse_args()
 
 def main ():
     # cli.
-    if len(sys.argv) < 3:
-        print('please supply an output type and yaml/json file(s) to parse.')
-        print()
-        print('accepted output types are: ', ''.join(k + '  ' for k in outputs.keys()))
-        print()
-        print('example usage:\n\t$ ./parser.py cereal_struct packet.yml status.json')
-        return
+    args = cli()
 
-    # try and find the function corresponding to the output type we were given.
-    fn_name = sys.argv[1]
-    fn = None
-    if fn_name in outputs:
-        fn = outputs[fn_name]
-    else:
-        print('unknown output type \'' + fn + '\'.\naccepted types are:',
-              outputs)
-        return
+    # find the function corresponding to the output type we were given.
+    fn = outputs[args.output]
+
+    if args.header is not None:
+        print(open(args.header).read())
 
     # parse the file & print the output.
-    for file in sys.argv[2:]:
+    for file in args.input_file:
         # get the name and extension from the filename
         dot_pos = len(file) - file[::-1].index('.')
         ext = file[dot_pos:]
@@ -110,13 +88,16 @@ def main ():
         # default to the name of the file
         name = file[:-(len(ext)+1)]
         # otherwise get output appropriate name, if applicable
-        if fn_name in packet['name']:
-            name = packet['name'][fn_name]
-        elif fn_name in names and names[fn_name] in packet['name']:
-            name = packet['name'][names[fn_name]]
+        if args.output in packet['name']:
+            name = packet['name'][args.output]
+        elif args.output in names and names[args.output] in packet['name']:
+            name = packet['name'][names[args.output]]
 
         # parse the file, and print out the result to stdout
         print(fn(packet, name) + '\n')
+
+    if args.footer is not None:
+        print(open(args.footer).read())
 
 if __name__ == '__main__':
     main()
