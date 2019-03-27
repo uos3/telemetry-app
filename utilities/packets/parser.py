@@ -16,7 +16,9 @@ import outputs
 #    X cereal (serialize function, & serialize function in struct)
 #    X sql
 #    X json & yaml
-#    * std::map (including assigning the values from a buffer?)
+#    X std::map (including assigning the values from a buffer?)
+#    X buffer parsing function
+#    X db insert from struct function
 #  * ability of specification files to be read by c++ (might involve using json
 #    instead of yaml).
 #    * from a brief look, it seems that parsing yaml from c++ needs an external
@@ -27,6 +29,11 @@ import outputs
 #    * steps:
 #       X let this program work with json (as well as yaml)
 #       * rewrite db.cpp to iterate over the json
+#    * issue: QJsonDocument has the members of a json object as unsorted (aka
+#      sorted alphabetically), which obviously breaks this as the members of the
+#      packet would get eg. parsed out of order. no way around that, apart from
+#      making the spec use an array instead of an object for all the fields.
+#      makes things kind of awkward though.
 #  * be able to take in a header and/or footer with the -h & -f options
 
 outputs = {
@@ -50,6 +57,9 @@ names = {
     'parse_buffer': 'cpp',
     'struct': 'cpp'
 }
+
+def header ():
+    pass
 
 def main ():
     # cli.

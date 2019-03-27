@@ -1,6 +1,7 @@
 from out_struct import c_name, c_type
 from util import field_size
 
+
 def out_parse_buffer (data, name):
     n = name[0].lower()
 

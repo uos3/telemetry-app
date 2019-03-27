@@ -1,5 +1,6 @@
 from out_struct import struct
 
+
 def cereal (data, name, idt=False):
     # if we're outputting the function as part of a struct, need to indent
     # everything.

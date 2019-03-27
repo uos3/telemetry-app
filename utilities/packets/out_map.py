@@ -1,6 +1,7 @@
 from out_struct import c_type
 from util import field_size
 
+
 # c types with equivalent Qt types
 q_types = [
     'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t',
