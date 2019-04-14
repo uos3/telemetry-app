@@ -6,7 +6,6 @@
 # output:
 #   binary file compliant with the current packet spec (v0.2 at the moment)
 
-import os
 import sys
 import json
 import yaml
@@ -23,10 +22,12 @@ payload_spec_filenames = {
     'imu': '../packets/imu.yml'
 }
 
+
 # https://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
 def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     class OrderedLoader(Loader):
         pass
+
     def construct_mapping(loader, node):
         loader.flatten_mapping(node)
         return object_pairs_hook(loader.construct_pairs(node))
@@ -35,6 +36,47 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
         construct_mapping)
     return yaml.load(stream, OrderedLoader)
 
+
+def get_value(field, json={}):
+    field_name = field[0]
+    value = None
+    try:
+        value = json[field_name]
+        if value:
+            return value
+    except KeyError:
+        pass
+
+    try:
+        value = field[1]["value"]
+        return value
+    except KeyError:
+        pass
+
+    return value
+    # if the field is in JSON, set it from there. If it is in spec, set it there. If neither, check type name: if None, generate to given length. If anything else, throw error?
+    # return field[0]
+
+
+def make_bin_value(field, value):
+    # if it's None, generate bin to the length from field
+    # if it is something, convert based on type
+    # ...oh boy.
+    #
+    # if it has a length value in the spec, it's an array (i.e. C++ fucked up version of a string, rails_status)
+    type = field[1]["type"]["name"]
+    # print field[1]["type"]["name"]
+    try:
+        len = field[1]["length"]
+        if len > 1:
+            # print "length: {}".format(len)
+            type = "{}_array".format(type)
+    except KeyError:
+        pass
+
+    # process the value as necessary depending on type.
+    # python has no switch syntax, so it's gonna be a series of if__elif
+    return type
 
 
 try:
@@ -71,19 +113,34 @@ except IOError:
 
 
 # try opening the JSON and yml files.
-values = json.load(json_file)
+input = json.load(json_file)
+input = input["p"]
 
-field_list = OrderedDict(packet_spec['fields_pre'].items() + status_spec['fields'].items() + payload_spec['fields'].items() + packet_spec['fields_post'].items())
+# print input
 
-for field_name, field_info in field_list.items():
-    print "{} -- {}".format(field_name, field_info['type']['name'])
+values = []
 
-# Just testing, needs to be done differently.
-# First, iterate through the fields_pre. if name = None, generate zeroes to the given length.
-# Then, iterate through status_spec fields. Fill from JSON.
-# Iterate through payload_spec fields, fill from JSON.
-# Last, iterate over fields_post. If name = None, generate zeroes to given length.
-# (Maybe use the None logic for the JSON fields too?)
-# (Make that a function, probably.)
-#
-# Or... function to check: if the field is in JSON, set it from there. If it is in spec, set it there. If neither, check type name: if None, generate to given length. If anything else, throw error?
+# prefix fields:
+for field in packet_spec['fields_pre'].items():
+    value = get_value(field)
+    values.append(make_bin_value(field, value))
+
+# status fields:
+for field in status_spec['fields'].items():
+    value = get_value(field, input["status"])
+    values.append(make_bin_value(field, value))
+
+# payload fields:
+for field in payload_spec['fields'].items():
+    value = get_value(field, input["payload." + packet_type])
+    values.append(make_bin_value(field, value))
+
+# postfix fields:
+for field in packet_spec['fields_post'].items():
+    value = get_value(field)
+    values.append(make_bin_value(field, value))
+
+print values
+
+
+# field_list = OrderedDict(packet_spec['fields_pre'].items() + status_spec['fields'].items() + payload_spec['fields'].items() + packet_spec['fields_post'].items())
