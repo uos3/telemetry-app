@@ -52,7 +52,6 @@ SOURCES += \
     currentstatus.cpp \
     datawindow.cpp \
     db.cpp \
-    filehandler.cpp \
     input_file.cpp \
     main.cpp \
     output_db.cpp \
@@ -69,7 +68,6 @@ HEADERS += \
     currentstatus.h \
     datawindow.h \
     db.h \
-    filehandler.h \
     input.h \
     input_file.h \
     output.h \

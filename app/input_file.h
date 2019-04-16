@@ -4,6 +4,8 @@
 
 #include <QFileSystemWatcher>
 
+
+// for receiving new packets via additions to a given file.
 class FileInput : public Input {
 	Q_OBJECT
 
