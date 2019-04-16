@@ -67,7 +67,7 @@ uint32_t Buffer::get (size_t num_bits) {
 	return bits;
 }
 
-char* Buffer::get_buf () { return this->buf.get(); }
-uint64_t Buffer::get_len () { return this->len; }
-uint64_t Buffer::get_pos () { return this->pos; }
+const char* Buffer::get_buf () const { return this->buf.get(); }
+uint64_t Buffer::get_len () const { return this->len; }
+uint64_t Buffer::get_pos () const { return this->pos; }
 void Buffer::set_pos (uint64_t pos) { this->pos = pos; }

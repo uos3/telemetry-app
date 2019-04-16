@@ -7,8 +7,8 @@
 QT += \
     core \
     gui \
-    sql \
-    network
+    network \
+    sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -50,28 +50,38 @@ SOURCES += \
     buffer.cpp \
     cli.cpp \
     currentstatus.cpp \
+    datawindow.cpp \
     db.cpp \
     filehandler.cpp \
+    input_file.cpp \
     main.cpp \
+    output_db.cpp \
+    output_json.cpp \
+    output_upload.cpp \
     packet.cpp \
     topwindow.cpp \
     uploader.cpp \
-    utility.cpp \
-    datawindow.cpp
+    utility.cpp
 
 HEADERS += \
     buffer.h \
     cli.h \
     currentstatus.h \
+    datawindow.h \
     db.h \
     filehandler.h \
+    input.h \
+    input_file.h \
+    output.h \
+    output_db.h \
+    output_json.h \
+    output_upload.h \
     packet.h \
     topwindow.h\
     uploader.h \
-    utility.h \
-    datawindow.h
+    utility.h
 
 FORMS += \
-    topwindow.ui \
     currentstatus.ui \
-    datawindow.ui
+    datawindow.ui \
+    topwindow.ui

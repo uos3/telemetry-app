@@ -81,7 +81,7 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 	return list;
 }
 
-bool DB::store_packet (Packet& p, QByteArray binary) {
+bool DB::store_packet (const Packet& p, const QByteArray& binary) {
     QSqlQuery query;
 
 	db.transaction();
@@ -90,7 +90,6 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 	QString qstr = "insert into frames (type, status, payload, hash, crc, "
 	               "frame_bin, downlink_time) values (:type, :status, :payload, "
 	               ":hash, :crc, :frame_bin, :downlink_time);";
-    qDebug() << qstr;
 	if (!query.prepare(qstr)) { qCritical() << "Error preparing query for frame table."; }
 	query.bindValue(":frame_bin", binary, QSql::In | QSql::Binary);
 	query.bindValue(":status", p.status.beacon_id);
@@ -549,15 +548,13 @@ bool DB::store_packet (Packet& p, QByteArray binary) {
 
 	success &= db.commit();
 
-	// TODO #refactor: remove prints (except maybe executedQuery & lastError)
-	if (success) {
-		qDebug() << "query to store packet in local database sent successfully.";
-		return true;
-	} else {
+	if (!success) {
 		qCritical() << "failed to send query to store packet in local database.";
 		qDebug() << this->dbname.c_str();
 		return false;
 	}
+
+	return true;
 }
 
 std::string DB::get_name () { return this->dbname; }

@@ -61,7 +61,7 @@ public:
 	/// \param p The packet to be stored.
 	/// \returns Whether or not the query to store the packet was successfully
 	///          executed.
-	bool store_packet (Packet& p, QByteArray binary);
+	bool store_packet (const Packet& p, const QByteArray& binary);
 
 	// Getters / Setters
 	std::string get_name ();

@@ -29,9 +29,9 @@ public:
 	uint32_t get (size_t num_bits);
 
 	// Getters / Setters
-	char* get_buf ();
-	uint64_t get_len ();
-	uint64_t get_pos ();
+	const char* get_buf () const;
+	uint64_t get_len () const;
+	uint64_t get_pos () const;
 	void set_pos (uint64_t pos);
 protected:
 	std::unique_ptr<char[]> buf;
