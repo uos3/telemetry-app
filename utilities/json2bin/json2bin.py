@@ -79,68 +79,71 @@ def make_bin_value(field, value):
     return type
 
 
-try:
-    packet_type = sys.argv[1]
-    json_filename = sys.argv[2]
-except IndexError:
-    print "ERROR: Missing arguments. You must supply a packet type and a path to the JSON file containing the values.\nUsage: `json2bin.py <config|gps|health|img|imu> <json>`"
-    exit(1)
+def main():
 
-try:
-    packet_spec_file = open(packet_spec_filename)
-    status_spec_file = open(status_spec_filename)
-except IOError:
-    print "ERROR: could not find packet spec file ({}) or status_spec_file ({})".format(packet_spec_filename, status_spec_filename)
-    exit(1)
+    try:
+        packet_type = sys.argv[1]
+        json_filename = sys.argv[2]
+    except IndexError:
+        print "ERROR: Missing arguments. You must supply a packet type and a path to the JSON file containing the values.\nUsage: `json2bin.py <config|gps|health|img|imu> <json>`"
+        exit(1)
 
-packet_spec = ordered_load(packet_spec_file, Loader=yaml.SafeLoader)
-status_spec = ordered_load(status_spec_file, Loader=yaml.SafeLoader)
+    try:
+        packet_spec_file = open(packet_spec_filename)
+        status_spec_file = open(status_spec_filename)
+    except IOError:
+        print "ERROR: could not find packet spec file ({}) or status_spec_file ({})".format(packet_spec_filename, status_spec_filename)
+        exit(1)
 
-try:
-    payload_spec_filename = payload_spec_filenames[packet_type]
-    payload_spec_file = open(payload_spec_filename)
-    payload_spec = ordered_load(payload_spec_file, Loader=yaml.SafeLoader)
-except Exception:
-    print "ERROR: could not find the payload spec file for given payload type. Available payload types: {}".format(", ".join(payload_spec_filenames.keys()))
-    exit(1)
+    packet_spec = ordered_load(packet_spec_file, Loader=yaml.SafeLoader)
+    status_spec = ordered_load(status_spec_file, Loader=yaml.SafeLoader)
+
+    try:
+        payload_spec_filename = payload_spec_filenames[packet_type]
+        payload_spec_file = open(payload_spec_filename)
+        payload_spec = ordered_load(payload_spec_file, Loader=yaml.SafeLoader)
+    except Exception:
+        print "ERROR: could not find the payload spec file for given payload type. Available payload types: {}".format(", ".join(payload_spec_filenames.keys()))
+        exit(1)
+
+    try:
+        json_file = open(json_filename)
+    except IOError:
+        print "ERROR: .json input file does not exist"
+        exit(1)
+
+    # try opening the JSON and yml files.
+    input = json.load(json_file)
+    input = input["p"]
+
+    # print input
+
+    values = []
+
+    # prefix fields:
+    for field in packet_spec['fields_pre'].items():
+        value = get_value(field)
+        values.append(make_bin_value(field, value))
+
+    # status fields:
+    for field in status_spec['fields'].items():
+        value = get_value(field, input["status"])
+        values.append(make_bin_value(field, value))
+
+    # payload fields:
+    for field in payload_spec['fields'].items():
+        value = get_value(field, input["payload." + packet_type])
+        values.append(make_bin_value(field, value))
+
+    # postfix fields:
+    for field in packet_spec['fields_post'].items():
+        value = get_value(field)
+        values.append(make_bin_value(field, value))
+
+    print values
+
+    # field_list = OrderedDict(packet_spec['fields_pre'].items() + status_spec['fields'].items() + payload_spec['fields'].items() + packet_spec['fields_post'].items())
 
 
-try:
-    json_file = open(json_filename)
-except IOError:
-    print "ERROR: .json input file does not exist"
-    exit(1)
-
-
-# try opening the JSON and yml files.
-input = json.load(json_file)
-input = input["p"]
-
-# print input
-
-values = []
-
-# prefix fields:
-for field in packet_spec['fields_pre'].items():
-    value = get_value(field)
-    values.append(make_bin_value(field, value))
-
-# status fields:
-for field in status_spec['fields'].items():
-    value = get_value(field, input["status"])
-    values.append(make_bin_value(field, value))
-
-# payload fields:
-for field in payload_spec['fields'].items():
-    value = get_value(field, input["payload." + packet_type])
-    values.append(make_bin_value(field, value))
-
-# postfix fields:
-for field in packet_spec['fields_post'].items():
-    value = get_value(field)
-    values.append(make_bin_value(field, value))
-
-print values
-
-
-# field_list = OrderedDict(packet_spec['fields_pre'].items() + status_spec['fields'].items() + payload_spec['fields'].items() + packet_spec['fields_post'].items())
+if __name__ == '__main__':
+    main()
