@@ -11,6 +11,7 @@
 #include "cli.h"
 #include "db.h"
 #include "input_file.h"
+#include "input_socket.h"
 #include "output_db.h"
 #include "output_json.h"
 #include "output_upload.h"
@@ -29,6 +30,8 @@ int main (int argc, char* argv[]) {
 
 		// Watch our binary file for new packets to be parsed/stored.
 		FileInput fi(file_path, packet_size);
+
+		SocketInput si;
 
 		JsonOutput jo;
 		jo.listen_to(fi);

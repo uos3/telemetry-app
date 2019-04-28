@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QByteArray>
+
 #include <fstream>
 #include <memory>
 #include <string.h>
@@ -8,7 +10,9 @@
 class Buffer {
 public:
 	// Construction / Destruction
-	Buffer();
+	Buffer (QByteArray& byte_array);
+
+	Buffer ();
 
 	// Methods
 	/// \brief Reads a buffer from a binary file.

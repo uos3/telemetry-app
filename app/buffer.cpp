@@ -2,6 +2,10 @@
 
 Buffer::Buffer () : buf(nullptr), len(0) { }
 
+Buffer::Buffer (QByteArray& byte_array)
+	: buf(byte_array.data())
+	, len(byte_array.length()) { }
+
 void Buffer::from_file (std::string fname, uint64_t size) {
 	if (!this->buf) {
 		// if we've loaded something before, clear the old buffer to load again.
