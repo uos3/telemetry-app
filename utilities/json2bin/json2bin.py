@@ -10,6 +10,7 @@ import sys
 import json
 import yaml
 from collections import OrderedDict
+from bitstring import BitArray, BitStream
 
 packet_spec_filename = "packet.yml"
 status_spec_filename = '../packets/status.yml'
@@ -42,8 +43,7 @@ def get_value(field, json={}):
     value = None
     try:
         value = json[field_name]
-        if value:
-            return value
+        # TODO test: boolean false is accepted
     except KeyError:
         pass
 
@@ -64,15 +64,40 @@ def make_bin_value(field, value):
     # ...oh boy.
     #
     # if it has a length value in the spec, it's an array (i.e. C++ fucked up version of a string, rails_status)
-    type = field[1]["type"]["name"]
-    # print field[1]["type"]["name"]
+    name = field[0]
+    field_info = field[1]["type"]
+    type = field_info["name"]
+    bits = None
+
+    print "{} -- {}, value to set: {}, {} bits".format(name, type, value, field_info['bits'])
+
+    if value is None or type is None:
+        bits = BitArray(field_info['bits'])
+        return True
+
     try:
-        len = field[1]["length"]
+        len = field_info["length"]
         if len > 1:
             # print "length: {}".format(len)
             type = "{}_array".format(type)
     except KeyError:
         pass
+
+    try:
+        if (type == 'int' and field_info['signed']):
+            bits = BitArray(int=value, length=field_info['bits'])
+        elif (type == 'int'):
+            bits = BitArray(uint=value, length=field_info['bits'])
+        elif (type == 'float'):
+            bits = BitArray(floatle=value,length=field_info['bits'])
+            print bits.bin
+    except Exception, e:
+        print "FATAL: can't set value of {}.".format(name)
+        print "  Incorrect input value, {}".format(str(e))
+        exit(1)
+
+
+    print "bits: {}".format(bits)
 
     # process the value as necessary depending on type.
     # python has no switch syntax, so it's gonna be a series of if__elif
