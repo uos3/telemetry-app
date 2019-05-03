@@ -10,7 +10,7 @@ import sys
 import json
 import yaml
 from collections import OrderedDict
-from bitstring import BitArray, BitStream
+from bitstring import BitArray
 
 packet_spec_filename = "packet.yml"
 status_spec_filename = '../packets/status.yml'
@@ -54,54 +54,65 @@ def get_value(field, json={}):
         pass
 
     return value
-    # if the field is in JSON, set it from there. If it is in spec, set it there. If neither, check type name: if None, generate to given length. If anything else, throw error?
-    # return field[0]
 
 
 def make_bin_value(field, value):
-    # if it's None, generate bin to the length from field
-    # if it is something, convert based on type
-    # ...oh boy.
-    #
-    # if it has a length value in the spec, it's an array (i.e. C++ fucked up version of a string, rails_status)
+    # TODO write tests for this function (how?????)
     name = field[0]
     field_info = field[1]["type"]
-    type = field_info["name"]
+    field_type = field_info["name"]
     bits = None
 
-    print "{} -- {}, value to set: {}, {} bits".format(name, type, value, field_info['bits'])
-
-    if value is None or type is None:
-        bits = BitArray(field_info['bits'])
-        return True
-
+    # modify the field type name to handle arrays
     try:
-        len = field_info["length"]
+        len = field[1]["length"]
         if len > 1:
             # print "length: {}".format(len)
-            type = "{}_array".format(type)
+            field_type = "{}_array".format(field_type)
     except KeyError:
         pass
 
+    print "{} -- {}, value to set: {}, {} bits".format(name, field_type, value, field_info['bits'])
+
+    # no default value = no conversion needed, just generate zeroes to the correct length
+    if value is None:
+        bits = BitArray(field_info['bits'])
+        return bits
+
+    # no type = take the default value as binary string
+    if field_type is None:
+        bits = BitArray(bin=value)
+
     try:
-        if (type == 'int' and field_info['signed']):
+        if (field_type == 'int' and field_info['signed']):
             bits = BitArray(int=value, length=field_info['bits'])
-        elif (type == 'int'):
+        elif (field_type == 'int' or field_type == 'time'):
+            # time is unix epoch = integer
             bits = BitArray(uint=value, length=field_info['bits'])
-        elif (type == 'float'):
-            bits = BitArray(floatle=value,length=field_info['bits'])
-            print bits.bin
+        elif (field_type == 'float'):
+            bits = BitArray(floatle=value, length=field_info['bits'])
+        elif (field_type == 'bool'):
+            bits = BitArray(bool=value)
+        elif (field_type == 'bool_array'):
+            bool_string = ''
+            for x in value:
+                if x:
+                    char = "1"
+                else:
+                    char = "0"
+                bool_string = bool_string + char
+            bits = BitArray(bin=bool_string)
+        elif (field_type == 'char_array'):
+            # ...string. It's a STRING. Thanks for nothing, C++.
+            bits = BitArray(bytes=value.encode('utf-8'))
     except Exception, e:
         print "FATAL: can't set value of {}.".format(name)
         print "  Incorrect input value, {}".format(str(e))
         exit(1)
 
-
     print "bits: {}".format(bits)
 
-    # process the value as necessary depending on type.
-    # python has no switch syntax, so it's gonna be a series of if__elif
-    return type
+    return bits
 
 
 def main():
@@ -166,6 +177,8 @@ def main():
         values.append(make_bin_value(field, value))
 
     print values
+
+    # join BinArrays into one; create a binfile
 
     # field_list = OrderedDict(packet_spec['fields_pre'].items() + status_spec['fields'].items() + payload_spec['fields'].items() + packet_spec['fields_post'].items())
 
