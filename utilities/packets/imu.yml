@@ -10,7 +10,7 @@ keys:
 
 fields:
   dataset_id: { type: { name: char },                         length: 2, desc: '' }
-  timestamp:  { type: { name: time },                                    desc: '' }
+  timestamp:  { type: { name: time, , bits: 32 },                        desc: '' }
   mag_x:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
   mag_y:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
   mag_z:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }

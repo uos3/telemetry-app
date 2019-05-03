@@ -10,7 +10,7 @@ keys:
 
 fields:
   dataset_id:               { type: { name: char }, length: 2,              desc: '' }
-  timestamp:                { type: { name: time },                         desc: '' }
+  timestamp:                { type: { name: time, bits: 32 },               desc: '' }
   obc_temperature:          { type: { name: int, bits:  8, signed:  true }, desc: '' }
   rx_temperature:           { type: { name: int, bits:  8, signed:  true }, desc: '' }
   tx_temperature:           { type: { name: int, bits:  8, signed:  true }, desc: '' }
