@@ -73,7 +73,7 @@ def make_bin_value(field, value):
     except KeyError:
         pass
 
-    print "{} -- {}, value to set: {}, {} bits".format(name, field_type, value, field_info['bits'])
+    # print "{} -- {}, value to set: {}, {} bits".format(name, field_type, value, field_info['bits'])
 
     # no default value = no conversion needed, just generate zeroes to the correct length
     if value is None:
@@ -111,7 +111,7 @@ def make_bin_value(field, value):
         print "  Incorrect input value, {}".format(str(e))
         exit(1)
 
-    print "bits: {}".format(bits)
+    # print "bits: {}".format(bits)
 
     return bits
 
@@ -179,8 +179,8 @@ def main():
 
     binary = BitArray('').join(values)
 
-    print binary.bin
-    print len(binary)
+    # print binary.bin
+    # print len(binary)
 
     time_created = datetime.now().strftime('%Y%m%d_%H%M%S')
 
