@@ -23,3 +23,16 @@ $ ./txt2bin my_binary_text_file.txt my_actual_binary_file.bin
 
 Utilities that allow you to only have to deal with the packet specification in
 one place, in yaml files.
+
+### json2bin
+
+Tool to generate a dummy binary file for testing purposes, using the yaml spec files as pattern and JSON file with values as input.
+
+Generates two files, the binary file and its text representation for visual control.
+
+Requires the `bitstring` library. 
+
+```bash
+$ pip install bitstring
+$ python ./json2bin.py gps example_files/gps.json
+```
