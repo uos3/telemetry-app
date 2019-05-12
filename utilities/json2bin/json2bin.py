@@ -11,6 +11,7 @@ import json
 import yaml
 from collections import OrderedDict
 from bitstring import BitArray
+from datetime import datetime
 
 packet_spec_filename = "packet.yml"
 status_spec_filename = '../packets/status.yml'
@@ -176,7 +177,20 @@ def main():
         value = get_value(field)
         values.append(make_bin_value(field, value))
 
-    print values
+    binary = BitArray('').join(values)
+
+    print binary.bin
+    print len(binary)
+
+    time_created = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+    fbin = open(packet_type + time_created + '.bin', 'wb')
+    binary.tofile(fbin)
+    fbin.close()
+
+    ftxt = open(packet_type + time_created + '.txt', 'w')
+    ftxt.write(binary.bin)
+    ftxt.close()
 
     # join BinArrays into one; create a binfile
 
