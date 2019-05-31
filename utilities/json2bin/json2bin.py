@@ -22,8 +22,8 @@ payload_spec_filenames = {
     'imu': '../packets/imu.yml'
 }
 
-default_packet_spec_filename = 'packet.yml'
-default_status_spec_filename = '../packets/status.yml'
+default_packet_spec_filename = 'packet_v1.0.yml'
+default_status_spec_filename = '../packets/status_v1.0.yml'
 verbose = False
 debug = False
 
