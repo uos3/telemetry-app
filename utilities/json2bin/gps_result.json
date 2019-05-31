@@ -1,0 +1,102 @@
+{
+    "p": {
+        "crc": "UU",
+        "hash": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+        "type": 2,
+        "status": {
+            "spacecraft_id": "BB",
+            "time": 86400,
+            "time_source": false,
+            "beacon_id": "23",
+            "obc_temperature": 3,
+            "battery_temperature": -64,
+            "battery_voltage": -128,
+            "battery_current": 85,
+            "charge_current": 204,
+            "antenna_deployment": false,
+            "operational_mode": -66,
+            "data_pending": 46065,
+            "reboot_count": 8,
+            "rails_status": [
+                false,
+                false,
+                true,
+                false,
+                false,
+                true
+            ],
+            "rx_temperature": 1,
+            "tx_temperature": 92,
+            "pa_temperature": 50,
+            "rx_noisefloor": 50
+        },
+        "payload.imu": {
+            "dataset_id": "25",
+            "timestamp": 21600,
+            "mag_x": [
+                0,
+                -19390,
+                0,
+                -21438,
+                1805
+            ],
+            "mag_y": [
+                2895,
+                21845,
+                21845,
+                0,
+                0
+            ],
+            "mag_z": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "gyro_x": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "gyro_y": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "gyro_z": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "accel_x": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "accel_y": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "accel_z": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        "downlink_time": 1559320760
+    }
+}

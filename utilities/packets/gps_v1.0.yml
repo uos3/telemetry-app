@@ -9,8 +9,10 @@ keys:
     - { name: frame_id, table: frames }
 
 fields:
-  seq_id: { type: { name: char, bits: 16 }, length: 2,     desc: '' }
+  dataset_id: { type: { name: char, bits: 16 }, length: 2,     desc: '' } # not quite v1.0
+  #dataset_id: { type: { name: null, bits: 16 }, value: '0011001000110101',   desc: '' } # not quite v1.0
   timestamp:  { type: { name: time, bits: 32 },                desc: '' } # this should be 'time' according to the spec
+  gps_time:   { type: { name: time, bits: 32 },                desc: '' }
   lat:        { type: { name: float, bits: 32 },               desc: '' }
   lon:        { type: { name: float, bits: 32 },               desc: '' }
   alt:        { type: { name: float, bits: 32 },               desc: '' }

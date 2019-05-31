@@ -1,7 +1,7 @@
 {
     "p": {
         "crc": "UU",
-        "hash": "UUUUUUUUUUUUUUUU",
+        "hash": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
         "type": 1,
         "status": {
             "spacecraft_id": "BB",
@@ -14,34 +14,34 @@
             "battery_current": 85,
             "charge_current": 204,
             "antenna_deployment": false,
-            "operational_mode": 126,
-            "data_pending": 48819,
-            "reboot_count": 241,
+            "operational_mode": -66,
+            "data_pending": 46065,
+            "reboot_count": 8,
             "rails_status": [
                 false,
                 false,
-                false,
-                false,
                 true,
-                false
+                false,
+                false,
+                true
             ],
-            "rx_temperature": 9,
-            "tx_temperature": 1,
-            "pa_temperature": 92,
+            "rx_temperature": 1,
+            "tx_temperature": 92,
+            "pa_temperature": 50,
             "rx_noisefloor": 50
         },
         "payload.gps": {
-            "dataset_id":"25",
+            "dataset_id": "25",
             "timestamp": 21600,
-            "gps_time": 14,
-            "lat": 45.0,
-            "lon": 20.0,
-            "alt": 6784.0,
-            "hdop": 85,
-            "vdop": 85,
-            "pdop": 85,
-            "tdop": 85
+            "gps_time": 46146,
+            "lat": 90.0,
+            "lon": 180.0,
+            "alt": 1431655808.0,
+            "hdop": 0,
+            "vdop": 0,
+            "pdop": 0,
+            "tdop": 0
         },
-        "downlink_time": 1559319576
+        "downlink_time": 1559321476
     }
 }

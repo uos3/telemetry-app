@@ -26,6 +26,7 @@ default_packet_spec_filename = 'packet_v1.2.yml'
 default_status_spec_filename = '../packets/status.yml'
 verbose = False
 debug = False
+debug_bitcount = 0
 
 
 def print_debug(str=''):
@@ -90,6 +91,9 @@ def make_bin_value(field, value):
     field_type = field_info["name"]
     bits = None
 
+    global debug_bitcount
+    debug_bitcount = debug_bitcount + field_info['bits']
+
     # modify the field type name to handle arrays
     try:
         field_length = field[1]["length"]
@@ -111,12 +115,12 @@ def make_bin_value(field, value):
 
     try:
         if (field_type == 'int' and field_info['signed']):
-            bits = BitArray(int=value, length=field_info['bits'])
+            bits = BitArray(int=int(value), length=field_info['bits'])
         elif (field_type == 'int' or field_type == 'time'):
             # time is unix epoch = integer
-            bits = BitArray(uint=value, length=field_info['bits'])
+            bits = BitArray(uint=int(value), length=field_info['bits'])
         elif (field_type == 'float'):
-            bits = BitArray(floatle=value, length=field_info['bits'])
+            bits = BitArray(float=value, length=field_info['bits'])
         elif (field_type == 'bool'):
             bits = BitArray(bool=value)
         elif (field_type == 'bool_array'):
@@ -142,6 +146,8 @@ def make_bin_value(field, value):
         print_error("  Incorrect input value, {}".format(str(e)))
         exit(1)
 
+    print_debug(bits.bin)
+    print_debug("---------------{}".format(debug_bitcount))
     return bits
 
 
@@ -197,23 +203,34 @@ def main():
 
     values = []
 
+
+    print_debug("---")
+    print_debug("= prefix:")
     # prefix fields:
     for field in packet_spec['fields_pre'].items():
         value = get_value(field, input)
         values.append(make_bin_value(field, value))
 
+    print_debug("---")
+    print_debug("= type code:")
     values.append(get_payload_code(args.packet_type, packet_spec))
 
+    print_debug("---")
+    print_debug("= status fields:")
     # status fields:
     for field in status_spec['fields'].items():
         value = get_value(field, input["status"])
         values.append(make_bin_value(field, value))
 
+    print_debug("---")
+    print_debug("= payload fields:")
     # payload fields:
     for field in payload_spec['fields'].items():
         value = get_value(field, input["payload." + args.packet_type])
         values.append(make_bin_value(field, value))
 
+    print_debug("---")
+    print_debug("= postfix:")
     # postfix fields:
     for field in packet_spec['fields_post'].items():
         value = get_value(field, input)

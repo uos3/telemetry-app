@@ -31,12 +31,12 @@
             "rx_noisefloor": 50
         },
         "payload.gps": {
-            "dataset_id":"25",
+            "dataset_id": "25",
             "timestamp": 21600,
             "gps_time": 14,
-            "lat": 45.0,
-            "lon": 20.0,
-            "alt": 6784.0,
+            "lat": 90.0,
+            "lon": 86.0,
+            "alt": 2332886784.0,
             "hdop": 85,
             "vdop": 85,
             "pdop": 85,
