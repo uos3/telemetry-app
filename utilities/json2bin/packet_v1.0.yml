@@ -1,0 +1,17 @@
+version: '1.0'
+
+payload_types:
+  codes: {config: 6, gps: 2, imu: 3, health: 4, img: 5}
+  code_length: 16
+  
+# fields where name = null will be generated automatically to the given bit length
+
+fields_pre:
+  preamble:  { type: { name: null, bits: 32 }, value: null, desc: '' } # how to encode binary value?
+  sync_words: { type: { name: null, bits: 32 }, value: null, desc: '' } # what IS this?
+
+fields_post:
+  error1:  { type: { name: null, bits: 1024 }, value: null, desc: '' }
+  error2:  { type: { name: null, bits: 1024 }, value: null, desc: '' }
+  hash: { type: { name: char, bits: 128 }, length: 16, value: null, desc: '' } # how is this calculated?
+  crc: { type: { name: char, bits: 16 }, length: 2, desc: '' } # and this????

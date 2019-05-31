@@ -1,0 +1,20 @@
+version: '1.2'
+
+name:
+  cpp: GPS
+  sql: gps
+
+keys:
+  foreign:
+    - { name: frame_id, table: frames }
+
+fields:
+  seq_id: { type: { name: char, bits: 16 }, length: 2,     desc: '' }
+  timestamp:  { type: { name: time, bits: 32 },                desc: '' } # this should be 'time' according to the spec
+  lat:        { type: { name: float, bits: 32 },               desc: '' }
+  lon:        { type: { name: float, bits: 32 },               desc: '' }
+  alt:        { type: { name: float, bits: 32 },               desc: '' }
+  hdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
+  vdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
+  pdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }
+  tdop:       { type: { name: int, bits:  8, signed: false }, desc: '' }

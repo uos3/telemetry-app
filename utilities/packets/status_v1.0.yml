@@ -1,0 +1,28 @@
+version: '1.2'
+
+name:
+  cpp: Status
+  sql: status
+
+keys:
+  foreign:
+    - { name: frame_id, table: frames }
+
+fields:
+  spacecraft_id:       { type: { name: char, bits: 16 }, length: 2,    desc: '' }
+  time:                { type: { name: time, bits: 32 },               desc: '' }
+  time_source:         { type: { name: bool, bits: 1 },                desc: '' }
+  seq_id:           { type: { name: char, bits: 32 }, length: 4,    desc: '' }
+  obc_temperature:     { type: { name: int, bits:  8, signed:  true }, desc: '' }
+  battery_temperature: { type: { name: int, bits:  8, signed:  true }, desc: '' }
+  battery_voltage:     { type: { name: int, bits:  8, signed:  true }, desc: '' }
+  battery_current:     { type: { name: int, bits:  8, signed: false }, desc: '' }
+  charge_current:      { type: { name: int, bits:  8, signed: false }, desc: '' }
+  antenna_deployment:  { type: { name: bool, bits: 1 },                desc: '' }
+  data_pending:        { type: { name: int, bits: 16, signed: false }, desc: '' }
+  reboot_count:        { type: { name: int, bits:  8, signed: false }, desc: '' }
+  rails_status:        { type: { name: bool, bits: 6 }, length: 6,     desc: '' }
+  rx_temperature:      { type: { name: int, bits:  8, signed:  true }, desc: '' }
+  tx_temperature:      { type: { name: int, bits:  8, signed:  true }, desc: '' }
+  pa_temperature:      { type: { name: int, bits:  8, signed:  true }, desc: '' }
+  rx_noisefloor:       { type: { name: int, bits:  8, signed: false }, desc: '' }
