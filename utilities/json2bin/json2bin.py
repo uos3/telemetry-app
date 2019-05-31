@@ -24,6 +24,22 @@ payload_spec_filenames = {
 
 default_packet_spec_filename = 'packet.yml'
 default_status_spec_filename = '../packets/status.yml'
+verbose = False
+debug = False
+
+
+def print_debug(str=''):
+    if debug:
+        print str
+
+
+def print_log(str=''):
+    if verbose:
+        print str
+
+
+def print_error(str=''):
+    print str
 
 
 # https://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
