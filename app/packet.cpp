@@ -8,7 +8,7 @@
 corresponding structs */
 
 void from_buffer (GPS& g, Buffer& b) {
-	b.set_pos(248);
+	b.set_pos(256);
 	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
 /* TODO #temp: '\0's on these */
 	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
@@ -29,7 +29,7 @@ void from_buffer (GPS& g, Buffer& b) {
 }
 
 void from_buffer (IMU& i, Buffer& b) {
-	b.set_pos(248);
+	b.set_pos(256);
 	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
 	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
 	                       static_cast<char>((ds_id & 0xFF)), '\0' };
@@ -65,7 +65,7 @@ void from_buffer (IMU& i, Buffer& b) {
 }
 
 void from_buffer (Img& i, Buffer& b) {
-	b.set_pos(248);
+	b.set_pos(256);
 	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
 	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
 	                       static_cast<char>((ds_id & 0xFF)), '\0' };
@@ -79,7 +79,7 @@ void from_buffer (Img& i, Buffer& b) {
 }
 
 void from_buffer (Health& h, Buffer& b) {
-	b.set_pos(248);
+	b.set_pos(256);
 	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
 	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
 	                       static_cast<char>((ds_id & 0xFF)), '\0' };
@@ -167,7 +167,7 @@ void from_buffer (Health& h, Buffer& b) {
 }
 
 void from_buffer (Config& c, Buffer& b) {
-	b.set_pos(248);
+	b.set_pos(256);
 	uint16_t ds_id = static_cast<uint16_t>(b.get(16));
 	char dataset_id[3] = { static_cast<char>((ds_id >> 8)),
 	                       static_cast<char>((ds_id & 0xFF)), '\0' };
