@@ -2,7 +2,7 @@
     "p": {
         "crc": "uu",
         "hash": "asdfghjklzxcvbnm",
-        "type": 1,
+        "type": 2,
         "status": {
             "spacecraft_id": "BB",
             "time": 86400,

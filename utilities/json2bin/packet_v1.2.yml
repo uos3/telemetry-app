@@ -1,5 +1,10 @@
 version: '1.2'
 
+payload_types:
+  codes: {config: 5, gps: 1, imu: 2, health: 3, img: 4}
+  code_length: 16
+
+
 # fields where name = null will be generated automatically to the given bit length
 
 fields_pre:
