@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -O3
+CXXFLAGS=-Wall -O3 -std=c++11
 EXE=parser
 INC_DIR=../../app
 SRC_DIR=../../app
