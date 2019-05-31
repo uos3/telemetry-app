@@ -36,11 +36,25 @@ Requires `yml` and `bitstring` libraries. Install required packages from the `re
 $ pip install -r requirements.txt
 ```
 
-### example usage
+### usage
 
 Generates two files, the binary file and its text representation for visual control. 
 
-```bash
-$ python ./json2bin.py [config|gps|health|img|imu] [input file] 
-$ python ./json2bin.py gps example_files/gps.json
+```
+usage: json2bin.py [-h] [-p PACKET_SPEC_FILENAME] [-s STATUS_SPEC_FILENAME]
+                   {config,gps,health,img,imu} json_filename
+
+Generate a binfile from JSON input.
+
+positional arguments:
+  {config,gps,health,img,imu}
+                        type of packet to generate
+  json_filename         file with input values
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PACKET_SPEC_FILENAME, --packet_spec PACKET_SPEC_FILENAME
+                        packet specification yml file
+  -s STATUS_SPEC_FILENAME, --status_spec STATUS_SPEC_FILENAME
+                        status data specification yml file
 ```

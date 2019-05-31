@@ -6,15 +6,13 @@
 # output:
 #   binary file compliant with the current packet spec (v0.2 at the moment)
 
-import sys
+import argparse
 import json
 import yaml
 from collections import OrderedDict
 from bitstring import BitArray
 from datetime import datetime
 
-packet_spec_filename = "packet.yml"
-status_spec_filename = '../packets/status.yml'
 
 payload_spec_filenames = {
     'config': '../packets/config.yml',
@@ -23,6 +21,9 @@ payload_spec_filenames = {
     'img': '../packets/img.yml',
     'imu': '../packets/imu.yml'
 }
+
+default_packet_spec_filename = 'packet.yml'
+default_status_spec_filename = '../packets/status.yml'
 
 
 # https://stackoverflow.com/questions/5121931/in-python-how-can-you-load-yaml-mappings-as-ordereddicts
@@ -118,25 +119,26 @@ def make_bin_value(field, value):
 
 def main():
 
-    try:
-        packet_type = sys.argv[1]
-        json_filename = sys.argv[2]
-    except IndexError:
-        print "ERROR: Missing arguments. You must supply a packet type and a path to the JSON file containing the values.\nUsage: `json2bin.py <config|gps|health|img|imu> <json>`"
-        exit(1)
+    parser = argparse.ArgumentParser(description='Generate a binfile from JSON input.')
+    parser.add_argument('-p', '--packet_spec', dest='packet_spec_filename', default=default_packet_spec_filename, help='packet specification yml file')
+    parser.add_argument('-s', '--status_spec', dest='status_spec_filename', default=default_status_spec_filename, help='status data specification yml file')
+    parser.add_argument('packet_type', choices=['config', 'gps', 'health', 'img', 'imu'], help="type of packet to generate")
+    parser.add_argument("json_filename", help='file with input values')
+
+    args = parser.parse_args()
 
     try:
-        packet_spec_file = open(packet_spec_filename)
-        status_spec_file = open(status_spec_filename)
+        packet_spec_file = open(args.packet_spec_filename)
+        status_spec_file = open(args.status_spec_filename)
     except IOError:
-        print "ERROR: could not find packet spec file ({}) or status_spec_file ({})".format(packet_spec_filename, status_spec_filename)
+        print "ERROR: could not find packet spec file ({}) or status_spec_file ({})".format(args.packet_spec_filename, args.status_spec_filename)
         exit(1)
 
     packet_spec = ordered_load(packet_spec_file, Loader=yaml.SafeLoader)
     status_spec = ordered_load(status_spec_file, Loader=yaml.SafeLoader)
 
     try:
-        payload_spec_filename = payload_spec_filenames[packet_type]
+        payload_spec_filename = payload_spec_filenames[args.packet_type]
         payload_spec_file = open(payload_spec_filename)
         payload_spec = ordered_load(payload_spec_file, Loader=yaml.SafeLoader)
     except Exception:
@@ -144,7 +146,7 @@ def main():
         exit(1)
 
     try:
-        json_file = open(json_filename)
+        json_file = open(args.json_filename)
     except IOError:
         print "ERROR: .json input file does not exist"
         exit(1)
@@ -169,7 +171,7 @@ def main():
 
     # payload fields:
     for field in payload_spec['fields'].items():
-        value = get_value(field, input["payload." + packet_type])
+        value = get_value(field, input["payload." + args.packet_type])
         values.append(make_bin_value(field, value))
 
     # postfix fields:
@@ -184,11 +186,11 @@ def main():
 
     time_created = datetime.now().strftime('%Y%m%d_%H%M%S')
 
-    fbin = open(packet_type + time_created + '.bin', 'wb')
+    fbin = open(args.packet_type + time_created + '.bin', 'wb')
     binary.tofile(fbin)
     fbin.close()
 
-    ftxt = open(packet_type + time_created + '.txt', 'w')
+    ftxt = open(args.packet_type + time_created + '.txt', 'w')
     ftxt.write(binary.bin)
     ftxt.close()
 
