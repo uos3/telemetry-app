@@ -56,20 +56,29 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     return yaml.load(stream, OrderedLoader)
 
 
+def get_payload_code(type, packet_spec):
+    code_value = packet_spec['payload_types']['codes'][type]
+    code_length = packet_spec['payload_types']['code_length']
+    print_debug("code value: {}; code length: {}".format(code_value, code_length))
+    return BitArray(int=code_value, length=code_length)
+
+
 def get_value(field, json={}):
     field_name = field[0]
+    print_debug("get_value '{}':".format(field_name))
     value = None
     try:
         value = json[field_name]
+        return value
         # TODO test: boolean false is accepted
     except KeyError:
-        pass
+        print_debug('  value not in JSON')
 
     try:
         value = field[1]["value"]
         return value
     except KeyError:
-        pass
+        print_debug('  no default value')
 
     return value
 
@@ -83,14 +92,13 @@ def make_bin_value(field, value):
 
     # modify the field type name to handle arrays
     try:
-        len = field[1]["length"]
-        if len > 1:
-            # print "length: {}".format(len)
+        field_length = field[1]["length"]
+        if field_length > 1:
             field_type = "{}_array".format(field_type)
     except KeyError:
         pass
 
-    # print "{} -- {}, value to set: {}, {} bits".format(name, field_type, value, field_info['bits'])
+    print_log("{} -- {}, value to set: {}, {} bits".format(name, field_type, value, field_info['bits']))
 
     # no default value = no conversion needed, just generate zeroes to the correct length
     if value is None:
@@ -122,63 +130,79 @@ def make_bin_value(field, value):
             bits = BitArray(bin=bool_string)
         elif (field_type == 'char_array'):
             # ...string. It's a STRING. Thanks for nothing, C++.
+            print_debug("  field: {}".format(name))
+            print_debug("  input value length: {}".format(len(value)))
+            print_debug("  expected length: {}".format(field_length))
+            if not field_length == len(value):
+                print_error("FATAL: input string for '{}' has incorrect length ({}, expected {})".format(name, len(value), field_length))
+                exit(1)
             bits = BitArray(bytes=value.encode('utf-8'))
     except Exception, e:
-        print "FATAL: can't set value of {}.".format(name)
-        print "  Incorrect input value, {}".format(str(e))
+        print_error("FATAL: can't set value of {}.".format(name))
+        print_error("  Incorrect input value, {}".format(str(e)))
         exit(1)
-
-    # print "bits: {}".format(bits)
 
     return bits
 
 
 def main():
-
     parser = argparse.ArgumentParser(description='Generate a binfile from JSON input.')
+    parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+    parser.add_argument("--debug", help="show debug logs", action="store_true")
     parser.add_argument('-p', '--packet_spec', dest='packet_spec_filename', default=default_packet_spec_filename, help='packet specification yml file')
     parser.add_argument('-s', '--status_spec', dest='status_spec_filename', default=default_status_spec_filename, help='status data specification yml file')
+    parser.add_argument('-P', '--payload_spec', dest='payload_spec_filename', help='payload data specification yml file')
     parser.add_argument('packet_type', choices=['config', 'gps', 'health', 'img', 'imu'], help="type of packet to generate")
     parser.add_argument("json_filename", help='file with input values')
 
     args = parser.parse_args()
 
+    global debug
+    debug = args.debug
+
+    global verbose
+    verbose = args.verbose or args.debug
+
     try:
         packet_spec_file = open(args.packet_spec_filename)
         status_spec_file = open(args.status_spec_filename)
     except IOError:
-        print "ERROR: could not find packet spec file ({}) or status_spec_file ({})".format(args.packet_spec_filename, args.status_spec_filename)
+        print_error("ERROR: could not find packet spec file ({}) or status_spec_file) ({})".format(args.packet_spec_filename, args.status_spec_filename))
         exit(1)
 
     packet_spec = ordered_load(packet_spec_file, Loader=yaml.SafeLoader)
     status_spec = ordered_load(status_spec_file, Loader=yaml.SafeLoader)
 
     try:
-        payload_spec_filename = payload_spec_filenames[args.packet_type]
-        payload_spec_file = open(payload_spec_filename)
+        if not args.payload_spec_filename:
+            args.payload_spec_filename = payload_spec_filenames[args.packet_type]
+        payload_spec_file = open(args.payload_spec_filename)
         payload_spec = ordered_load(payload_spec_file, Loader=yaml.SafeLoader)
     except Exception:
-        print "ERROR: could not find the payload spec file for given payload type. Available payload types: {}".format(", ".join(payload_spec_filenames.keys()))
+        print_error("ERROR: could not find the payload spec file for given payload type. Available payload types: {}".format(", ".join(payload_spec_filenames.keys())))
         exit(1)
 
     try:
         json_file = open(args.json_filename)
     except IOError:
-        print "ERROR: .json input file does not exist"
+        print_error("ERROR: .json input file does not exist")
         exit(1)
 
     # try opening the JSON and yml files.
     input = json.load(json_file)
     input = input["p"]
-
-    # print input
+    print_debug("INPUT:")
+    print_debug(input)
+    print_debug("-----")
 
     values = []
 
     # prefix fields:
     for field in packet_spec['fields_pre'].items():
-        value = get_value(field)
+        value = get_value(field, input)
         values.append(make_bin_value(field, value))
+
+    values.append(get_payload_code(args.packet_type, packet_spec))
 
     # status fields:
     for field in status_spec['fields'].items():
@@ -192,13 +216,18 @@ def main():
 
     # postfix fields:
     for field in packet_spec['fields_post'].items():
-        value = get_value(field)
+        value = get_value(field, input)
         values.append(make_bin_value(field, value))
 
     binary = BitArray('').join(values)
+    bitlength = len(binary.bin)
+    mod = bitlength % 8
 
-    # print binary.bin
-    # print len(binary)
+    if mod > 0:
+        choice = raw_input("WARNING: The bit length of this packet doesn't add up to complete bytes ({} % 8 = {}). The generated bin file will be padded with 0s. Proceed? [Y/n] ".format(bitlength, mod))
+
+        if choice is 'n':
+            exit(1)
 
     time_created = datetime.now().strftime('%Y%m%d_%H%M%S')
 
