@@ -1,48 +1,32 @@
 #include "buffer.h"
 
-Buffer::Buffer () : buf(nullptr), len(0) { }
+#include <QFile>
+#include <QString>
 
-Buffer::Buffer (QByteArray& byte_array)
-	: buf(byte_array.data())
-	, len(byte_array.length()) { }
+Buffer::Buffer () : buf() {}
 
-void Buffer::from_file (std::string fname, uint64_t size) {
-	if (!this->buf) {
-		// if we've loaded something before, clear the old buffer to load again.
-		this->buf.reset();
-		this->len = 0;
-	}
+Buffer::Buffer (const QByteArray& byte_array)
+	: buf(byte_array) {}
 
-	std::ifstream is (fname, std::ifstream::binary);
-	if (is) {
-		is.seekg(0, is.end);
-		uint64_t length = static_cast<uint64_t>(is.tellg()); // length of the whole file
-		if (!size) {
-			size = length;
-		} else {
-			// TODO #robustness
-			if (size/8 > length) {
-				is.close();
-				throw std::runtime_error("tried to read beyond end of file.");
-			}
-			size /= 8;
-		}
-		is.seekg(length-size, is.beg);
+Buffer::~Buffer () {}
 
-		std::unique_ptr<char[]> buffer(new char[size]);
+void Buffer::from_file (std::string filename, uint64_t size) {
+	QFile file(QString::fromStdString(filename));
 
-		is.read(buffer.get(), size);
+	if (!file.exists())
+		throw std::runtime_error("file " + filename + " doesn't exist.");
 
-		if (!is) {
-			throw std::runtime_error("error reading file " + fname + ".");
-		}
-		is.close();
+	if (!file.open(QIODevice::ReadOnly))
+		return;
 
-		buf.swap(buffer);
-		this->len = size;
-	} else {
-		throw std::runtime_error("couldn't read " + fname + " -- are you sure it exists?");
-	}
+	if (size == 0)
+		size = file.size();
+
+	if (!file.seek(file.size() - size))
+		return;
+
+	buf = file.read(size);
+	pos = 0;
 }
 
 uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
@@ -71,7 +55,7 @@ uint32_t Buffer::get (size_t num_bits) {
 	return bits;
 }
 
-const char* Buffer::get_buf () const { return this->buf.get(); }
-uint64_t Buffer::get_len () const { return this->len; }
+const char* Buffer::get_buf () const { return this->buf.data(); }
+uint64_t Buffer::get_len () const { return this->buf.size(); }
 uint64_t Buffer::get_pos () const { return this->pos; }
 void Buffer::set_pos (uint64_t pos) { this->pos = pos; }

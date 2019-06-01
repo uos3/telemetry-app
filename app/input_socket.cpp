@@ -24,16 +24,12 @@ SocketInputClient::SocketInputClient (QTcpSocket* socket,
 }
 
 void SocketInputClient::new_data () {
-	auto data = socket->readAll();
+	Buffer buffer(socket->readAll());
+	Packet packet;
 
-	/* TODO #temp */
-	qDebug("new socket data: %s", data.data());
-	/* Buffer buffer(data); */
-	/* Packet packet; */
+	from_buffer(packet, buffer, util::now());
 
-	/* from_buffer(packet, buffer, util::now()); */
-
-	/* emit new_packet(buffer, packet); */
+	emit new_packet(buffer, packet);
 }
 
 QTcpSocket* SocketInputClient::get_socket () {

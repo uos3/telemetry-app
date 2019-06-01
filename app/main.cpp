@@ -35,11 +35,13 @@ int main (int argc, char* argv[]) {
 
 		JsonOutput jo;
 		jo.listen_to(fi);
+		jo.listen_to(si);
 
 		DB db("cubesat.db");
 		DBOutput dbo(db);
 		if (db.connect(secrets::username, secrets::password)) {
 			dbo.listen_to(fi);
+			dbo.listen_to(si);
 		} else {
 			qWarning() << "DB failed to connect.";
 		}
@@ -47,6 +49,7 @@ int main (int argc, char* argv[]) {
 		Uploader uploader("http://localhost:8080", secrets::app_key, "cooldude49");
 		UploaderOutput uo(uploader);
 		uo.listen_to(fi);
+		uo.listen_to(si);
 
 		// Display the GUI.
         topwindow w;
