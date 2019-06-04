@@ -31,7 +31,8 @@ names = {
 }
 
 def cli ():
-    ''' parse commandline arguments, and return an object containing their contents.
+    ''' parse commandline arguments, and return an object containing their
+    contents.
     '''
 
     args = argparse.ArgumentParser(conflict_handler='resolve',
@@ -41,7 +42,7 @@ def cli ():
     args.add_argument('input_file', type=str, nargs='+',
                       help='Input packet spec file(s).')
     args.add_argument('--output', '-o', choices=outputs, required=True,
-                      help='Type of output to generate.')
+                      help='Type of output format to generate.')
     args.add_argument('--header', '-h',
                       help='Filename of a header, to prepend to the output.')
     args.add_argument('--footer', '-f',
