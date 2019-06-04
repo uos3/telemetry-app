@@ -16,12 +16,13 @@ void from_buffer (GPS& g, Buffer& b) {
 /* TODO #temp: 3 (was 2) & elsewhere */
 	std::copy(dataset_id, dataset_id+3, g.dataset_id);
 	g.timestamp = b.get(32);
-/* TODO #temp: clamping these values -- hopefully shouldn't need to for real
- *             data (should have been dealt with earlier in the pipeline) */
 	g.gps_time = b.get(32);
-	g.lat = std::max( -90.f, std::min(static_cast<float>(b.get(32)),  90.f));
-	g.lon = std::max(-180.f, std::min(static_cast<float>(b.get(32)), 180.f));
-	g.alt = static_cast<float>(b.get(32));
+	uint32_t raw_lat = b.get(32);
+	g.lat = reinterpret_cast<float&>(raw_lat);
+	uint32_t raw_lon = b.get(32);
+	g.lon = reinterpret_cast<float&>(raw_lon);
+	uint32_t raw_alt = b.get(32);
+	g.alt = reinterpret_cast<float&>(raw_alt);
 	g.hdop = static_cast<uint8_t>(b.get(8));
 	g.vdop = static_cast<uint8_t>(b.get(8));
 	g.pdop = static_cast<uint8_t>(b.get(8));
