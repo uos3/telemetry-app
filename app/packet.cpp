@@ -87,9 +87,9 @@ void from_buffer (Health& h, Buffer& b) {
 	std::copy(dataset_id, dataset_id+3, h.dataset_id);
 	h.timestamp = b.get(32);
 	h.obc_temperature = static_cast<uint8_t>(b.get(8));
-	h.rx_temperature = static_cast<uint8_t>(b.get(8));
-	h.tx_temperature = static_cast<uint8_t>(b.get(8));
-	h.pa_temperature = static_cast<uint8_t>(b.get(8));
+	h.rx_temperature = static_cast<int8_t>(b.get(8));
+	h.tx_temperature = static_cast<int8_t>(b.get(8));
+	h.pa_temperature = static_cast<int8_t>(b.get(8));
 	h.reboot_count = static_cast<uint8_t>(b.get(8));
 	h.data_packets_pending = static_cast<uint16_t>(b.get(16));
 	h.antenna_switch = static_cast<bool>(b.get(1));
@@ -239,9 +239,9 @@ void from_buffer (Status& s, Buffer& b) {
 		static_cast<bool>(b.get(1)), static_cast<bool>(b.get(1))
 	};
 	std::copy(rails_status, rails_status+6, s.rails_status);
-	s.rx_temperature = static_cast<uint8_t>(b.get(8));
-	s.tx_temperature = static_cast<uint8_t>(b.get(8));
-	s.pa_temperature = static_cast<uint8_t>(b.get(8));
+	s.rx_temperature = static_cast<int8_t>(b.get(8));
+	s.tx_temperature = static_cast<int8_t>(b.get(8));
+	s.pa_temperature = static_cast<int8_t>(b.get(8));
 	s.rx_noisefloor = static_cast<uint8_t>(b.get(8));
 }
 

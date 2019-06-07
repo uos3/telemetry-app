@@ -17,27 +17,33 @@ void Buffer::from_file (std::string filename, uint64_t size) {
 		throw std::runtime_error("file " + filename + " doesn't exist.");
 
 	if (!file.open(QIODevice::ReadOnly))
-		return;
+		throw std::runtime_error("couldn't open file " + filename + ".");
 
 	if (size == 0)
 		size = file.size();
 
 	if (!file.seek(file.size() - size))
-		return;
+		throw std::runtime_error("couldn't seek back " + std::to_string(size) +
+		                         "bytes into " + filename + ".");
 
 	buf = file.read(size);
 	pos = 0;
 }
 
 uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
-	// TODO #robustness: some check that num_bits <= 32 (how to deal with
-	//                   failure?)
+	/* TODO #documentation: re: throws */
+	if (num_bits > 32)
+		throw std::runtime_error("Buffer::get can only read up to 32 bits -- tried to "
+		                         "read " + std::to_string(num_bits) + ".");
+
+	if (start_bit + num_bits > buf.size () * 8)
+		throw std::runtime_error("tried to read beyond end of buffer.");
+
 	uint32_t byte = start_bit / 8;
 	uint8_t  bit  = start_bit % 8;
 
 	if (bit + num_bits > 8) {
 		// want to read 'across' bytes, so must do in multiple stages.
-		// TODO #optimisation: make this iterative.
 		uint8_t available = 8 - bit;
 		uint32_t val = this->get(start_bit, available);
 		val = val << (num_bits - available);
