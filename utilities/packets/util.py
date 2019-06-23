@@ -3,7 +3,7 @@
 type_sizes = {
     'float': 32,
     'char': 8,
-    'bool': 8,
+    'bool': 1,
     'time': 32
 }
 
