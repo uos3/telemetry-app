@@ -1,9 +1,17 @@
-app/app.pro.user
-app/secrets
-build*
-bin*
-*Makefile
 *.qmake.*
 *.user.*
-utilities/txt2bin
+*.o
 *__pycache__*
+
+app/Makefile
+app/app.pro.user
+app/secrets
+
+bin*
+build*
+
+utilities/parser/parser
+utilities/txt2bin
+
+utilities/socket publisher/Makefile
+utilities/socket publisher/socket_pub

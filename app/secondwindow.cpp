@@ -15,7 +15,7 @@ secondwindow::secondwindow(QWidget *parent): QWidget(parent), ui(new Ui::secondw
     ui->setupUi(this);
 
     // Connect to the cubesat database
-    DB read_db("localhost", "cubesat");
+    DB read_db("cubesat.db");
     read_db.connect(secrets::username, secrets::password);
 
 
@@ -54,7 +54,7 @@ void secondwindow::on_refreshButton_clicked()
     // We should try to reload and display the data
 
     // Connect to the cubesat database
-    DB read_db("localhost", "cubesat");
+    DB read_db("cubesat.db");
     read_db.connect(secrets::username, secrets::password);
 
     // Setup the database model

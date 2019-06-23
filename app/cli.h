@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string.h>
-#include <cereal/archives/json.hpp>
+#include "cereal/archives/json.hpp"
 #include "buffer.h"
 #include "packet.h"
 

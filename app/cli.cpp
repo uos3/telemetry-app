@@ -3,7 +3,11 @@
 
 int cli (int argc, char *argv[]) {
 	if (argc >= 2) {
-		if (!strcmp(argv[1], "parse")) { parse(argv[2]); }
+		if (!strcmp(argv[1], "parse")) {
+			if (argc < 3) { std::cout << "parse needs a filename.\n"; }
+			else { parse(argv[2]); }
+		}
+		else { std::cout << "unknown function '" << argv[1] << "'.\n"; }
 		return 1;
 	}
 	return 0;
@@ -13,14 +17,11 @@ void parse (char* fname) {
 	Buffer b;
 	b.from_file(fname);
 
-	/* Packet p; */
-	/* from_buffer(p, b); */
+	Packet p;
+	from_buffer(p, b);
 
-	/* cereal::JSONOutputArchive archive(std::cout); */
-/* TODO #temp */
-	/* archive(CEREAL_NVP(p)); */
-
-	auto mymap = parse_packet(b);
-	QJsonDocument json_doc = QJsonDocument::fromVariant(mymap);
-	std::cout << json_doc.toJson().data();
+	{
+		cereal::JSONOutputArchive archive(std::cout);
+		archive(CEREAL_NVP(p));
+	}
 }

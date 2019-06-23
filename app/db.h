@@ -31,10 +31,11 @@
 class DB {
 public:
 	// Construction / Destruction
-	DB(std::string hostname, std::string dbname);
-	DB(const DB& other);
+	DB(std::string dbname);
+	/* TODO #remove */
+	/* DB(const DB& other); */
 
-	DB& operator=(const DB& other);
+	/* DB& operator=(const DB& other); */
 
 	~DB();
 
@@ -61,18 +62,14 @@ public:
 	/// \param p The packet to be stored.
 	/// \returns Whether or not the query to store the packet was successfully
 	///          executed.
-	bool store_packet (QMap<QString, QVariant>& p, QByteArray binary);
-
-	bool store_packet (Packet& p, QByteArray binary);
+	bool store_packet (const Packet& p, const QByteArray& binary);
 
 	// Getters / Setters
 	std::string get_name ();
-	std::string get_hostname ();
 
     QSqlDatabase get_database ();
 private:
 	// Members
 	QSqlDatabase db;
 	std::string dbname;
-	std::string hostname;
 };
