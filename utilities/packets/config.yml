@@ -10,11 +10,11 @@ keys:
 
 fields:
   dataset_id:                  { type: { name: char }, length: 2,              desc: '' }
-  tx_enable:                   { type: { name: int, bits:  8, signed: false }, desc: '' }
+  tx_enable:                   { type: { name: bool },                         desc: '' }
   tx_interval:                 { type: { name: int, bits:  8, signed: false }, desc: '' }
   tx_interval_downlink:        { type: { name: int, bits:  8, signed: false }, desc: '' }
-  tx_datarate:                 { type: { name: int, bits:  8, signed: false }, desc: '' } # 4 bit 'enum' (what are the values?)
-  tx_power:                    { type: { name: int, bits:  8, signed: false }, desc: '' }
+  tx_datarate:                 { type: { name: int, bits:  4, signed: false }, desc: '' } # 4 bit 'enum' (what are the values?)
+  tx_power:                    { type: { name: int, bits:  4, signed: false }, desc: '' }
   tx_overtemp:                 { type: { name: int, bits:  8, signed:  true }, desc: '' }
   rx_overtemp:                 { type: { name: int, bits:  8, signed:  true }, desc: '' }
   batt_overtemp:               { type: { name: int, bits:  8, signed:  true }, desc: '' }
@@ -25,15 +25,15 @@ fields:
   health_acquisition_interval: { type: { name: int, bits: 16, signed: false }, desc: '' }
   configuration_acquisition_interval: { type: { name: int, bits: 16, signed: false }, desc: '' }
   imu_acquisition_interval:    { type: { name: int, bits: 16, signed: false }, desc: '' }
-  imu_sample_count:            { type: { name: int, bits:  8, signed: false }, desc: '' }
+  imu_sample_count:            { type: { name: int, bits:  4, signed: false }, desc: '' }
   imu_sample_interval:         { type: { name: int, bits:  8, signed: false }, desc: '' }
   gps_acquisition_interval:    { type: { name: int, bits: 16, signed: false }, desc: '' }
-  gps_sample_count:            { type: { name: int, bits:  8, signed: false }, desc: '' }
+  gps_sample_count:            { type: { name: int, bits:  4, signed: false }, desc: '' }
   gps_sample_interval:         { type: { name: int, bits:  8, signed: false }, desc: '' }
   image_acquisition_time:      { type: { name: time },                         desc: '' }
   image_acquisition_profile:   { type: { name: int, bits:  8, signed: false }, desc: '' }
   time:                        { type: { name: time },                         desc: '' }
-  operational_mode:            { type: { name: int, bits:  8, signed: false }, desc: '' }
+  operational_mode:            { type: { name: int, bits:  2, signed: false }, desc: '' }
   self_test:                   { type: { name: bool },                         desc: '' }
   power_rail_1:                { type: { name: bool },                         desc: '' }
   power_rail_2:                { type: { name: bool },                         desc: '' }

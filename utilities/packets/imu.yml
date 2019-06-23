@@ -11,6 +11,7 @@ keys:
 fields:
   dataset_id: { type: { name: char },                         length: 2, desc: '' }
   timestamp:  { type: { name: time },                                    desc: '' }
+  # TODO the following are listed as 4 16 bit ints, but with a total size of 80 bits, so not sure which is correct.
   mag_x:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
   mag_y:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
   mag_z:      { type: { name: int, bits: 16, signed:  true }, length: 5, desc: '' }
