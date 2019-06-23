@@ -21,7 +21,7 @@
 
 
 static const std::string file_path = "input.bin";
-static const uint32_t packet_size = 3136;
+static const uint32_t packet_size = 3136 / 8;
 
 int main (int argc, char* argv[]) {
 
@@ -30,7 +30,6 @@ int main (int argc, char* argv[]) {
 
 		// Watch our binary file for new packets to be parsed/stored.
 		FileInput fi(file_path, packet_size);
-
 		SocketInput si;
 
 		JsonOutput jo;

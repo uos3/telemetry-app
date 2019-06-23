@@ -1,5 +1,4 @@
 #include "cli.h"
-#include "spec.h"
 
 int cli (int argc, char *argv[]) {
 	if (argc >= 2) {
