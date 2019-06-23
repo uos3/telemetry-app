@@ -1,8 +1,0 @@
-version: '1.2'
-packet:
-  crc:           { type: { name: char }, length: 2,              desc: '' }
-  hash:          { type: { name: char }, length: 16,             desc: '' }
-  downlink_time: { type: { name: int, bits: 32, signed: false }, desc: '' }
-  type:          { type: { name: PayloadType },                  desc: '' }
-  status:        { type: { name: Status },                       desc: '' }
-  payload:       { type: { name: Payload },                      desc: '' }
