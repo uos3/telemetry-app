@@ -36,7 +36,7 @@ uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
 		throw std::runtime_error("Buffer::get can only read up to 32 bits -- tried to "
 		                         "read " + std::to_string(num_bits) + ".");
 
-	if (start_bit + num_bits > buf.size () * 8)
+	if (start_bit + num_bits > static_cast<size_t>(buf.size () * 8))
 		throw std::runtime_error("tried to read beyond end of buffer.");
 
 	uint32_t byte = start_bit / 8;
