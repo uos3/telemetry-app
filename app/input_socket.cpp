@@ -24,9 +24,15 @@ SocketInputClient::SocketInputClient (QTcpSocket* socket,
 }
 
 void SocketInputClient::new_data () {
-	Buffer buffer(socket->readAll());
-	Packet packet;
+	QByteArray read = socket->readAll();
 
+	// get the data from the QByteArray, such that we own it. unfortunately, I can't
+	// see a way to do this other than to copy it out.
+	std::unique_ptr<char[]> data(new char[read.size()]);
+	std::copy(read.data(), read.data() + read.size(), data.get());
+	Buffer buffer(std::move(data), read.size());
+
+	Packet packet;
 	from_buffer(packet, buffer, util::now());
 
 	emit new_packet(buffer, packet);

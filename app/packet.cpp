@@ -4,8 +4,11 @@
 #include <algorithm>
 #include <ctime>
 
-/* Overloaded from_buffer functions that extract data from the buffer into the
-corresponding structs */
+// Overloaded from_buffer functions that extract data from the buffer into the
+// corresponding structs.
+
+// Note: this file intentionally uses no Qt, so that it can be compiled into a minimal
+// CLI program (necessary because of storage constraints on the server).
 
 void from_buffer (GPS& g, Buffer& b) {
 	b.set_pos(266);

@@ -17,10 +17,9 @@ FileInput::FileInput (const std::string& fname,
 }
 
 void FileInput::file_changed () {
-	Buffer buffer;
-	Packet packet;
+	Buffer buffer = Buffer::from_file(this->fname, this->packet_size);
 
-	buffer.from_file(this->fname, this->packet_size);
+	Packet packet;
 	from_buffer(packet, buffer, util::now());
 
 	emit new_packet(buffer, packet);

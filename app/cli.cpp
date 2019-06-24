@@ -13,8 +13,7 @@ int cli (int argc, char *argv[]) {
 }
 
 void parse (char* fname) {
-	Buffer b;
-	b.from_file(fname);
+	Buffer b = Buffer::from_file(fname);
 
 	Packet p;
 	from_buffer(p, b);

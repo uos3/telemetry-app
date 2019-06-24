@@ -1,33 +1,54 @@
 #include "buffer.h"
 
-#include <QFile>
-#include <QString>
+#include <fstream>
+#include <memory>
 
-Buffer::Buffer () : buf() {}
 
-Buffer::Buffer (const QByteArray& byte_array)
-	: buf(byte_array) {}
+Buffer::Buffer (const char buf[], uint64_t len)
+	: buf(buf), len(len) {}
+
+Buffer::Buffer (std::unique_ptr<const char[]> buf, uint64_t len)
+	: buf(std::move(buf)), len(len) {}
+
+Buffer::Buffer (Buffer&& other)
+	: buf(std::move(other.buf)), len(other.len) {}
+
+Buffer& Buffer::operator= (Buffer&& other) {
+	buf = std::move(other.buf);
+	len = other.len;
+
+	return *this;
+}
 
 Buffer::~Buffer () {}
 
-void Buffer::from_file (std::string filename, uint64_t size) {
-	QFile file(QString::fromStdString(filename));
+Buffer Buffer::from_file (const std::string &filename, uint64_t size) {
+	std::ifstream is (filename, std::ifstream::binary);
+	if (!is)
+		throw std::runtime_error(
+			"couldn't read " + filename + " -- are you sure it exists?");
 
-	if (!file.exists())
-		throw std::runtime_error("file " + filename + " doesn't exist.");
+	is.seekg(0, is.end);
+	uint64_t file_length = static_cast<uint64_t>(is.tellg());
 
-	if (!file.open(QIODevice::ReadOnly))
-		throw std::runtime_error("couldn't open file " + filename + ".");
+	if (size > file_length)
+		throw std::runtime_error("tried to read beyond end of file.");
+	if (!size)
+		size = file_length;
 
-	if (size == 0)
-		size = file.size();
+	is.seekg(-size, is.end);
 
-	if (!file.seek(file.size() - size))
-		throw std::runtime_error("couldn't seek back " + std::to_string(size) +
-		                         "bytes into " + filename + ".");
+	std::unique_ptr<char[]> data(new char[size]);
+	is.read(data.get(), size);
 
-	buf = file.read(size);
-	pos = 0;
+	if (!is) {
+		is.close();
+		throw std::runtime_error("error reading file " + filename + ".");
+	}
+
+	is.close();
+
+	return Buffer (std::move(data), size);
 }
 
 uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
@@ -36,7 +57,7 @@ uint32_t Buffer::get (uint32_t start_bit, size_t num_bits) {
 		throw std::runtime_error("Buffer::get can only read up to 32 bits -- tried to "
 		                         "read " + std::to_string(num_bits) + ".");
 
-	if (start_bit + num_bits > static_cast<size_t>(buf.size () * 8))
+	if (start_bit + num_bits > len * 8)
 		throw std::runtime_error("tried to read beyond end of buffer.");
 
 	uint32_t byte = start_bit / 8;
@@ -61,7 +82,7 @@ uint32_t Buffer::get (size_t num_bits) {
 	return bits;
 }
 
-const char* Buffer::get_buf () const { return this->buf.data(); }
-uint64_t Buffer::get_len () const { return this->buf.size(); }
+const char* Buffer::get_buf () const { return this->buf.get(); }
+uint64_t Buffer::get_len () const { return this->len; }
 uint64_t Buffer::get_pos () const { return this->pos; }
 void Buffer::set_pos (uint64_t pos) { this->pos = pos; }
