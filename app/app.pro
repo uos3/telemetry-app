@@ -55,6 +55,7 @@ SOURCES += \
     input_file.cpp \
     input_socket.cpp \
     main.cpp \
+    mainwindow.cpp \
     output_db.cpp \
     output_json.cpp \
     output_upload.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     input.h \
     input_file.h \
     input_socket.h \
+    mainwindow.h \
     output.h \
     output_db.h \
     output_json.h \

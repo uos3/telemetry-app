@@ -12,6 +12,7 @@
 #include "db.h"
 #include "input_file.h"
 #include "input_socket.h"
+#include "mainwindow.h"
 #include "output_db.h"
 #include "output_json.h"
 #include "output_upload.h"
@@ -51,8 +52,11 @@ int main (int argc, char* argv[]) {
 		uo.listen_to(si);
 
 		// Display the GUI.
-        topwindow w;
-		w.show();
+		/* topwindow w; */
+		/* w.show(); */
+
+		MainWindow window(db);
+		window.show();
 
 		return a.exec();
 	} else { return 0; }

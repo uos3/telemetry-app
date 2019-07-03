@@ -4,8 +4,8 @@
 #include <cstring>
 #include <algorithm>
 
-#include <cereal/cereal.hpp>
-#include <cereal/types/vector.hpp>
+#include "cereal/cereal.hpp"
+#include "cereal/types/vector.hpp"
 
 // Types of downlink packets, and functions to make them from loaded buffers.
 

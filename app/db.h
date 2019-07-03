@@ -4,6 +4,7 @@
 
 #include <QByteArray>
 #include <QMap>
+#include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTableView>
@@ -28,7 +29,8 @@
 //      * is less of an abstraction of the database
 //      * more flexible than is needed
 //      * might be awkward to subclass QSqlDatabase
-class DB {
+class DB : public QObject {
+	Q_OBJECT
 public:
 	// Construction / Destruction
 	DB(std::string dbname);
@@ -67,7 +69,11 @@ public:
 	// Getters / Setters
 	std::string get_name ();
 
-    QSqlDatabase get_database ();
+	const QSqlDatabase& get_database () const;
+
+signals:
+	void packet_stored (const Packet& packet);
+
 private:
 	// Members
 	QSqlDatabase db;

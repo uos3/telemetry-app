@@ -87,7 +87,7 @@ QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
 }
 
 bool DB::store_packet (const Packet& p, const QByteArray& binary) {
-    QSqlQuery query;
+	QSqlQuery query;
 
 	db.transaction();
 
@@ -559,8 +559,9 @@ bool DB::store_packet (const Packet& p, const QByteArray& binary) {
 		return false;
 	}
 
+	emit packet_stored(p);
 	return true;
 }
 
 std::string DB::get_name () { return this->dbname; }
-QSqlDatabase DB::get_database () { return this->db; }
+const QSqlDatabase& DB::get_database () const { return this->db; }
