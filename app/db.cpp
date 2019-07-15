@@ -4,89 +4,10 @@
 
 #include <QDebug>
 #include <QSqlError>
-#include <QSqlQueryModel>
-#include <QTextStream>
+#include <QSqlQuery>
 
-/* TODO #temp */
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QFile>
 
-#include <ctime>
-
-DB::DB (std::string dbname) : dbname(dbname) {
-// set up db
-	db = QSqlDatabase::addDatabase("QSQLITE");
-	db.setDatabaseName(QString::fromStdString(dbname));
-}
-
-/* TODO #remove */
-/* DB::DB(const DB& other) : dbname(other.dbname) { */
-/* 	db = QSqlDatabase::addDatabase("QMYSQL"); */
-/* 	db.setDatabaseName(QString::fromStdString(dbname)); */
-/* } */
-
-/* DB& DB::operator=(const DB& other) { */
-/* 	if (db.isOpen()) { db.close(); } */
-
-/* 	dbname = other.dbname; */
-/* 	db.setDatabaseName(QString::fromStdString(dbname)); */
-
-/* 	return *this; */
-/* } */
-
-DB::~DB () {
-	if (db.isOpen()) { db.close(); }
-}
-
-bool DB::connect (std::string username, std::string password) {
-	return db.open(QString::fromStdString(username),
-	               QString::fromStdString(password));
-}
-
-QSqlQuery DB::get (QString table, QString field) {
-	QSqlQuery query;
-	QString full_query_string = "select " + field + " from " + table;
-	if (query.exec(full_query_string)) {
-		return query;
-	} else {
-		// TODO #enhancement: can prob deal with this better.
-		std::string msg = "error with db query \"" + full_query_string.toStdString()+ "\".";
-		throw std::runtime_error(msg);
-	}
-}
-
-QTableView* DB::table (QString table, QString fields) {
-	QSqlQueryModel model;
-	model.setQuery("select" + fields + " from " + table);
-
-	QStringList field_list = fields.split(", ");
-	for (int i=0; i<field_list.size(); i++) {
-		model.setHeaderData(i, Qt::Horizontal, field_list.at(i));
-	}
-
-	QTableView* view = new QTableView;
-	view->setModel(&model);
-	return view;
-}
-
-QList<QPair<QString, QString>> DB::row (QSqlQuery qu, QString fields) {
-// gives a tuple (for a row) of { "col_name": "value", ... }
-// TODO #refactor: necessary?
-	QStringList field_list = fields.split(", ");
-
-	QList<QPair<QString, QString>> list;
-	for (int i=0; i < field_list.size(); i++) {
-		QString col = field_list.at(i);
-		QString val = qu.value(i).toString();
-
-		list << qMakePair(col, val);
-	}
-
-	return list;
-}
-
-bool DB::store_packet (const Packet& p, const QByteArray& binary) {
+bool db::store_packet (QSqlDatabase& db, const Packet& p, const QByteArray& binary) {
 	QSqlQuery query;
 
 	db.transaction();
@@ -555,13 +476,8 @@ bool DB::store_packet (const Packet& p, const QByteArray& binary) {
 
 	if (!success) {
 		qCritical() << "failed to send query to store packet in local database.";
-		qDebug() << this->dbname.c_str();
 		return false;
 	}
 
-	emit packet_stored(p);
 	return true;
 }
-
-std::string DB::get_name () { return this->dbname; }
-const QSqlDatabase& DB::get_database () const { return this->db; }

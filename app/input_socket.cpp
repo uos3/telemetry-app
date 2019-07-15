@@ -51,8 +51,6 @@ SocketInput::SocketInput (uint16_t port,
 
 	socket.listen(QHostAddress(QString::fromStdString(hostname)), port);
 
-	qDebug("listening.");
-
 	connect(&socket, &QTcpServer::newConnection, this, &SocketInput::new_client);
 }
 
@@ -60,13 +58,10 @@ void SocketInput::new_client () {
 	auto client = new SocketInputClient(socket.nextPendingConnection(), this);
 	clients.push_back(client);
 
-	qDebug("new socket client.");
-
 	connect(client, &SocketInputClient::new_packet,
 	        this, &SocketInput::new_packet);
 
 	connect(client->get_socket(), &QTcpSocket::disconnected, [&](){
-		qDebug("socket client disconnecting.");
 		clients.erase(
 			std::remove(clients.begin(), clients.end(), client), clients.end());
 	});

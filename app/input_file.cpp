@@ -17,6 +17,7 @@ FileInput::FileInput (const std::string& fname,
 }
 
 void FileInput::file_changed () {
+	// NOTE: assumes that just one packet has been inserted in this update.
 	Buffer buffer = Buffer::from_file(this->fname, this->packet_size);
 
 	Packet packet;

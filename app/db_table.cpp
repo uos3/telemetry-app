@@ -1,22 +1,18 @@
 #include "db_table.h"
 
-#include "QVBoxLayout"
-#include "QSizePolicy"
+#include <QDebug>
+#include <QVBoxLayout>
+#include <QSizePolicy>
 
 
-DBTable::DBTable(
-	QSqlDatabase& db,
-	std::string table,
-	QWidget* parent,
-	Qt::WindowFlags f,
-	std::string sort_by)
-	: QWidget(parent, f)
-	, db(db)
-	, table(table)
-	, sort_by(sort_by)
-	, model(new QSqlQueryModel(this))
-	, view(new QTableView(this)) {
-
+DBTable::DBTable (QSqlDatabase& db, std::string table, QWidget* parent,
+                  Qt::WindowFlags f, std::string sort_by)
+                 : QWidget(parent, f)
+                 , db(db)
+                 , table(table)
+                 , sort_by(sort_by)
+                 , model(new QSqlQueryModel(this))
+                 , view(new QTableView(this)) {
 	setLayout(new QVBoxLayout(this));
 	view->setModel(model);
 	layout()->addWidget(view);
@@ -24,7 +20,28 @@ DBTable::DBTable(
 
 	model->setQuery(
 		QSqlQuery(QString::fromStdString(DBTable::query_string(table, sort_by)), db));
-	model->query().exec();
+
+	/* TODO #temp */
+	/* if (table != "img") */
+	/* 	return; */
+
+	/* { */
+	/* 	QDebug deb = qDebug(); */
+	/* 	for (int i = 0; i < model->columnCount(); i++) { */
+	/* 		deb << model->headerData(i, Qt::Horizontal) << " "; */
+	/* 	} */
+	/* } */
+
+	/* for (int r = 0; r < model->rowCount(); r++) { */
+	/* 	QDebug deb = qDebug(); */
+	/* 	for (int c = 0; c < model->columnCount(); c++) { */
+	/* 		deb << model->data(model->index(r, c)) << " "; */
+	/* 	} */
+	/* } */
+}
+
+QSqlQueryModel* DBTable::get_model () {
+	return model;
 }
 
 void DBTable::refresh (const Packet& p) {

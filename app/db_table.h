@@ -13,12 +13,11 @@ class DBTable : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit DBTable (
-		QSqlDatabase& db,
-		std::string table,
-		QWidget* parent=nullptr,
-		Qt::WindowFlags f=Qt::WindowFlags(),
-		std::string sort_by="frame_id");
+	explicit DBTable (QSqlDatabase& db, std::string table,
+	                  QWidget* parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags(),
+	                  std::string sort_by="frame_id");
+
+	QSqlQueryModel* get_model ();
 
 public slots:
 	void refresh (const Packet& p);

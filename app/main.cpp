@@ -2,10 +2,8 @@
 #include <tuple>
 
 #include <QApplication>
-#include <QDebug>
-#include <QFileSystemWatcher>
 #include <QObject>
-#include <QtNetwork>
+#include <QSqlDatabase>
 
 #include "buffer.h"
 #include "cli.h"
@@ -17,7 +15,6 @@
 #include "output_json.h"
 #include "output_upload.h"
 #include "secrets/secrets.h"
-#include "topwindow.h"
 #include "uploader.h"
 
 
@@ -26,38 +23,41 @@ static const uint32_t packet_size = 3136 / 8;
 
 int main (int argc, char* argv[]) {
 
-	if (!cli(argc, argv)) {
-		QApplication a(argc, argv);
+	// If we've received commandline arguments, operate as a CLI program then exit.
+	if (cli(argc, argv))
+		return 0;
 
-		// Watch our binary file for new packets to be parsed/stored.
-		FileInput fi(file_path, packet_size);
-		SocketInput si;
+	QApplication a(argc, argv);
 
-		JsonOutput jo;
-		jo.listen_to(fi);
-		jo.listen_to(si);
+	// Watch for new packets to be dealt with.
+	FileInput fi(file_path, packet_size);
+	SocketInput si;
 
-		DB db("cubesat.db");
-		DBOutput dbo(db);
-		if (db.connect(secrets::username, secrets::password)) {
-			dbo.listen_to(fi);
-			dbo.listen_to(si);
-		} else {
-			qWarning() << "DB failed to connect.";
-		}
+	// Set up outputs for new packets.
+	JsonOutput jo;
+	jo.listen_to(fi);
+	jo.listen_to(si);
 
-		Uploader uploader("http://localhost:8080", secrets::app_key, "cooldude49");
-		UploaderOutput uo(uploader);
-		uo.listen_to(fi);
-		uo.listen_to(si);
+	QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+	db.setDatabaseName("cubesat.db");
+	DBOutput dbo(db);
+	if (db.open(QString::fromStdString(secrets::username),
+				QString::fromStdString(secrets::password))) {
+		dbo.listen_to(fi);
+		dbo.listen_to(si);
+	} else {
+		qWarning("DB failed to connect.");
+	}
 
-		// Display the GUI.
-		/* topwindow w; */
-		/* w.show(); */
+	Uploader uploader("http://localhost:8080", secrets::app_key, "cooldude49");
+	UploaderOutput uo(uploader);
+	uo.listen_to(fi);
+	uo.listen_to(si);
 
-		MainWindow window(db);
-		window.show();
+	// Show the main window.
+	MainWindow window(db);
+	QObject::connect(&dbo, &DBOutput::packet_output, &window, &MainWindow::refresh);
+	window.show();
 
-		return a.exec();
-	} else { return 0; }
+	return a.exec();
 }

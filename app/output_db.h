@@ -1,7 +1,8 @@
 #pragma once
 
-#include "db.h"
 #include "output.h"
+
+#include <QSqlDatabase>
 
 
 // for inserting new packets into the local database.
@@ -10,11 +11,11 @@ class DBOutput : public Output
 	Q_OBJECT
 
 public:
-	DBOutput (DB& db, QObject* parent=nullptr);
+	DBOutput (QSqlDatabase& db, QObject* parent=nullptr);
 
-public slots:
-	void output (const Buffer& buffer, const Packet& packet) override;
+protected:
+	bool do_output (const Buffer& buffer, const Packet& packet) override;
 
 private:
-	DB& db;
+	QSqlDatabase& db;
 };

@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT += \
+    charts \
     core \
     gui \
     network \
@@ -49,9 +50,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     buffer.cpp \
     cli.cpp \
-    currentstatus.cpp \
-    datawindow.cpp \
+    # currentstatus.cpp \
+    # datawindow.cpp \
     db.cpp \
+    db_table.cpp \
     input_file.cpp \
     input_socket.cpp \
     main.cpp \
@@ -60,16 +62,17 @@ SOURCES += \
     output_json.cpp \
     output_upload.cpp \
     packet.cpp \
-    topwindow.cpp \
+    # topwindow.cpp \
     uploader.cpp \
     utility.cpp
 
 HEADERS += \
     buffer.h \
     cli.h \
-    currentstatus.h \
-    datawindow.h \
+    # currentstatus.h \
+    # datawindow.h \
     db.h \
+    db_table.h \
     input.h \
     input_file.h \
     input_socket.h \
@@ -79,11 +82,11 @@ HEADERS += \
     output_json.h \
     output_upload.h \
     packet.h \
-    topwindow.h\
+    # topwindow.h\
     uploader.h \
     utility.h
 
-FORMS += \
-    currentstatus.ui \
-    datawindow.ui \
-    topwindow.ui
+# FORMS += \
+#     currentstatus.ui \
+#     datawindow.ui \
+#     topwindow.ui

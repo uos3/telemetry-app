@@ -12,8 +12,8 @@ class UploaderOutput : public Output
 public:
 	UploaderOutput (Uploader& uploader, QObject* parent=nullptr);
 
-public slots:
-	void output (const Buffer& buffer, const Packet& packet) override;
+protected:
+	bool do_output (const Buffer& buffer, const Packet& packet) override;
 
 private:
 	Uploader& uploader;

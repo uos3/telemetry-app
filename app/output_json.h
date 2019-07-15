@@ -15,8 +15,8 @@ class JsonOutput : public Output
 public:
 	JsonOutput (std::ostream& os=std::cout, QObject* parent=nullptr);
 
-public slots:
-	void output (const Buffer& buffer, const Packet& packet) override;
+protected:
+	bool do_output (const Buffer& buffer, const Packet& packet) override;
 
 private:
 	cereal::JSONOutputArchive archive;
