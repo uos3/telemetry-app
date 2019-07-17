@@ -14,7 +14,7 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
                        , img_table(db, "img", this)
                        , config_table(db, "config", this)
                        , tables_tabs(new QTabWidget(this))
-                       , tables_dock(new QDockWidget("Packet Data", this))
+                       , tables_widget(new QWidget(this))
                        , frames_columns(new QListWidget(this))
                        , gps_columns(new QListWidget(this))
                        , imu_columns(new QListWidget(this))
@@ -38,12 +38,13 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
 	graphing_widget->setLayout(layout);
 	layout->addWidget(columns_tabs);
 	layout->addWidget(graph_tabs);
-	layout->setContentsMargins(5, 5, 5, 5);
-	columns_tabs->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
-	graph_tabs->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+	layout->setContentsMargins(tab_margins, tab_margins, tab_margins, tab_margins);
+	columns_tabs->setMinimumWidth(columns_tabs->count() * 58); // kind of arbitrary
+	columns_tabs->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+	graph_tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	mode_tabs->addTab(graphing_widget, "Graphing");
-	mode_tabs->addTab(tables_dock, "Tables");
+	mode_tabs->addTab(tables_widget, "Tables");
 	setCentralWidget(mode_tabs);
 }
 
@@ -55,7 +56,10 @@ void MainWindow::setUpTables () {
 	tables_tabs->addTab(&img_table, "IMG");
 	tables_tabs->addTab(&config_table, "Config");
 
-	tables_dock->setWidget(tables_tabs);
+	tables_widget->setLayout(new QHBoxLayout(tables_widget));
+	tables_widget->layout()->addWidget(tables_tabs);
+	tables_widget->layout()->setContentsMargins(
+		tab_margins, tab_margins, tab_margins, tab_margins);
 }
 
 void MainWindow::setUpColumns () {

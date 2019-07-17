@@ -16,28 +16,10 @@ DBTable::DBTable (QSqlDatabase& db, std::string table, QWidget* parent,
 	setLayout(new QVBoxLayout(this));
 	view->setModel(model);
 	layout()->addWidget(view);
-	layout()->setContentsMargins(5, 5, 5, 5);
+	layout()->setContentsMargins(margins, margins, margins, margins);
 
 	model->setQuery(
 		QSqlQuery(QString::fromStdString(DBTable::query_string(table, sort_by)), db));
-
-	/* TODO #temp */
-	/* if (table != "img") */
-	/* 	return; */
-
-	/* { */
-	/* 	QDebug deb = qDebug(); */
-	/* 	for (int i = 0; i < model->columnCount(); i++) { */
-	/* 		deb << model->headerData(i, Qt::Horizontal) << " "; */
-	/* 	} */
-	/* } */
-
-	/* for (int r = 0; r < model->rowCount(); r++) { */
-	/* 	QDebug deb = qDebug(); */
-	/* 	for (int c = 0; c < model->columnCount(); c++) { */
-	/* 		deb << model->data(model->index(r, c)) << " "; */
-	/* 	} */
-	/* } */
 }
 
 QSqlQueryModel* DBTable::get_model () {

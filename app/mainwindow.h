@@ -5,7 +5,6 @@
 
 #include <QChart>
 #include <QChartView>
-#include <QDockWidget>
 #include <QLineSeries>
 #include <QListWidget>
 #include <QMainWindow>
@@ -29,6 +28,8 @@ private:
 	void setUpColumns (QSqlQueryModel* model, QListWidget* widget);
 	void setUpGraphs ();
 
+	static const int tab_margins = 5;
+
 	QSqlDatabase& db;
 
 	// tables at the bottom
@@ -40,7 +41,7 @@ private:
 	DBTable config_table;
 
 	QTabWidget* tables_tabs;
-	QDockWidget* tables_dock;
+	QWidget* tables_widget;
 
 	// checkable list of columns on the side
 	QListWidget* frames_columns;
