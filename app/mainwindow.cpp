@@ -26,29 +26,40 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
                        , chart(new QChart())
                        , chart_view(new QChartView(this))
                        , graph_tabs(new QTabWidget(this))
+                       , graphing_split(new QSplitter(this))
                        , graphing_widget(new QWidget(this))
                        , mode_tabs(new QTabWidget(this)) {
-	resize(1000, 600);
+	// set the default window size
+	int window_width = 1000;
+	int window_height = 600;
+	resize(window_width, window_height);
 
+	// create constituent widgets
 	setUpTables();
 	setUpColumns();
 	setUpGraphs();
 
+	// set up the default size of the graphing columns
+	graphing_split->addWidget(columns_tabs);
+	graphing_split->addWidget(graph_tabs);
+	int columns_size = columns_tabs->count() * 57;
+	int graph_size = window_width - columns_size;
+	graphing_split->setSizes({ columns_size, graph_size });
+
+	// add some margins to the graphing tab
 	QHBoxLayout* layout = new QHBoxLayout(graphing_widget);
 	graphing_widget->setLayout(layout);
-	layout->addWidget(columns_tabs);
-	layout->addWidget(graph_tabs);
+	layout->addWidget(graphing_split);
 	layout->setContentsMargins(tab_margins, tab_margins, tab_margins, tab_margins);
-	columns_tabs->setMinimumWidth(columns_tabs->count() * 58); // kind of arbitrary
-	columns_tabs->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-	graph_tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
+	// add the main tabs to the window
 	mode_tabs->addTab(graphing_widget, "Graphing");
 	mode_tabs->addTab(tables_widget, "Tables");
 	setCentralWidget(mode_tabs);
 }
 
 void MainWindow::setUpTables () {
+	// add table tabs
 	tables_tabs->addTab(&frames_table, "Frames");
 	tables_tabs->addTab(&gps_table, "GPS");
 	tables_tabs->addTab(&imu_table, "IMU");
@@ -56,6 +67,7 @@ void MainWindow::setUpTables () {
 	tables_tabs->addTab(&img_table, "IMG");
 	tables_tabs->addTab(&config_table, "Config");
 
+	// add some margins
 	tables_widget->setLayout(new QHBoxLayout(tables_widget));
 	tables_widget->layout()->addWidget(tables_tabs);
 	tables_widget->layout()->setContentsMargins(
@@ -82,10 +94,13 @@ void MainWindow::setUpColumns (QSqlQueryModel* model, QListWidget* widget) {
 	if (model == nullptr || widget == nullptr)
 		return;
 
+	// add a list item for the names of each column from the sql table
 	for (int i = 0; i < model->columnCount(); i++) {
 		widget->addItem(model->headerData(i, Qt::Horizontal).toString());
 		auto item = widget->item(i);
-		item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+		item->setFlags((item->flags()
+			           | Qt::ItemIsUserCheckable) // checkboxes
+			           & ~Qt::ItemIsSelectable);  // can't 'select' columns
 		item->setCheckState(Qt::Unchecked);
 	}
 }

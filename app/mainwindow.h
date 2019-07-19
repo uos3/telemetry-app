@@ -8,6 +8,7 @@
 #include <QLineSeries>
 #include <QListWidget>
 #include <QMainWindow>
+#include <QSplitter>
 #include <QSqlDatabase>
 #include <QTabWidget>
 
@@ -59,6 +60,7 @@ private:
 	QtCharts::QChartView* chart_view;
 	QTabWidget* graph_tabs;
 
+	QSplitter* graphing_split;
 	QWidget* graphing_widget;
 
 	// tab between tables and graphs
