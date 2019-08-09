@@ -1,11 +1,12 @@
 #pragma once
 
 #include "packet.h"
+#include "db_columns.h"
+#include "db_graph.h"
 #include "db_table.h"
 
-#include <QChart>
-#include <QChartView>
-#include <QLineSeries>
+#include <QDockWidget>
+#include <QListView>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QSplitter>
@@ -26,7 +27,6 @@ public slots:
 private:
 	void setUpTables ();
 	void setUpColumns ();
-	void setUpColumns (QSqlQueryModel* model, QListWidget* widget);
 	void setUpGraphs ();
 
 	static const int tab_margins = 5;
@@ -43,26 +43,30 @@ private:
 
 	QTabWidget* tables_tabs;
 	QWidget* tables_widget;
+	QDockWidget* tables_dock;
 
 	// checkable list of columns on the side
-	QListWidget* frames_columns;
-	QListWidget* gps_columns;
-	QListWidget* imu_columns;
-	QListWidget* health_columns;
-	QListWidget* img_columns;
-	QListWidget* config_columns;
+	DBColumns* frames_columns;
+	DBColumns* gps_columns;
+	DBColumns* imu_columns;
+	DBColumns* health_columns;
+	DBColumns* img_columns;
+	DBColumns* config_columns;
+
+	QListView* frames_column_list;
+	QListView* gps_column_list;
+	QListView* imu_column_list;
+	QListView* health_column_list;
+	QListView* img_column_list;
+	QListView* config_column_list;
 
 	QTabWidget* columns_tabs;
 
 	// customisable graph(s) in the centre
-	QtCharts::QLineSeries* series;
-	QtCharts::QChart* chart;
-	QtCharts::QChartView* chart_view;
+	DBGraph* graph;
 	QTabWidget* graph_tabs;
 
 	QSplitter* graphing_split;
 	QWidget* graphing_widget;
-
-	// tab between tables and graphs
-	QTabWidget* mode_tabs;
+	QDockWidget* graphing_dock;
 };

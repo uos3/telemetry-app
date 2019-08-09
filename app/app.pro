@@ -53,6 +53,8 @@ SOURCES += \
     # currentstatus.cpp \
     # datawindow.cpp \
     db.cpp \
+    db_columns.cpp \
+    db_graph.cpp \
     db_table.cpp \
     input_file.cpp \
     input_socket.cpp \
@@ -72,6 +74,8 @@ HEADERS += \
     # currentstatus.h \
     # datawindow.h \
     db.h \
+    db_columns.h \
+    db_graph.h \
     db_table.h \
     input.h \
     input_file.h \

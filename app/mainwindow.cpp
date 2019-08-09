@@ -2,7 +2,6 @@
 
 #include <QSqlQueryModel>
 #include <QHBoxLayout>
-using namespace QtCharts;
 
 
 MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags)
@@ -15,20 +14,31 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
                        , config_table(db, "config", this)
                        , tables_tabs(new QTabWidget(this))
                        , tables_widget(new QWidget(this))
-                       , frames_columns(new QListWidget(this))
-                       , gps_columns(new QListWidget(this))
-                       , imu_columns(new QListWidget(this))
-                       , health_columns(new QListWidget(this))
-                       , img_columns(new QListWidget(this))
-                       , config_columns(new QListWidget(this))
+                       , tables_dock(new QDockWidget(this))
+                       , frames_columns(
+                           new DBColumns("frames", *frames_table.get_model(), this))
+                       , gps_columns(
+                           new DBColumns("gps", *gps_table.get_model(), this))
+                       , imu_columns(
+                           new DBColumns("imu", *imu_table.get_model(), this))
+                       , health_columns(
+                           new DBColumns("health", *health_table.get_model(), this))
+                       , img_columns(
+                           new DBColumns("img", *img_table.get_model(), this))
+                       , config_columns(
+                           new DBColumns("config", *config_table.get_model(), this))
+                       , frames_column_list(new QListView(this))
+                       , gps_column_list(new QListView(this))
+                       , imu_column_list(new QListView(this))
+                       , health_column_list(new QListView(this))
+                       , img_column_list(new QListView(this))
+                       , config_column_list(new QListView(this))
                        , columns_tabs(new QTabWidget(this))
-                       , series(new QLineSeries(this))
-                       , chart(new QChart())
-                       , chart_view(new QChartView(this))
+                       , graph(new DBGraph(db, this))
                        , graph_tabs(new QTabWidget(this))
                        , graphing_split(new QSplitter(this))
                        , graphing_widget(new QWidget(this))
-                       , mode_tabs(new QTabWidget(this)) {
+                       , graphing_dock(new QDockWidget(this)) {
 	// set the default window size
 	int window_width = 1000;
 	int window_height = 600;
@@ -53,9 +63,13 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
 	layout->setContentsMargins(tab_margins, tab_margins, tab_margins, tab_margins);
 
 	// add the main tabs to the window
-	mode_tabs->addTab(graphing_widget, "Graphing");
-	mode_tabs->addTab(tables_widget, "Tables");
-	setCentralWidget(mode_tabs);
+	tables_dock->setWidget(tables_widget);
+	tables_dock->setWindowTitle("Tables");
+	graphing_dock->setWidget(graphing_widget);
+	graphing_dock->setWindowTitle("Graphs");
+	addDockWidget(Qt::BottomDockWidgetArea, tables_dock);
+	addDockWidget(Qt::BottomDockWidgetArea, graphing_dock);
+	tabifyDockWidget(tables_dock, graphing_dock);
 }
 
 void MainWindow::setUpTables () {
@@ -75,61 +89,42 @@ void MainWindow::setUpTables () {
 }
 
 void MainWindow::setUpColumns () {
-	setUpColumns(frames_table.get_model(), frames_columns);
-	setUpColumns(gps_table.get_model(), gps_columns);
-	setUpColumns(imu_table.get_model(), imu_columns);
-	setUpColumns(health_table.get_model(), health_columns);
-	setUpColumns(img_table.get_model(), img_columns);
-	setUpColumns(config_table.get_model(), config_columns);
+	// link list views to corresonding column models
+	frames_column_list->setModel(frames_columns);
+	gps_column_list->setModel(gps_columns);
+	imu_column_list->setModel(imu_columns);
+	health_column_list->setModel(health_columns);
+	img_column_list->setModel(img_columns);
+	config_column_list->setModel(config_columns);
 
-	columns_tabs->addTab(frames_columns, "Frames");
-	columns_tabs->addTab(gps_columns, "GPS");
-	columns_tabs->addTab(imu_columns, "IMU");
-	columns_tabs->addTab(health_columns, "Health");
-	columns_tabs->addTab(img_columns, "IMG");
-	columns_tabs->addTab(config_columns, "Config");
-}
-
-void MainWindow::setUpColumns (QSqlQueryModel* model, QListWidget* widget) {
-	if (model == nullptr || widget == nullptr)
-		return;
-
-	// add a list item for the names of each column from the sql table
-	for (int i = 0; i < model->columnCount(); i++) {
-		widget->addItem(model->headerData(i, Qt::Horizontal).toString());
-		auto item = widget->item(i);
-		item->setFlags((item->flags()
-			           | Qt::ItemIsUserCheckable) // checkboxes
-			           & ~Qt::ItemIsSelectable);  // can't 'select' columns
-		item->setCheckState(Qt::Unchecked);
-	}
+	columns_tabs->addTab(frames_column_list, "Frames");
+	columns_tabs->addTab(gps_column_list, "GPS");
+	columns_tabs->addTab(imu_column_list, "IMU");
+	columns_tabs->addTab(health_column_list, "Health");
+	columns_tabs->addTab(img_column_list, "IMG");
+	columns_tabs->addTab(config_column_list, "Config");
 }
 
 void MainWindow::setUpGraphs () {
-	series->setName("example");
-	series->append(0, 6);
-	series->append(2, 4);
-	series->append(3, 8);
-	series->append(7, 4);
-	series->append(10, 5);
+	graph->add_table("gps", gps_columns);
+	graph->add_table("imu", imu_columns);
+	graph->add_table("health", health_columns);
+	graph->add_table("img", img_columns);
+	graph->add_table("config", config_columns);
 
-	chart->addSeries(series);
-	chart->createDefaultAxes();
-	chart->setTitle("Simple line chart example");
-
-	chart_view->setChart(chart);
-	chart_view->setRenderHint(QPainter::Antialiasing);
-
-	graph_tabs->addTab(chart_view, "Graph");
+	graph_tabs->addTab(graph, "Graph");
 }
 
 void MainWindow::refresh (const Packet& p) {
+	Q_UNUSED(p);
 	/* TODO #speed: this (I think) is making stuff lag -- might have to explicitly make
 	 * this non-blocking? */
-	frames_table.refresh(p);
-	gps_table.refresh(p);
-	imu_table.refresh(p);
-	health_table.refresh(p);
-	img_table.refresh(p);
-	config_table.refresh(p);
+	frames_table.refresh();
+	gps_table.refresh();
+	imu_table.refresh();
+	health_table.refresh();
+	img_table.refresh();
+	config_table.refresh();
+
+	graph->refresh();
 }

@@ -26,8 +26,7 @@ QSqlQueryModel* DBTable::get_model () {
 	return model;
 }
 
-void DBTable::refresh (const Packet& p) {
-	Q_UNUSED(p);
+void DBTable::refresh () {
 	model->setQuery(model->query());
 	model->query().exec();
 }

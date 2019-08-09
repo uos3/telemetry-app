@@ -19,11 +19,10 @@ public:
 
 	QSqlQueryModel* get_model ();
 
-public slots:
-	void refresh (const Packet& p);
+	void refresh ();
 
 private:
-	static std::string query_string (std::string table, std::string sort_by);
+	static std::string query_string (std::string table, std::string sort_by="");
 
 	static const int margins = 0;
 
