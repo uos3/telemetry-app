@@ -33,10 +33,11 @@ public:
 	// refresh the lines in th chart.
 	void refresh ();
 
-	// update which columns have a line in the chart.
+private:
+	// update whether the column `column_name` from the table with checkable columns
+	// `columns` should have its line drawn.
 	void update_lines (DBColumns* columns, std::string column_name);
 
-private:
 	// get a line in the chart from its name.
 	// note: to get a properly formatted line name to put into this method, used
 	// DBGraph::line_name.

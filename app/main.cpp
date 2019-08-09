@@ -42,7 +42,7 @@ int main (int argc, char* argv[]) {
 	db.setDatabaseName("cubesat.db");
 	DBOutput dbo(db);
 	if (db.open(QString::fromStdString(secrets::username),
-				QString::fromStdString(secrets::password))) {
+	            QString::fromStdString(secrets::password))) {
 		dbo.listen_to(fi);
 		dbo.listen_to(si);
 	} else {

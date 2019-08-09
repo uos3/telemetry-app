@@ -31,7 +31,7 @@ void DBTable::refresh () {
 	model->query().exec();
 }
 
-std::string DBTable::query_string(std::string table, std::string sort_by) {
+std::string DBTable::query_string (std::string table, std::string sort_by) {
 	std::string q_str = "select * from " + table;
 	if (!sort_by.empty())
 		q_str += " order by " + sort_by + " desc";

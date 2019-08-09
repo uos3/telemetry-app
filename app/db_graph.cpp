@@ -30,7 +30,7 @@ DBGraph::DBGraph (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags f)
 	layout()->setContentsMargins(margins, margins, margins, margins);
 }
 
-void DBGraph::add_table(std::string table_name, DBColumns* columns) {
+void DBGraph::add_table (std::string table_name, DBColumns* columns) {
 	auto query_model = new QSqlQueryModel(this);
 	std::string query_str = DBGraph::query_string(table_name, "timestamp");
 	query_model->setQuery(QSqlQuery(QString::fromStdString(query_str), db));
@@ -44,7 +44,7 @@ void DBGraph::add_table(std::string table_name, DBColumns* columns) {
 		});
 }
 
-void DBGraph::remove_table(std::string table_name) {
+void DBGraph::remove_table (std::string table_name) {
 	auto it = tables.find(table_name);
 	if (it == tables.end())
 		return;
@@ -57,7 +57,9 @@ void DBGraph::remove_table(std::string table_name) {
 
 void DBGraph::refresh () {
 	/* TODO #speed: use frame_id to just append new data, instead of throwing all the
-	 *              graphs away and starting again each time. */
+	 *              graphs away and starting again each time. might also want to provide
+	 *              a force-regen button in this case, to actually regenerate everything
+	 *              (just in case). */
 	for (auto l : chart->series()) {
 		(dynamic_cast<QLineSeries*>(l))->clear();
 	}
@@ -105,8 +107,8 @@ void DBGraph::refresh () {
 			}
 
 			// if applicable, set the points we just created as the line's data. note:
-			// calling 'append' on a line triggers an update on the chart, so to save on
-			// redraws we remove the line, append everything, then re-add it afterwards.
+			// if we don't remove/re-add the series, the line doesn't draw. also, we
+			// append all our points at once to possibly save on redraws.
 			if (!can_graph)
 				continue;
 
@@ -122,9 +124,6 @@ void DBGraph::refresh () {
 }
 
 void DBGraph::update_lines (DBColumns* columns, std::string column_name) {
-	// TODO :S
-	/* auto table = dynamic_cast<DBColumns*>(sender()); */
-
 	if (columns == nullptr)
 		return;
 
@@ -164,30 +163,29 @@ QtCharts::QLineSeries* DBGraph::get_line (std::string name) const {
 
 void DBGraph::recreateAxes () {
 	// QChart::createDefaultAxes not only creates some axes, but also rescales the chart
-	// to the data. if this isn't called, the chart isn't rescaled for new/removed data
-	// despite removing/adding the axes we actually want.
+	// to the data. otherwise, we'd probably have to mess around with the mins and maxes
+	// of all the lines ourselves.
 	chart->createDefaultAxes();
 
+	// remove the axes QChart::createDefaultAxes just made for us.
 	for (auto axis : chart->axes())
 		chart->removeAxis(axis);
 
 	// bit dodgy: for some reason QChart::createDefaultAxes deletes the existing axes,
 	// instead of just removing them. that means we have to remake our axes from scratch
-	// instead of just calling addAxis again. because the axis pointers given to the
-	// series' don't themselves change, the axes attached to each series are still okay.
+	// instead of just calling addAxis again.
 	x_axis = new QDateTimeAxis(this);
 	x_axis->setFormat("yyyy-MM-dd HH:mm:ss:z");
 	x_axis->setTitleText("Date");
 
 	y_axis = new QValueAxis(this);
-	y_axis->setTickCount(10);
 	y_axis->setTitleText("Value");
 
 	chart->addAxis(x_axis, Qt::AlignBottom);
 	chart->addAxis(y_axis, Qt::AlignLeft);
 
-	// nevermind, apparently for axes to work you need to attach them to the chart
-	// before the series so we need to re-attach anyway...
+	// for axes to work you need to attach them to the chart *before* the series, so we
+	// need to re-attach them.
 	for (auto s : chart->series()) {
 		s->attachAxis(x_axis);
 		s->attachAxis(y_axis);
@@ -198,7 +196,7 @@ std::string DBGraph::line_name (std::string table_name, std::string column_name)
 	return table_name + "." + column_name;
 }
 
-std::string DBGraph::query_string(std::string table, std::string sort_by) {
+std::string DBGraph::query_string (std::string table, std::string sort_by) {
 	std::string q_str = "select * from " + table;
 	if (!sort_by.empty())
 		q_str += " order by " + sort_by + " asc";
