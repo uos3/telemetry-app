@@ -1,9 +1,9 @@
 #include "db_columns.h"
 
 
-DBColumns::DBColumns (std::string name, const QSqlQueryModel& model, QObject* parent)
+DBColumns::DBColumns (std::string table_name, const QSqlQueryModel& model, QObject* parent)
           : QAbstractListModel(parent)
-          , name(name) {
+          , table_name(table_name) {
 	// insert names and checkedness (default off) for each column in the table
 	for (int i = 0; i < model.columnCount(); i++) {
 		column_names.push_back(
@@ -69,8 +69,8 @@ Qt::ItemFlags DBColumns::flags (const QModelIndex& index) const {
 	return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
 }
 
-std::string DBColumns::get_name () const {
-	return name;
+std::string DBColumns::get_table_name () const {
+	return table_name;
 }
 
 std::vector<std::string> DBColumns::get_column_names () const {

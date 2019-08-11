@@ -24,7 +24,7 @@ public:
 private:
 	static std::string query_string (std::string table, std::string sort_by="");
 
-	static const int margins = 0;
+	static const int MARGINS = 0;
 
 	QSqlDatabase& db;
 	std::string table;

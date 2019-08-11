@@ -28,7 +28,7 @@ public:
 	Qt::ItemFlags flags (const QModelIndex& index) const override;
 
 	// getters
-	std::string get_name () const;
+	std::string get_table_name () const;
 
 	std::vector<std::string> get_column_names () const;
 
@@ -36,7 +36,7 @@ signals:
 	void column_toggled (std::string column);
 
 private:
-	std::string name;
+	std::string table_name;
 
 	// kind of odd not just having a map, but we need vectors so that we can keep our
 	// secific ordering of keys (column names) and index into them by integer index (as

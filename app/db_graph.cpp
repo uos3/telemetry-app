@@ -1,8 +1,7 @@
 #include "db_graph.h"
 
-#include <QDebug>
-
 #include <QDateTime>
+#include <QGraphicsLayout>
 #include <QList>
 #include <QPointF>
 #include <QSqlField>
@@ -11,14 +10,19 @@
 using namespace QtCharts;
 
 
-DBGraph::DBGraph (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags f)
+DBGraph::DBGraph (QSqlDatabase& db,
+                  std::string title,
+                  QWidget* parent,
+                  Qt::WindowFlags f)
                  : QWidget(parent, f)
                  , db(db)
+                 , title(title)
                  , chart(new QChart())
                  , view(new QChartView(this))
                  , x_axis (nullptr)
                  , y_axis (nullptr) {
-	chart->setTitle("Simple DBGraph example");
+	chart->setTitle(QString::fromStdString(title));
+	chart->layout()->setContentsMargins(0, 0, 0, 0);
 
 	recreateAxes();
 
@@ -27,15 +31,16 @@ DBGraph::DBGraph (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags f)
 
 	setLayout(new QVBoxLayout(this));
 	layout()->addWidget(view);
-	layout()->setContentsMargins(margins, margins, margins, margins);
+	layout()->setContentsMargins(MARGINS, MARGINS, MARGINS, MARGINS);
 }
 
-void DBGraph::add_table (std::string table_name, DBColumns* columns) {
+void DBGraph::add_table (DBColumns* columns) {
 	auto query_model = new QSqlQueryModel(this);
-	std::string query_str = DBGraph::query_string(table_name, "timestamp");
+	std::string query_str = DBGraph::query_string(
+		columns->get_table_name(), "timestamp");
 	query_model->setQuery(QSqlQuery(QString::fromStdString(query_str), db));
 
-	tables[table_name] = std::make_pair(columns, query_model);
+	tables[columns->get_table_name()] = std::make_pair(columns, query_model);
 
 	connect(
 		columns, &DBColumns::column_toggled,
@@ -123,11 +128,24 @@ void DBGraph::refresh () {
 	recreateAxes();
 }
 
+std::string DBGraph::get_title () {
+	return title;
+}
+
+DBGraph::Tables& DBGraph::get_tables () {
+	return tables;
+}
+
+void DBGraph::set_title (std::string title) {
+	this->title = title;
+	chart->setTitle(QString::fromStdString(title));
+}
+
 void DBGraph::update_lines (DBColumns* columns, std::string column_name) {
 	if (columns == nullptr)
 		return;
 
-	std::string line_name = DBGraph::line_name(columns->get_name(), column_name);
+	std::string line_name = DBGraph::line_name(columns->get_table_name(), column_name);
 
 	bool now_checked = columns->is_checked(column_name);
 

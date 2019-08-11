@@ -20,18 +20,31 @@
 class DBGraph : public QWidget {
 	Q_OBJECT
 
+using Tables = std::map<std::string, std::pair<DBColumns*, QSqlQueryModel*>>;
+
 public:
 	DBGraph (
-		QSqlDatabase& db, QWidget* parent=nullptr, Qt::WindowFlags f=Qt::WindowFlags());
+		QSqlDatabase& db,
+		std::string title="",
+		QWidget* parent=nullptr,
+		Qt::WindowFlags f=Qt::WindowFlags());
 
 	// add a table to be able to get lines from.
-	void add_table (std::string table_name, DBColumns* columns);
+	void add_table (DBColumns* columns);
 
 	// remove a table.
 	void remove_table (std::string table_name);
 
 	// refresh the lines in th chart.
 	void refresh ();
+
+	// getters
+	std::string get_title ();
+
+	Tables& get_tables ();
+
+	// setters
+	void set_title (std::string title);
 
 private:
 	// update whether the column `column_name` from the table with checkable columns
@@ -52,11 +65,13 @@ private:
 	// get the database query used to retrieve the data for drawing lines.
 	static std::string query_string (std::string table, std::string sort_by="");
 
-	static const int margins = 0;
+	static const int MARGINS = 0;
 
 	QSqlDatabase& db;
 
-	std::map<std::string, std::pair<DBColumns*, QSqlQueryModel*>> tables;
+	std::string title;
+
+	Tables tables;
 
 	/* TODO #speed: implement caching of previously shown lines and their data */
 	QtCharts::QChart* chart;

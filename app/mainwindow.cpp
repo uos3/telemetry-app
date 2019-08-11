@@ -1,68 +1,56 @@
 #include "mainwindow.h"
 
-#include <QSqlQueryModel>
 #include <QHBoxLayout>
+#include <QInputDialog>
+#include <QLabel>
+#include <QSqlQueryModel>
 
 
 MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags)
                        : QMainWindow(parent, flags), db(db)
                        , frames_table(db, "frames", this)
-                       , gps_table(db, "gps", this)
-                       , imu_table(db, "imu", this)
-                       , health_table(db, "health", this)
-                       , img_table(db, "img", this)
-                       , config_table(db, "config", this)
+                       , gps_table(db, GPS_TABLE_NAME, this)
+                       , imu_table(db, IMU_TABLE_NAME, this)
+                       , health_table(db, HEALTH_TABLE_NAME, this)
+                       , img_table(db, IMG_TABLE_NAME, this)
+                       , config_table(db, CONFIG_TABLE_NAME, this)
                        , tables_tabs(new QTabWidget(this))
                        , tables_widget(new QWidget(this))
                        , tables_dock(new QDockWidget(this))
-                       , frames_columns(
-                           new DBColumns("frames", *frames_table.get_model(), this))
-                       , gps_columns(
-                           new DBColumns("gps", *gps_table.get_model(), this))
-                       , imu_columns(
-                           new DBColumns("imu", *imu_table.get_model(), this))
-                       , health_columns(
-                           new DBColumns("health", *health_table.get_model(), this))
-                       , img_columns(
-                           new DBColumns("img", *img_table.get_model(), this))
-                       , config_columns(
-                           new DBColumns("config", *config_table.get_model(), this))
-                       , frames_column_list(new QListView(this))
                        , gps_column_list(new QListView(this))
                        , imu_column_list(new QListView(this))
                        , health_column_list(new QListView(this))
                        , img_column_list(new QListView(this))
                        , config_column_list(new QListView(this))
                        , columns_tabs(new QTabWidget(this))
-                       , graph(new DBGraph(db, this))
                        , graph_tabs(new QTabWidget(this))
                        , graphing_split(new QSplitter(this))
                        , graphing_widget(new QWidget(this))
                        , graphing_dock(new QDockWidget(this)) {
-	// set the default window size
+	// set the default window size.
 	int window_width = 1000;
 	int window_height = 600;
 	resize(window_width, window_height);
 
-	// create constituent widgets
+	// create constituent widgets.
 	setUpTables();
 	setUpColumns();
-	setUpGraphs();
+	setUpGraphTabs();
 
-	// set up the default size of the graphing columns
+	// set up the default size of the graphing columns.
 	graphing_split->addWidget(columns_tabs);
 	graphing_split->addWidget(graph_tabs);
 	int columns_size = columns_tabs->count() * 57;
 	int graph_size = window_width - columns_size;
 	graphing_split->setSizes({ columns_size, graph_size });
 
-	// add some margins to the graphing tab
+	// add some margins to the graphing tab.
 	QHBoxLayout* layout = new QHBoxLayout(graphing_widget);
 	graphing_widget->setLayout(layout);
 	layout->addWidget(graphing_split);
-	layout->setContentsMargins(tab_margins, tab_margins, tab_margins, tab_margins);
+	layout->setContentsMargins(TAB_MARGINS, TAB_MARGINS, TAB_MARGINS, TAB_MARGINS);
 
-	// add the main tabs to the window
+	// add the main tabs to the window.
 	tables_dock->setWidget(tables_widget);
 	tables_dock->setWindowTitle("Tables");
 	graphing_dock->setWidget(graphing_widget);
@@ -73,46 +61,136 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
 }
 
 void MainWindow::setUpTables () {
-	// add table tabs
-	tables_tabs->addTab(&frames_table, "Frames");
-	tables_tabs->addTab(&gps_table, "GPS");
-	tables_tabs->addTab(&imu_table, "IMU");
-	tables_tabs->addTab(&health_table, "Health");
-	tables_tabs->addTab(&img_table, "IMG");
-	tables_tabs->addTab(&config_table, "Config");
+	// add table tabs.
+	tables_tabs->addTab(&frames_table, QString::fromStdString(FRAMES_TITLE));
+	tables_tabs->addTab(&gps_table, QString::fromStdString(GPS_TITLE));
+	tables_tabs->addTab(&imu_table, QString::fromStdString(IMU_TITLE));
+	tables_tabs->addTab(&health_table, QString::fromStdString(HEALTH_TITLE));
+	tables_tabs->addTab(&img_table, QString::fromStdString(IMG_TITLE));
+	tables_tabs->addTab(&config_table, QString::fromStdString(CONFIG_TITLE));
 
-	// add some margins
+	// add some margins.
 	tables_widget->setLayout(new QHBoxLayout(tables_widget));
 	tables_widget->layout()->addWidget(tables_tabs);
 	tables_widget->layout()->setContentsMargins(
-		tab_margins, tab_margins, tab_margins, tab_margins);
+		TAB_MARGINS, TAB_MARGINS, TAB_MARGINS, TAB_MARGINS);
 }
 
 void MainWindow::setUpColumns () {
-	// link list views to corresonding column models
-	frames_column_list->setModel(frames_columns);
-	gps_column_list->setModel(gps_columns);
-	imu_column_list->setModel(imu_columns);
-	health_column_list->setModel(health_columns);
-	img_column_list->setModel(img_columns);
-	config_column_list->setModel(config_columns);
-
-	columns_tabs->addTab(frames_column_list, "Frames");
-	columns_tabs->addTab(gps_column_list, "GPS");
-	columns_tabs->addTab(imu_column_list, "IMU");
-	columns_tabs->addTab(health_column_list, "Health");
-	columns_tabs->addTab(img_column_list, "IMG");
-	columns_tabs->addTab(config_column_list, "Config");
+	// add a tab in the columns view for each table that you might want to graph.
+	columns_tabs->addTab(gps_column_list, QString::fromStdString(GPS_TITLE));
+	columns_tabs->addTab(imu_column_list, QString::fromStdString(IMU_TITLE));
+	columns_tabs->addTab(health_column_list, QString::fromStdString(HEALTH_TITLE));
+	columns_tabs->addTab(img_column_list, QString::fromStdString(IMG_TITLE));
+	columns_tabs->addTab(config_column_list, QString::fromStdString(CONFIG_TITLE));
 }
 
-void MainWindow::setUpGraphs () {
-	graph->add_table("gps", gps_columns);
-	graph->add_table("imu", imu_columns);
-	graph->add_table("health", health_columns);
-	graph->add_table("img", img_columns);
-	graph->add_table("config", config_columns);
+void MainWindow::setUpGraphTabs () {
+	// add 'x' close buttons to tabs.
+	graph_tabs->setTabsClosable(true);
 
-	graph_tabs->addTab(graph, "Graph");
+	// add an 'add tab' tab, and hide its close button.
+	QLabel* add_tab_label = new QLabel(
+		"To add a graph, click the '+' button above.", this);
+	add_tab_label->setAlignment(Qt::AlignCenter);
+	graph_tabs->insertTab(0, add_tab_label, "+");
+	graph_tabs->tabBar()->tabButton(0, QTabBar::RightSide)->resize(0, 0);
+
+	// add a starting graph, and focus on it.
+	addGraph();
+	graph_tabs->setCurrentIndex(0);
+	setActiveGraph(graphs[0]);
+
+	// connect signal to change tab.
+	connect(
+		graph_tabs, &QTabWidget::currentChanged,
+		this, [this](int index){
+			if (index == graph_tabs->count() - 1) {
+				graph_tabs->setCurrentIndex(index - 1);
+				return;
+			}
+
+			auto graph = dynamic_cast<DBGraph*>(graph_tabs->widget(index));
+			auto it = std::find(graphs.begin(), graphs.end(), graph);
+
+			if (it != graphs.end())
+				setActiveGraph(graph);
+		});
+
+	// connect signal to add tabs.
+	connect(
+		graph_tabs, &QTabWidget::tabBarClicked,
+		this, [this](int index){
+			if (index != graph_tabs->count() - 1)
+				return;
+
+			addGraph();
+			graph_tabs->setCurrentIndex(graph_tabs->count() - 2);
+		});
+
+	// connect signal to remove tabs.
+	connect(
+		graph_tabs, &QTabWidget::tabCloseRequested,
+		this, [this](int index){
+			if (index == graph_tabs->count() - 1)
+				return;
+
+			DBGraph* to_remove = dynamic_cast<DBGraph*>(graph_tabs->widget(index));
+
+			graph_tabs->removeTab(index);
+
+			auto remove_it = std::find(graphs.begin(), graphs.end(), to_remove);
+			graphs.erase(remove_it);
+			delete to_remove;
+
+		});
+
+	// connect signal to rename tabs.
+	connect(
+		graph_tabs, &QTabWidget::tabBarDoubleClicked,
+		this, [this](int index){
+			if (index == graph_tabs->count() - 1)
+				return;
+
+			bool ok = true;
+			QString new_name = QInputDialog::getText(
+				this, "Change Graph Name", "Insert new graph name:", QLineEdit::Normal,
+				graph_tabs->tabText(index), &ok);
+
+			if (!ok)
+				return;
+
+			graph_tabs->setTabText(index, new_name);
+			DBGraph* graph = dynamic_cast<DBGraph*>(graph_tabs->widget(index));
+			graph->set_title(new_name.toStdString());
+		});
+}
+
+DBGraph* MainWindow::addGraph () {
+	// create a new graph.
+	std::string name = "Graph " + std::to_string(graphs.size() + 1);
+	DBGraph* graph = new DBGraph(db, name, this);
+
+	// give it DBColumns models, for each table we want checkable boxes for.
+	graph->add_table(new DBColumns(GPS_TABLE_NAME, *gps_table.get_model(), this));
+	graph->add_table(new DBColumns(IMU_TABLE_NAME, *imu_table.get_model(), this));
+	graph->add_table(new DBColumns(HEALTH_TABLE_NAME, *health_table.get_model(), this));
+	graph->add_table(new DBColumns(IMG_TABLE_NAME, *img_table.get_model(), this));
+	graph->add_table(new DBColumns(CONFIG_TABLE_NAME, *config_table.get_model(), this));
+
+	graphs.push_back(graph);
+	graph_tabs->insertTab(graph_tabs->count() - 1, graph, QString::fromStdString(name));
+
+	return graph;
+}
+
+void MainWindow::setActiveGraph (DBGraph* graph) {
+	// link list views to corresonding column models, for the active graph.
+	gps_column_list->setModel(graph->get_tables().at(GPS_TABLE_NAME).first);
+	imu_column_list->setModel(graph->get_tables().at(IMU_TABLE_NAME).first);
+	health_column_list->setModel(graph->get_tables().at(HEALTH_TABLE_NAME).first);
+	img_column_list->setModel(graph->get_tables().at(IMG_TABLE_NAME).first);
+	config_column_list->setModel(graph->get_tables().at(CONFIG_TABLE_NAME).first);
 }
 
 void MainWindow::refresh (const Packet& p) {
@@ -126,5 +204,5 @@ void MainWindow::refresh (const Packet& p) {
 	img_table.refresh();
 	config_table.refresh();
 
-	graph->refresh();
+	dynamic_cast<DBGraph*>(graph_tabs->currentWidget())->refresh();
 }

@@ -16,7 +16,7 @@ DBTable::DBTable (QSqlDatabase& db, std::string table, QWidget* parent,
 	setLayout(new QVBoxLayout(this));
 	view->setModel(model);
 	layout()->addWidget(view);
-	layout()->setContentsMargins(margins, margins, margins, margins);
+	layout()->setContentsMargins(MARGINS, MARGINS, MARGINS, MARGINS);
 
 	model->setQuery(
 		QSqlQuery(QString::fromStdString(DBTable::query_string(table, sort_by)), db));
