@@ -6,7 +6,6 @@
 #include <QChart>
 #include <QChartView>
 #include <QDateTimeAxis>
-#include <QMetaObject>
 #include <QLineSeries>
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
@@ -14,7 +13,6 @@
 #include <QWidget>
 
 #include <map>
-#include <utility>
 
 
 class DBGraph : public QWidget {
@@ -35,7 +33,7 @@ public:
 	// remove a table.
 	void remove_table (std::string table_name);
 
-	// refresh the lines in th chart.
+	// refresh the lines in the chart.
 	void refresh ();
 
 	// getters
@@ -57,7 +55,7 @@ private:
 	QtCharts::QLineSeries* get_line (std::string name) const;
 
 	// regenerate the axes of the chart.
-	void recreateAxes ();
+	void recreate_axes ();
 
 	// get the name of a line in the chart.
 	static std::string line_name (std::string table_name, std::string column_name);

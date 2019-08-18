@@ -26,16 +26,23 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
                        , graph_tabs(new QTabWidget(this))
                        , graphing_split(new QSplitter(this))
                        , graphing_widget(new QWidget(this))
-                       , graphing_dock(new QDockWidget(this)) {
+                       , graphing_dock(new QDockWidget(this))
+                       , toolbar(new QToolBar(this))
+                       , refresh_action(nullptr)
+                       , upload_action(nullptr)
+                       , auto_refresh_action(nullptr)
+                       , notifier(nullptr)
+                       , auto_refresh(false) {
 	// set the default window size.
 	int window_width = 1000;
 	int window_height = 600;
 	resize(window_width, window_height);
 
 	// create constituent widgets.
-	setUpTables();
-	setUpColumns();
-	setUpGraphTabs();
+	set_up_tables();
+	set_up_columns();
+	set_up_graph_tabs();
+	set_up_toolbar();
 
 	// set up the default size of the graphing columns.
 	graphing_split->addWidget(columns_tabs);
@@ -58,9 +65,30 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
 	addDockWidget(Qt::BottomDockWidgetArea, tables_dock);
 	addDockWidget(Qt::BottomDockWidgetArea, graphing_dock);
 	tabifyDockWidget(tables_dock, graphing_dock);
+
+	// add the toolbar at the top.
+	addToolBar(Qt::TopToolBarArea, toolbar);
 }
 
-void MainWindow::setUpTables () {
+void MainWindow::notify_from (Output* output) {
+	this->notifier = output;
+}
+
+void MainWindow::set_auto_refresh (bool auto_refresh) {
+	if (notifier == nullptr)
+		return;
+
+	if (auto_refresh) {
+		connect(notifier, &Output::packet_output, this, &MainWindow::refresh,
+		        Qt::UniqueConnection);
+	} else {
+		disconnect(notifier, &Output::packet_output, this, &MainWindow::refresh);
+	}
+
+	auto_refresh_action->setChecked(auto_refresh);
+}
+
+void MainWindow::set_up_tables () {
 	// add table tabs.
 	tables_tabs->addTab(&frames_table, QString::fromStdString(FRAMES_TITLE));
 	tables_tabs->addTab(&gps_table, QString::fromStdString(GPS_TITLE));
@@ -76,7 +104,7 @@ void MainWindow::setUpTables () {
 		TAB_MARGINS, TAB_MARGINS, TAB_MARGINS, TAB_MARGINS);
 }
 
-void MainWindow::setUpColumns () {
+void MainWindow::set_up_columns () {
 	// add a tab in the columns view for each table that you might want to graph.
 	columns_tabs->addTab(gps_column_list, QString::fromStdString(GPS_TITLE));
 	columns_tabs->addTab(imu_column_list, QString::fromStdString(IMU_TITLE));
@@ -85,7 +113,7 @@ void MainWindow::setUpColumns () {
 	columns_tabs->addTab(config_column_list, QString::fromStdString(CONFIG_TITLE));
 }
 
-void MainWindow::setUpGraphTabs () {
+void MainWindow::set_up_graph_tabs () {
 	// add 'x' close buttons to tabs.
 	graph_tabs->setTabsClosable(true);
 
@@ -97,9 +125,9 @@ void MainWindow::setUpGraphTabs () {
 	graph_tabs->tabBar()->tabButton(0, QTabBar::RightSide)->resize(0, 0);
 
 	// add a starting graph, and focus on it.
-	addGraph();
+	add_graph();
 	graph_tabs->setCurrentIndex(0);
-	setActiveGraph(graphs[0]);
+	set_active_graph(graphs[0]);
 
 	// connect signal to change tab.
 	connect(
@@ -114,7 +142,7 @@ void MainWindow::setUpGraphTabs () {
 			auto it = std::find(graphs.begin(), graphs.end(), graph);
 
 			if (it != graphs.end())
-				setActiveGraph(graph);
+				set_active_graph(graph);
 		});
 
 	// connect signal to add tabs.
@@ -124,7 +152,7 @@ void MainWindow::setUpGraphTabs () {
 			if (index != graph_tabs->count() - 1)
 				return;
 
-			addGraph();
+			add_graph();
 			graph_tabs->setCurrentIndex(graph_tabs->count() - 2);
 		});
 
@@ -166,7 +194,20 @@ void MainWindow::setUpGraphTabs () {
 		});
 }
 
-DBGraph* MainWindow::addGraph () {
+void MainWindow::set_up_toolbar () {
+	refresh_action = toolbar->addAction("refresh");
+	upload_action = toolbar->addAction("upload");
+	auto_refresh_action = toolbar->addAction("auto-refresh");
+
+	connect(refresh_action, &QAction::triggered, this, &MainWindow::refresh);
+
+	auto_refresh_action->setCheckable(true);
+	connect(auto_refresh_action, &QAction::toggled, this, &MainWindow::set_auto_refresh);
+
+	set_auto_refresh(auto_refresh);
+}
+
+DBGraph* MainWindow::add_graph () {
 	// create a new graph.
 	std::string name = "Graph " + std::to_string(graphs.size() + 1);
 	DBGraph* graph = new DBGraph(db, name, this);
@@ -184,17 +225,19 @@ DBGraph* MainWindow::addGraph () {
 	return graph;
 }
 
-void MainWindow::setActiveGraph (DBGraph* graph) {
+void MainWindow::set_active_graph (DBGraph* graph) {
 	// link list views to corresonding column models, for the active graph.
 	gps_column_list->setModel(graph->get_tables().at(GPS_TABLE_NAME).first);
 	imu_column_list->setModel(graph->get_tables().at(IMU_TABLE_NAME).first);
 	health_column_list->setModel(graph->get_tables().at(HEALTH_TABLE_NAME).first);
 	img_column_list->setModel(graph->get_tables().at(IMG_TABLE_NAME).first);
 	config_column_list->setModel(graph->get_tables().at(CONFIG_TABLE_NAME).first);
+
+	/* TODO #correctness: is this always wanted (even if auto-refresh is off)? */
+	graph->refresh();
 }
 
-void MainWindow::refresh (const Packet& p) {
-	Q_UNUSED(p);
+void MainWindow::refresh () {
 	/* TODO #speed: this (I think) is making stuff lag -- might have to explicitly make
 	 * this non-blocking? */
 	frames_table.refresh();

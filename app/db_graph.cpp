@@ -24,7 +24,7 @@ DBGraph::DBGraph (QSqlDatabase& db,
 	chart->setTitle(QString::fromStdString(title));
 	chart->layout()->setContentsMargins(0, 0, 0, 0);
 
-	recreateAxes();
+	recreate_axes();
 
 	view->setChart(chart);
 	view->setRenderHint(QPainter::Antialiasing);
@@ -125,7 +125,7 @@ void DBGraph::refresh () {
 		}
 	}
 
-	recreateAxes();
+	recreate_axes();
 }
 
 std::string DBGraph::get_title () {
@@ -179,7 +179,7 @@ QtCharts::QLineSeries* DBGraph::get_line (std::string name) const {
 	return nullptr;
 }
 
-void DBGraph::recreateAxes () {
+void DBGraph::recreate_axes () {
 	// QChart::createDefaultAxes not only creates some axes, but also rescales the chart
 	// to the data. otherwise, we'd probably have to mess around with the mins and maxes
 	// of all the lines ourselves.

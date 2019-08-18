@@ -4,6 +4,7 @@
 #include "db_columns.h"
 #include "db_graph.h"
 #include "db_table.h"
+#include "output.h"
 
 #include <QDockWidget>
 #include <QListView>
@@ -12,6 +13,8 @@
 #include <QSplitter>
 #include <QSqlDatabase>
 #include <QTabWidget>
+#include <QToolBar>
+
 
 namespace {
 	/* TODO #cleanup: get from elsewhere */
@@ -38,16 +41,21 @@ public:
 		QWidget *parent = nullptr,
 		Qt::WindowFlags flags = Qt::WindowFlags());
 
+	void notify_from (Output* output);
+
 public slots:
-	void refresh (const Packet& p);
+	void set_auto_refresh (bool auto_refresh);
+
+	void refresh ();
 
 private:
-	void setUpTables ();
-	void setUpColumns ();
-	void setUpGraphTabs ();
+	void set_up_tables ();
+	void set_up_columns ();
+	void set_up_graph_tabs ();
+	void set_up_toolbar ();
 
-	DBGraph* addGraph ();
-	void setActiveGraph (DBGraph* graph);
+	DBGraph* add_graph ();
+	void set_active_graph (DBGraph* graph);
 
 	static const int TAB_MARGINS = 5;
 
@@ -83,4 +91,15 @@ private:
 	QSplitter* graphing_split;
 	QWidget* graphing_widget;
 	QDockWidget* graphing_dock;
+
+	// toolbar at the top, for general functions.
+	QToolBar* toolbar;
+	QAction* refresh_action;
+	QAction* upload_action;
+	QAction* auto_refresh_action;
+
+	/* TODO #refactor: this could potentially be a list, but not sure when you'd want
+	 *                 one. */
+	Output* notifier;
+	bool auto_refresh;
 };

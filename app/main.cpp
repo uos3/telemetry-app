@@ -46,7 +46,7 @@ int main (int argc, char* argv[]) {
 		dbo.listen_to(fi);
 		dbo.listen_to(si);
 	} else {
-		qWarning("DB failed to connect.");
+		qCritical("failed to connect to DB.");
 	}
 
 	Uploader uploader("http://localhost:8080", secrets::app_key, "cooldude49");
@@ -56,7 +56,8 @@ int main (int argc, char* argv[]) {
 
 	// Show the main window.
 	MainWindow window(db);
-	QObject::connect(&dbo, &DBOutput::packet_output, &window, &MainWindow::refresh);
+	window.notify_from(&dbo);
+	window.set_auto_refresh(true);
 	window.show();
 
 	return a.exec();

@@ -22,24 +22,24 @@ void Uploader::upload (const QByteArray& data, uint32_t downlink_time) {
 
 	QHttpPart app_key_part;
 	app_key_part.setHeader(QNetworkRequest::ContentDispositionHeader,
-	                   QVariant("form-data; name=\"app_key\""));
+	                       QVariant("form-data; name=\"app_key\""));
 	app_key_part.setBody(app_key.c_str());
 
 	QHttpPart submit_key_part;
 	submit_key_part.setHeader(QNetworkRequest::ContentDispositionHeader,
-	                   QVariant("form-data; name=\"submit_key\""));
+	                          QVariant("form-data; name=\"submit_key\""));
 	submit_key_part.setBody(submit_key.c_str());
 
 	QHttpPart downlink_time_part;
 	downlink_time_part.setHeader(QNetworkRequest::ContentDispositionHeader,
-	                   QVariant("form-data; name=\"downlink_time\""));
+	                             QVariant("form-data; name=\"downlink_time\""));
 	downlink_time_part.setBody(QString::number(downlink_time).toLatin1());
 
 	QHttpPart binary_part;
 	binary_part.setHeader(QNetworkRequest::ContentTypeHeader,
-	                     QVariant("application/octet-stream"));
+	                      QVariant("application/octet-stream"));
 	binary_part.setHeader(QNetworkRequest::ContentDispositionHeader,
-	                     QVariant("form-data; name=\"data\"; filename=\"data.bin\""));
+	                      QVariant("form-data; name=\"data\"; filename=\"data.bin\""));
 	binary_part.setBody(data);
 
 	multi_part->append(app_key_part);
