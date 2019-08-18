@@ -195,10 +195,19 @@ void MainWindow::set_up_graph_tabs () {
 }
 
 void MainWindow::set_up_toolbar () {
+	// left-aligned actions.
 	refresh_action = toolbar->addAction("refresh");
 	upload_action = toolbar->addAction("upload");
+
+	// empty spacer in the middle.
+	auto spacer = new QWidget(toolbar);
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	toolbar->addWidget(spacer);
+
+	// right-aligned actions.
 	auto_refresh_action = toolbar->addAction("auto-refresh");
 
+	// connect up signals, and other initialisation.
 	connect(refresh_action, &QAction::triggered, this, &MainWindow::refresh);
 
 	auto_refresh_action->setCheckable(true);
