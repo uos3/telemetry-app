@@ -49,13 +49,13 @@ int main (int argc, char* argv[]) {
 		qCritical("failed to connect to DB.");
 	}
 
-	Uploader uploader("http://localhost:8080", secrets::app_key, "cooldude49");
-	UploaderOutput uo(uploader);
-	uo.listen_to(fi);
-	uo.listen_to(si);
+	Uploader uploader("http://localhost", 8080, secrets::app_key, "cooldude49");
+	/* UploaderOutput uo(uploader); */
+	/* uo.listen_to(fi); */
+	/* uo.listen_to(si); */
 
 	// Show the main window.
-	MainWindow window(db);
+	MainWindow window(db, uploader);
 	window.notify_from(&dbo);
 	window.set_auto_refresh(true);
 	window.show();

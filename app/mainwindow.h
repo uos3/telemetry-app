@@ -5,6 +5,8 @@
 #include "db_graph.h"
 #include "db_table.h"
 #include "output.h"
+#include "uploader.h"
+#include "uploader_settings.h"
 
 #include <QDockWidget>
 #include <QListView>
@@ -38,6 +40,7 @@ class MainWindow : public QMainWindow {
 public:
 	explicit MainWindow(
 		QSqlDatabase& db,
+		Uploader& uploader,
 		QWidget *parent = nullptr,
 		Qt::WindowFlags flags = Qt::WindowFlags());
 
@@ -45,8 +48,10 @@ public:
 
 public slots:
 	void set_auto_refresh (bool auto_refresh);
-
 	void refresh ();
+
+	void configure_uploader ();
+	void upload (const std::vector<int>& frames);
 
 private:
 	void set_up_tables ();
@@ -60,6 +65,8 @@ private:
 	static const int TAB_MARGINS = 5;
 
 	QSqlDatabase& db;
+
+	Uploader& uploader;
 
 	// tables in a top-level tab.
 	DBTable frames_table;
@@ -97,6 +104,10 @@ private:
 	QAction* refresh_action;
 	QAction* upload_action;
 	QAction* auto_refresh_action;
+	QAction* upload_config_action;
+
+	// a modeless dialog, for changing settings of the uploader.
+	UploaderSettings* uploader_settings;
 
 	/* TODO #refactor: this could potentially be a list, but not sure when you'd want
 	 *                 one. */

@@ -50,8 +50,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     buffer.cpp \
     cli.cpp \
-    # currentstatus.cpp \
-    # datawindow.cpp \
     db.cpp \
     db_columns.cpp \
     db_graph.cpp \
@@ -64,15 +62,13 @@ SOURCES += \
     output_json.cpp \
     output_upload.cpp \
     packet.cpp \
-    # topwindow.cpp \
     uploader.cpp \
+    uploader_settings.cpp \
     utility.cpp
 
 HEADERS += \
     buffer.h \
     cli.h \
-    # currentstatus.h \
-    # datawindow.h \
     db.h \
     db_columns.h \
     db_graph.h \
@@ -86,11 +82,6 @@ HEADERS += \
     output_json.h \
     output_upload.h \
     packet.h \
-    # topwindow.h\
     uploader.h \
+    uploader_settings.h \
     utility.h
-
-# FORMS += \
-#     currentstatus.ui \
-#     datawindow.ui \
-#     topwindow.ui

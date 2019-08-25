@@ -6,18 +6,21 @@
 #include <QNetworkRequest>
 #include <QUrlQuery>
 
+#include <string>
 
-Uploader::Uploader (std::string target, std::string app_key,
+
+Uploader::Uploader (std::string address, uint16_t port, std::string app_key,
                     std::string submit_key) :
 	manager(new QNetworkAccessManager(this)),
-	target(target),
+	address(address),
+	port(port),
 	app_key(app_key),
 	submit_key(submit_key) { }
 
 void Uploader::upload (const QByteArray& data, uint32_t downlink_time) {
 	multi_part.reset(new QHttpMultiPart(QHttpMultiPart::FormDataType, this));
 
-	QUrl url(QString::fromStdString(target));
+	QUrl url(QString::fromStdString(get_target()));
 	QNetworkRequest request(url);
 
 	QHttpPart app_key_part;
@@ -70,7 +73,38 @@ void Uploader::reply_finished (QNetworkReply* reply) {
 	}
 }
 
-std::string Uploader::get_target () { return this->target; }
-void Uploader::set_target (std::string target) { this->target = target; }
+std::string Uploader::get_target () { return address + ':' + std::to_string(port); }
+void Uploader::set_target (std::string target) {
+	std::string addr = target.substr(0, target.find(':'));
+	std::string port_str = target.substr(target.find(':') + 1);
+	unsigned long port_long = 0;
+
+	try {
+		port_long = std::stoul(port_str);
+	} catch (std::invalid_argument& e) {
+		qCritical("port '%s' passed to Uploader::set_target was invalid.",
+		          port_str.c_str());
+		return;
+	} catch (std::out_of_range& e) {
+		qCritical("port '%s' passed to Uploader::set_target was out of range.",
+		          port_str.c_str());
+		return;
+	}
+
+	if (port_long > 65535) {
+		qCritical("port '%s' passed to Uploader::set_target was out of range.",
+		          port_str.c_str());
+		return;
+	}
+
+	address = addr;
+	port = static_cast<uint16_t>(port_long);
+}
+std::string Uploader::get_address () { return this->address; }
+void Uploader::set_address (std::string address) { this->address = address; }
+uint16_t Uploader::get_port () { return this->port; }
+void Uploader::set_port (uint16_t port) { this->port = port; }
+std::string Uploader::get_app_key () { return this->app_key; }
 void Uploader::set_app_key (std::string app_key) { this->app_key = app_key; }
+std::string Uploader::get_submit_key () { return this->submit_key; }
 void Uploader::set_submit_key (std::string submit_key) { this->submit_key = submit_key; }

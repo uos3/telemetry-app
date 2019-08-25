@@ -4,6 +4,7 @@
 #include <QGraphicsLayout>
 #include <QList>
 #include <QPointF>
+#include <QSqlError>
 #include <QSqlField>
 #include <QSqlRecord>
 #include <QVBoxLayout>
@@ -36,9 +37,9 @@ DBGraph::DBGraph (QSqlDatabase& db,
 
 void DBGraph::add_table (DBColumns* columns) {
 	auto query_model = new QSqlQueryModel(this);
-	std::string query_str = DBGraph::query_string(
-		columns->get_table_name(), "timestamp");
-	query_model->setQuery(QSqlQuery(QString::fromStdString(query_str), db));
+	QString query_str = QString::fromStdString(DBGraph::query_string(
+		columns->get_table_name(), "timestamp"));
+	query_model->setQuery(QSqlQuery(query_str, db));
 
 	tables[columns->get_table_name()] = std::make_pair(columns, query_model);
 
@@ -76,12 +77,18 @@ void DBGraph::refresh () {
 		DBColumns* columns = table.second.first;
 		QSqlQueryModel* model = table.second.second;
 
-		model->setQuery(model->query());
-		model->query().exec();
-
 		int timestamp_idx = model->query().record().indexOf("timestamp");
 		if (timestamp_idx == -1)
 			continue;
+
+		// re-execute the query for the table's data, to get new additions.
+		QString query_str = QString::fromStdString(DBGraph::query_string(
+			columns->get_table_name(), "timestamp"));
+		if (!model->query().exec(query_str)) {
+			qWarning("failed to refresh graph from database: %s",
+			         qPrintable(model->query().lastError().text()));
+			continue;
+		}
 
 		for (int col=0; col < model->columnCount(); col++) {
 			// see which columns in the table we have a line for.
@@ -120,7 +127,6 @@ void DBGraph::refresh () {
 			line->append(points);
 
 			chart->removeSeries(line);
-
 			chart->addSeries(line);
 		}
 	}

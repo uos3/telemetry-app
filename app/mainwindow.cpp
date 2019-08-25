@@ -3,11 +3,13 @@
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QLabel>
-#include <QSqlQueryModel>
 
 
-MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags)
-                       : QMainWindow(parent, flags), db(db)
+MainWindow::MainWindow (QSqlDatabase& db,
+                        Uploader& uploader,
+                        QWidget* parent,
+                        Qt::WindowFlags flags)
+                       : QMainWindow(parent, flags), db(db), uploader(uploader)
                        , frames_table(db, "frames", this)
                        , gps_table(db, GPS_TABLE_NAME, this)
                        , imu_table(db, IMU_TABLE_NAME, this)
@@ -31,6 +33,7 @@ MainWindow::MainWindow (QSqlDatabase& db, QWidget* parent, Qt::WindowFlags flags
                        , refresh_action(nullptr)
                        , upload_action(nullptr)
                        , auto_refresh_action(nullptr)
+                       , uploader_settings(new UploaderSettings(uploader, this))
                        , notifier(nullptr)
                        , auto_refresh(false) {
 	// set the default window size.
@@ -86,6 +89,35 @@ void MainWindow::set_auto_refresh (bool auto_refresh) {
 	}
 
 	auto_refresh_action->setChecked(auto_refresh);
+}
+
+void MainWindow::refresh () {
+	/* TODO #speed: this (I think) is making stuff lag -- might have to explicitly make
+	 * this non-blocking? */
+	frames_table.refresh();
+	gps_table.refresh();
+	imu_table.refresh();
+	health_table.refresh();
+	img_table.refresh();
+	config_table.refresh();
+
+	dynamic_cast<DBGraph*>(graph_tabs->currentWidget())->refresh();
+}
+
+void MainWindow::configure_uploader () {
+	if (uploader_settings == nullptr) return;
+
+	uploader_settings->show();
+	uploader_settings->raise();
+	uploader_settings->activateWindow();
+}
+
+void MainWindow::upload (const std::vector<int>& frames) {
+	// TODO #finish: invoke the uploader -- will prob want an extra db table with
+	//               (foreign) 'frame id' + 'is uploaded' to know what to upload (in
+	//               lieu of extra user control).
+	Q_UNUSED(frames);
+	qDebug("finish me.");
 }
 
 void MainWindow::set_up_tables () {
@@ -196,8 +228,8 @@ void MainWindow::set_up_graph_tabs () {
 
 void MainWindow::set_up_toolbar () {
 	// left-aligned actions.
-	refresh_action = toolbar->addAction("refresh");
-	upload_action = toolbar->addAction("upload");
+	refresh_action = toolbar->addAction("Refresh");
+	upload_action = toolbar->addAction("Upload");
 
 	// empty spacer in the middle.
 	auto spacer = new QWidget(toolbar);
@@ -205,13 +237,17 @@ void MainWindow::set_up_toolbar () {
 	toolbar->addWidget(spacer);
 
 	// right-aligned actions.
-	auto_refresh_action = toolbar->addAction("auto-refresh");
+	auto_refresh_action = toolbar->addAction("Auto-refresh");
+	upload_config_action = toolbar->addAction("Configure uploads");
 
 	// connect up signals, and other initialisation.
 	connect(refresh_action, &QAction::triggered, this, &MainWindow::refresh);
 
 	auto_refresh_action->setCheckable(true);
 	connect(auto_refresh_action, &QAction::toggled, this, &MainWindow::set_auto_refresh);
+
+	connect(upload_config_action, &QAction::triggered,
+	        this, &MainWindow::configure_uploader);
 
 	set_auto_refresh(auto_refresh);
 }
@@ -244,17 +280,4 @@ void MainWindow::set_active_graph (DBGraph* graph) {
 
 	/* TODO #correctness: is this always wanted (even if auto-refresh is off)? */
 	graph->refresh();
-}
-
-void MainWindow::refresh () {
-	/* TODO #speed: this (I think) is making stuff lag -- might have to explicitly make
-	 * this non-blocking? */
-	frames_table.refresh();
-	gps_table.refresh();
-	imu_table.refresh();
-	health_table.refresh();
-	img_table.refresh();
-	config_table.refresh();
-
-	dynamic_cast<DBGraph*>(graph_tabs->currentWidget())->refresh();
 }
