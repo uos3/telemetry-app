@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 
+#include <QByteArray>
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QLabel>
+#include <QSqlRecord>
 
 
 MainWindow::MainWindow (QSqlDatabase& db,
@@ -113,11 +115,21 @@ void MainWindow::configure_uploader () {
 }
 
 void MainWindow::upload (const std::vector<int>& frames) {
-	// TODO #finish: invoke the uploader -- will prob want an extra db table with
-	//               (foreign) 'frame id' + 'is uploaded' to know what to upload (in
-	//               lieu of extra user control).
-	Q_UNUSED(frames);
-	qDebug("finish me.");
+	auto frames_model = frames_table.get_model();
+
+	// only upload if *all* the frames have a valid binary.
+	std::vector<QByteArray> binaries;
+	for (auto frame_id : frames) {
+		auto binary = frames_model->record(frame_id).value("frame_bin").toByteArray();
+		if (binary.isEmpty() || binary.isNull()) {
+			qCritical("couldn't find binary in database to upload! upload failed.");
+			return;
+		}
+		binaries.push_back(binary);
+	}
+
+	for (auto binary : binaries)
+		uploader.upload(binary);
 }
 
 void MainWindow::set_up_tables () {
@@ -245,6 +257,14 @@ void MainWindow::set_up_toolbar () {
 
 	auto_refresh_action->setCheckable(true);
 	connect(auto_refresh_action, &QAction::toggled, this, &MainWindow::set_auto_refresh);
+
+	/* TODO #finish: choose which frame(s) to upload properly */
+	connect(upload_action, &QAction::triggered, this, [this](bool checked){
+		Q_UNUSED(checked);
+
+		auto frame_id = frames_table.get_model()->rowCount();
+		upload({ frame_id });
+	});
 
 	connect(upload_config_action, &QAction::triggered,
 	        this, &MainWindow::configure_uploader);

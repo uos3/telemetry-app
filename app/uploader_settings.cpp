@@ -56,7 +56,7 @@ void UploaderSettings::accept () {
 	uploader.set_port(port);
 	uploader.set_app_key(app_key_field->text().toStdString());
 	uploader.set_submit_key(submit_key_field->text().toStdString());
-	done(1);
+	done(QDialog::Accepted);
 }
 
 void UploaderSettings::showEvent (QShowEvent* event) {
