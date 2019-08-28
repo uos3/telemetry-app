@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+#include "statusbar.h"
+
 #include <QByteArray>
 #include <QHBoxLayout>
 #include <QInputDialog>
@@ -73,6 +75,11 @@ MainWindow::MainWindow (QSqlDatabase& db,
 
 	// add the toolbar at the top.
 	addToolBar(Qt::TopToolBarArea, toolbar);
+
+	// add a status bar at the bottom.
+	StatusBar::set_instance(new QStatusBar(this));
+	StatusBar::install_message_handler();
+	setStatusBar(StatusBar::get_instance());
 }
 
 void MainWindow::notify_from (Output* output) {
@@ -176,7 +183,7 @@ void MainWindow::set_up_graph_tabs () {
 	// connect signal to change tab.
 	connect(
 		graph_tabs, &QTabWidget::currentChanged,
-		this, [this](int index){
+		this, [this](int index) {
 			if (index == graph_tabs->count() - 1) {
 				graph_tabs->setCurrentIndex(index - 1);
 				return;
@@ -192,7 +199,7 @@ void MainWindow::set_up_graph_tabs () {
 	// connect signal to add tabs.
 	connect(
 		graph_tabs, &QTabWidget::tabBarClicked,
-		this, [this](int index){
+		this, [this](int index) {
 			if (index != graph_tabs->count() - 1)
 				return;
 
@@ -203,7 +210,7 @@ void MainWindow::set_up_graph_tabs () {
 	// connect signal to remove tabs.
 	connect(
 		graph_tabs, &QTabWidget::tabCloseRequested,
-		this, [this](int index){
+		this, [this](int index) {
 			if (index == graph_tabs->count() - 1)
 				return;
 
@@ -220,7 +227,7 @@ void MainWindow::set_up_graph_tabs () {
 	// connect signal to rename tabs.
 	connect(
 		graph_tabs, &QTabWidget::tabBarDoubleClicked,
-		this, [this](int index){
+		this, [this](int index) {
 			if (index == graph_tabs->count() - 1)
 				return;
 
@@ -259,7 +266,7 @@ void MainWindow::set_up_toolbar () {
 	connect(auto_refresh_action, &QAction::toggled, this, &MainWindow::set_auto_refresh);
 
 	/* TODO #finish: choose which frame(s) to upload properly */
-	connect(upload_action, &QAction::triggered, this, [this](bool checked){
+	connect(upload_action, &QAction::triggered, this, [this](bool checked) {
 		Q_UNUSED(checked);
 
 		auto frame_id = frames_table.get_model()->rowCount();

@@ -40,11 +40,21 @@ UploaderSettings::UploaderSettings (Uploader& uploader,
 }
 
 void UploaderSettings::accept () {
-	if (!address_field->hasAcceptableInput() ||
-	    !port_field->hasAcceptableInput() ||
-	    !app_key_field->hasAcceptableInput() ||
-	    !submit_key_field->hasAcceptableInput()) {
-		return; // TODO feedback to the user.
+	if (!address_field->hasAcceptableInput()) {
+		qCritical("Invalid address '%s'", qPrintable(address_field->text()));
+		return;
+	}
+	if (!port_field->hasAcceptableInput()) {
+		qCritical("Invalid port '%s'", qPrintable(port_field->text()));
+		return;
+	}
+	if (!app_key_field->hasAcceptableInput()) {
+		qCritical("Invalid app_key '%s'", qPrintable(app_key_field->text()));
+		return;
+	}
+	if (!submit_key_field->hasAcceptableInput()) {
+		qCritical("Invalid submit_key '%s'", qPrintable(submit_key_field->text()));
+		return;
 	}
 
 	bool ok;

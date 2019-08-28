@@ -1,10 +1,10 @@
 #pragma once
 
-#include "packet.h"
 #include "db_columns.h"
 #include "db_graph.h"
 #include "db_table.h"
 #include "output.h"
+#include "packet.h"
 #include "uploader.h"
 #include "uploader_settings.h"
 

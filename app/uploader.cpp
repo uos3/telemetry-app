@@ -68,9 +68,8 @@ void Uploader::reply_finished (QNetworkReply* reply) {
 	 *                * do I really need a slot here? could just leave it to
 	 *                  clients to deal with replies as they will. */
 	QString dataString = QString::fromUtf8(data);
-	if (!dataString.isEmpty()) {
-		qDebug() << dataString;
-	}
+	if (!dataString.isEmpty())
+		qDebug("Upload response: %s", qPrintable(dataString));
 }
 
 std::string Uploader::get_target () { return address + ':' + std::to_string(port); }

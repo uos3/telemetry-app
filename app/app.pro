@@ -62,6 +62,7 @@ SOURCES += \
     output_json.cpp \
     output_upload.cpp \
     packet.cpp \
+    statusbar.cpp \
     uploader.cpp \
     uploader_settings.cpp \
     utility.cpp
@@ -82,6 +83,7 @@ HEADERS += \
     output_json.h \
     output_upload.h \
     packet.h \
+    statusbar.h \
     uploader.h \
     uploader_settings.h \
     utility.h

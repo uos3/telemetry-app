@@ -50,9 +50,6 @@ int main (int argc, char* argv[]) {
 	}
 
 	Uploader uploader("http://localhost", 8080, secrets::app_key, "cooldude49");
-	/* UploaderOutput uo(uploader); */
-	/* uo.listen_to(fi); */
-	/* uo.listen_to(si); */
 
 	// Show the main window.
 	MainWindow window(db, uploader);
